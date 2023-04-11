@@ -13,6 +13,7 @@ global V invV
 global NODETOL
 
 global ode_fn adj_fn
+global y0
 
 % Low storage Runge-Kutta coefficients
 rk4a = [            0.0 ...
@@ -30,3 +31,11 @@ rk4c = [             0.0  ...
          2526269341429.0/6820363962896.0 ...
          2006345519317.0/3224310063776.0 ...
          2802321613138.0/2924317926251.0];
+
+% Radau abscissas
+radau = {};
+radau{1} = -1;
+radau{2} = [-1; 1/3];
+radau{3} = [-1; (1 - sqrt(6))/5; (1 + sqrt(6))/5];
+radau{4} = [-1; -0.575319; 0.181066; 0.822824];
+radau{5} = [-1; -0.72048; -0.167181; 0.446314; 0.885792];
