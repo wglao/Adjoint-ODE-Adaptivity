@@ -10,6 +10,7 @@ global rx J
 global rk4a rk4b rk4c
 global Nfaces EToE EToF
 global V invV
+global Phi w
 global NODETOL
 
 global ode_fn adj_fn

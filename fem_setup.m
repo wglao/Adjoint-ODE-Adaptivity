@@ -1,4 +1,4 @@
-function fem_setup(n,k,tspan)
+function fem_setup(n,k,tspan,n_gq)
     % setup problem
     Globals1D;
     N = n;
@@ -23,5 +23,21 @@ function fem_setup(n,k,tspan)
     end
     
     StartUp1D;
+    
+    [r,w] = JacobiGQ(0,0,n_gq);
+    n_r = size(r,1);
+    Phi = zeros(n_r,Np);
+    p = zeros(Np,1);
+    invVT = inv(V');
+    for k = 1:n_r
+        for i = 1:Np
+            for nn = 1:Np
+                p(nn) = invVT(i,nn)*JacobiP(r(k),0,0,nn-1);
+            end
+            Phi(k,i) = sum(p);
+        end
+    end
+
+        
 
 end

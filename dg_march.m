@@ -1,33 +1,77 @@
-function [t,y] = dg_march(Ns,Ks,times,y0)
+function [t,y] = dg_march(Ns,Ks,times,y0,x_true,u_true)
     % solve ode with DG marching in time (element by element)
     Globals1D;
     t = cell(Ks,1);
     y = cell(Ks,1);
-    res = cell(Ks,1);
-    yR_prev = y0;
-    % advection speed
-    a = 1;
+    uR_prev = y0;
     
-    % outer time step loop
-    for s = 1:Ks
-        fem_setup(Ns(s),1,times(s:s+1))
-        hk = x(end) - x(1);
-        M = hk/2 .* inv(V*V');
-        S = inv(V*V')*Dr;
-        m = zeros(Np,Np); m(end) = 1;
-        A = -S'+m-M;
-        F = zeros(Np,1); F(1) = yR_prev;
-        
-        u_s = A\F;
-        y{s} = u_s;
-        yR_prev = u_s(end);
-        t{s} = x;
+    linear = false;
+%     linear = true;
+    
+    if linear
+        for k = 1:Ks
+            fem_setup(Ns(k),1,times(k:k+1),1)
+            hk = x(end) - x(1);
+            M_k = hk/2 .* inv(V*V');
+            S = inv(V*V')*Dr;
+            B = zeros(Np,Np); B(end) = 1;
+            A = -S'+B-M_k;
+            F = zeros(Np,1); F(1) = uR_prev;
+            
+            u_k = A\F;
+            y{k} = u_k;
+            uR_prev = u_k(end);
+            t{k} = x;
+        end
+    else
+        Nps = Ns+1;
+        for k = 1:Ks
+            fem_setup(Ns(k),1,times(k:k+1),4*Ns(k))
+            hk = x(end) - x(1);
+            
+            % Newton Iteration
+            it = 0;
+            maxit = 500;
+            err = 1;
+            tol = 1e-7;
+            U_old = uR_prev*ones(Nps(k),1);
+%             interpolate true solution
+            x_interp = x(1) + (1+r).*hk./2;
+            U_e = interp1(x_true,u_true,x_interp);
+            wue = w.*U_e;
+            Me = hk/2 .* Phi'*wue;
+            U_old = (hk/2 .* inv(V*V'))\Me;
+            while it<=maxit && err > tol
+                % Construct Forward A Matrix and Jacobian                
+                % polyfit for interpolation for A(f(u))
+                pu = polyfit(x,U_old,Ns(k));
+                x_interp = x(1) + (1+r).*hk./2;
+                ur_k = polyval(pu, x_interp);
+                            
+                wfu = w.*(ur_k.^2);
+                wdf = diag(w.*2.*ur_k);
+                M_tilde = hk/2 .* Phi'*wfu;
+                dMtdU = hk/2 .* Phi'*wdf*Phi;
+                S = (V*V')\Dr;
+                B = zeros(Np,Np); B(end) = -1;
+                F = zeros(Np,1); F(1) = uR_prev;
 
-        if s==Ks
-            p = polyfit(x,u_s,Ns(s));
-            u_interp = @(t) polyval(p,t);
-            disp('JuH')
-            fprintf('%.10e\n',integral(u_interp,x(1),x(end)))
+                A = S'+B;
+                dRdU = A+dMtdU;
+
+                R = A*U_old + M_tilde + F;
+                delta_u = dRdU\R;
+                U_next = U_old - delta_u;
+                err = norm(U_old-U_next);
+                U_old = U_next;
+                it = it + 1;
+            end
+            if it > maxit
+                fprintf('element %d did not converge\n',k)
+            end
+            uR_prev = U_next(end);
+            y{k} = U_next;
+            t{k} = x;
         end
     end
     return
