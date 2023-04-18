@@ -26,7 +26,7 @@ function [t,y] = dg_march(Ns,Ks,times,y0,x_true,u_true)
     else
         Nps = Ns+1;
         for k = 1:Ks
-            fem_setup(Ns(k),1,times(k:k+1),4*Ns(k))
+            fem_setup(Ns(k),1,times(k:k+1),30*Ns(k))
             hk = x(end) - x(1);
             
             % Newton Iteration
@@ -36,11 +36,11 @@ function [t,y] = dg_march(Ns,Ks,times,y0,x_true,u_true)
             tol = 1e-7;
             U_old = uR_prev*ones(Nps(k),1);
 %             interpolate true solution
-            x_interp = x(1) + (1+r).*hk./2;
-            U_e = interp1(x_true,u_true,x_interp);
-            wue = w.*U_e;
-            Me = hk/2 .* Phi'*wue;
-            U_old = (hk/2 .* inv(V*V'))\Me;
+%             x_interp = x(1) + (1+r).*hk./2;
+%             U_e = interp1(x_true,u_true,x_interp);
+%             wue = w.*U_e;
+%             Me = hk/2 .* Phi'*wue;
+%             U_old = (hk/2 .* inv(V*V'))\Me;
             while it<=maxit && err > tol
                 % Construct Forward A Matrix and Jacobian                
                 % polyfit for interpolation for A(f(u))
@@ -48,8 +48,8 @@ function [t,y] = dg_march(Ns,Ks,times,y0,x_true,u_true)
                 x_interp = x(1) + (1+r).*hk./2;
                 ur_k = polyval(pu, x_interp);
                             
-                wfu = w.*(ur_k.^2);
-                wdf = diag(w.*2.*ur_k);
+                wfu = w.*(sin(ur_k));
+                wdf = diag(w.*cos(ur_k));
                 M_tilde = hk/2 .* Phi'*wfu;
                 dMtdU = hk/2 .* Phi'*wdf*Phi;
                 S = (V*V')\Dr;
@@ -66,6 +66,8 @@ function [t,y] = dg_march(Ns,Ks,times,y0,x_true,u_true)
                 U_old = U_next;
                 it = it + 1;
             end
+            fprintf('element %d norm residual: %.10e\n',k,norm(R))
+            fprintf('element %d used %d its\n',k,it)
             if it > maxit
                 fprintf('element %d did not converge\n',k)
             end

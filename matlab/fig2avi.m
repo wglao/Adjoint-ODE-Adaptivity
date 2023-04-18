@@ -1,7 +1,7 @@
 nf = length(findobj('type','figure'));
 
 if nf>0
-    v = VideoWriter('rec_linear.avi');
+    v = VideoWriter('interp_nonlin.avi');
     v.FrameRate = 5;
     open(v);
     for i=1:nf

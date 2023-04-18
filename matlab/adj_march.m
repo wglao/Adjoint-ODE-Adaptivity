@@ -78,7 +78,7 @@ function [t,v,err] = adj_march(Ns,Ks,times)
             r_interp = tk(1) + (1+r).*hk./2;
             ur_k = uh_interp(r_interp);
                         
-            w_tilde = diag(w.*2.*ur_k);
+            w_tilde = diag(w.*cos(ur_k));
             M_v = hk/2 .* Phi'*w_tilde*Phi;
             M_k = hk/2 .* inv(V*V');
             S = inv(V*V')*Dr;
@@ -86,11 +86,11 @@ function [t,v,err] = adj_march(Ns,Ks,times)
             A = -S'+B-M_v;
 
             % %     $ J = \int_{k=Nk} (u) dt $      % %
-    %         if s == Ks
-    %             F = M*ones(Np,1); F(end) = F(end) - vL_prev;
-    %         else
-    %             F = zeros(Np,1); F(end) = - vL_prev;
-    %         end
+%             if k == Ks
+%                 F = M_k*eq(1:Np,Np)'; F(end) = F(end) - vL_prev;
+%             else
+%                 F = zeros(Np,1); F(end) = - vL_prev;
+%             end
 
             % %     $ J = \int_{\Omega_h} (u) dt $      % %
             F = M_k*ones(Np,1); F(end) = F(end) - vL_prev;
@@ -101,18 +101,18 @@ function [t,v,err] = adj_march(Ns,Ks,times)
             t{k} = x;
             
             B([1,end]) = [0,1];
-            wfu = w.*(ur_k.^2);
+            wfu = w.*(sin(ur_k));
             M_tilde = hk/2 .* Phi'*wfu;
             S = (V*V')\Dr;
             B = zeros(Np,Np); B(end) = -1;
             F = zeros(Np,1);
-
-                A = -S'+B;
             if k == 1
                 F(1) = y0;
             else
                 F(1) = y1{k-1}(end);
             end
+
+            A = -S'-B;
 
             err(k) = v_k'*(-A*uh_k - M_tilde + F);
 

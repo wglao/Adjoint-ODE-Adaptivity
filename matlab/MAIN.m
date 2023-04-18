@@ -3,14 +3,20 @@ clc; clear all; close all;
 addpath("utils")
 Globals1D;
 
-ode_fn = @(u,t) u.^2;
 
-tspan=[0 1];
+tspan=[0 2];
 y0 = 1;
 
-xplot = linspace(0,1);
+syms u(t)
+f_ode = diff(u,t) == sin(u);
+f_fn = dsolve(f_ode,u(0)==1);
+f = matlabFunction(f_fn);
+t_true = linspace(tspan(1),tspan(2),200);
+y_true = f(t_true);
+ode_fn = @(u,t) sin(u);
+xplot = linspace(0,2);
 
-Ks = 3;
+Ks = 2;
 n = 1;
 Ns = n.*ones(Ks,1);
 times = linspace(tspan(1),tspan(2),Ks+1);
@@ -22,7 +28,7 @@ maxit = 30;
 global y1 t1 y1f t1f blim;
 while  it <= maxit
     opts = odeset('RelTol',1e-6,'AbsTol',1e-7);
-    [t_true,y_true] = ode45(ode_fn,tspan,y0,opts);
+%     [t_true,y_true] = ode45(ode_fn,tspan,y0,opts);
     [t1,y1] = dg_march(Ns,Ks,times,y0,t_true,y_true);
     [t1f,y1f] = dg_march(Ns+2,Ks,times,y0,t_true,y_true);
     [t2,y2,err_con1] = adj_march(Ns+1,Ks,times);
@@ -79,10 +85,10 @@ while  it <= maxit
     hold on
     xplot = linspace(0,1,500);
     yyaxis right
-    p1 = plot(xplot,exp(xplot),'b-','LineWidth',1);
+    p1 = plot(t_true,y_true,'k-','LineWidth',4);
 %     p1 = plot(t_true,y_true,'b-','LineWidth',1);
 %     xplot = linspace(times(end-1),1,ceil(500*(1-times(end-1))));
-    p2 = plot(xplot,adj_eq_f(xplot),'r-','LineWidth',1);
+%     p2 = plot(xplot,adj_eq_f(xplot),'r-','LineWidth',1);
 %     xplot = linspace(0,times(end-1),ceil(500*(times(end-1))));
 %     p3 = plot(xplot,adj_eq_f2(xplot),'r-','LineWidth',1);
     l = legend('Primal','Adjoint','',Location='best');
@@ -113,8 +119,8 @@ while  it <= maxit
         
 
         yyaxis right
-        plot(t1{i},y1{i},'b--*','LineWidth',1)
-        plot(t2{i},y2{i},'r--*','LineWidth',1)
+        plot(t1{i},y1{i},'g--*','LineWidth',2)
+        plot(t2{i},y2{i},'r--*','LineWidth',2)
 %         plot(t3{i},y3{i},'r--s','LineWidth',1)
         ylabel('Solution')
         
@@ -136,8 +142,8 @@ while  it <= maxit
 
     if it == 0
         imwrite(frame.cdata, 'init_nonlin.png')
-    elseif it == 10
-        imwrite(frame.cdata, 'refine10_nonlin.png')
+    elseif it == 31
+        imwrite(frame.cdata, 'refine30_nonlin.png')
     end
 
 %     writeVideo(v,frame)
