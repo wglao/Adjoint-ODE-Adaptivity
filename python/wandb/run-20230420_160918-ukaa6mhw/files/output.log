@@ -1,0 +1,39 @@
+Traceback (most recent call last):
+  File "/scratch1/07169/wgl/adjoint/python/Main_FD_with_net.py", line 176, in <module>
+    wandb.log({
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/wandb/sdk/wandb_run.py", line 393, in wrapper
+    return func(self, *args, **kwargs)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/wandb/sdk/wandb_run.py", line 344, in wrapper_fn
+    return func(self, *args, **kwargs)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/wandb/sdk/wandb_run.py", line 334, in wrapper
+    return func(self, *args, **kwargs)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/wandb/sdk/wandb_run.py", line 1750, in log
+    self._log(data=data, step=step, commit=commit)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/wandb/sdk/wandb_run.py", line 1531, in _log
+    self._partial_history_callback(data, step, commit)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/wandb/sdk/wandb_run.py", line 1401, in _partial_history_callback
+    self._backend.interface.publish_partial_history(
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/wandb/sdk/interface/interface.py", line 579, in publish_partial_history
+    item.value_json = json_dumps_safer_history(v)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/wandb/util.py", line 827, in json_dumps_safer_history
+    return json.dumps(obj, cls=WandBHistoryJSONEncoder, **kwargs)
+  File "/opt/apps/intel19/python3/3.9.2/lib/python3.9/json/__init__.py", line 234, in dumps
+    return cls(
+  File "/opt/apps/intel19/python3/3.9.2/lib/python3.9/json/encoder.py", line 199, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "/opt/apps/intel19/python3/3.9.2/lib/python3.9/json/encoder.py", line 257, in iterencode
+    return _iterencode(o, 0)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/wandb/util.py", line 789, in default
+    obj, compressed = maybe_compress_history(obj)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/wandb/util.py", line 690, in maybe_compress_history
+    return wandb.Histogram(obj, num_bins=32).to_json(), True
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/wandb/sdk/data_types/histogram.py", line 76, in __init__
+    self.histogram, self.bins = np.histogram(sequence, bins=num_bins)
+  File "<__array_function__ internals>", line 200, in histogram
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/numpy/lib/histograms.py", line 780, in histogram
+    bin_edges, uniform_bins = _get_bin_edges(a, bins, range, weights)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/numpy/lib/histograms.py", line 426, in _get_bin_edges
+    first_edge, last_edge = _get_outer_edges(a, range)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/numpy/lib/histograms.py", line 323, in _get_outer_edges
+    raise ValueError(
+ValueError: autodetected range of [0.0, inf] is not finite

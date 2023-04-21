@@ -1,0 +1,216 @@
+{
+    "os": "Linux-3.10.0-1127.13.1.el7.x86_64-x86_64-with-glibc2.17",
+    "python": "3.9.2",
+    "heartbeatAt": "2023-04-20T19:11:18.981422",
+    "startedAt": "2023-04-20T19:11:18.287477",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "<python with no main file>",
+    "git": {
+        "remote": "https://github.com/wglao/Adjoint-ODE-Adaptivity.git",
+        "commit": "3084b5cf0e2341c1a10f6cd53dd02324790d9519"
+    },
+    "email": "wesleygarlao@utexas.edu",
+    "root": "/scratch1/07169/wgl/adjoint",
+    "host": "c196-022.frontera.tacc.utexas.edu",
+    "username": "wgl",
+    "executable": "/work2/07169/wgl/frontera/PHO-ICES/adj-env/bin/python3",
+    "cpu_count": 16,
+    "cpu_count_logical": 32,
+    "cpu_freq": {
+        "current": 2216.8459375,
+        "min": 1200.0,
+        "max": 3000.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 1494.25,
+            "min": 1200.0,
+            "max": 3000.0
+        },
+        {
+            "current": 2104.87,
+            "min": 1200.0,
+            "max": 3000.0
+        },
+        {
+            "current": 1627.423,
+            "min": 1200.0,
+            "max": 3000.0
+        },
+        {
+            "current": 1200.347,
+            "min": 1200.0,
+            "max": 3000.0
+        },
+        {
+            "current": 2728.82,
+            "min": 1200.0,
+            "max": 3000.0
+        },
+        {
+            "current": 2471.191,
+            "min": 1200.0,
+            "max": 3000.0
+        },
+        {
+            "current": 1841.986,
+            "min": 1200.0,
+            "max": 3000.0
+        },
+        {
+            "current": 1199.835,
+            "min": 1200.0,
+            "max": 3000.0
+        },
+        {
+            "current": 2321.74,
+            "min": 1200.0,
+            "max": 3000.0
+        },
+        {
+            "current": 1986.181,
+            "min": 1200.0,
+            "max": 3000.0
+        },
+        {
+            "current": 2693.572,
+            "min": 1200.0,
+            "max": 3000.0
+        },
+        {
+            "current": 2828.924,
+            "min": 1200.0,
+            "max": 3000.0
+        },
+        {
+            "current": 2834.692,
+            "min": 1200.0,
+            "max": 3000.0
+        },
+        {
+            "current": 2384.674,
+            "min": 1200.0,
+            "max": 3000.0
+        },
+        {
+            "current": 1589.355,
+            "min": 1200.0,
+            "max": 3000.0
+        },
+        {
+            "current": 2248.168,
+            "min": 1200.0,
+            "max": 3000.0
+        },
+        {
+            "current": 1519.757,
+            "min": 1200.0,
+            "max": 3000.0
+        },
+        {
+            "current": 2443.377,
+            "min": 1200.0,
+            "max": 3000.0
+        },
+        {
+            "current": 2258.038,
+            "min": 1200.0,
+            "max": 3000.0
+        },
+        {
+            "current": 2474.652,
+            "min": 1200.0,
+            "max": 3000.0
+        },
+        {
+            "current": 2742.279,
+            "min": 1200.0,
+            "max": 3000.0
+        },
+        {
+            "current": 2954.919,
+            "min": 1200.0,
+            "max": 3000.0
+        },
+        {
+            "current": 2017.712,
+            "min": 1200.0,
+            "max": 3000.0
+        },
+        {
+            "current": 2121.789,
+            "min": 1200.0,
+            "max": 3000.0
+        },
+        {
+            "current": 2376.983,
+            "min": 1200.0,
+            "max": 3000.0
+        },
+        {
+            "current": 2949.279,
+            "min": 1200.0,
+            "max": 3000.0
+        },
+        {
+            "current": 2944.665,
+            "min": 1200.0,
+            "max": 3000.0
+        },
+        {
+            "current": 1570.129,
+            "min": 1200.0,
+            "max": 3000.0
+        },
+        {
+            "current": 2492.852,
+            "min": 1200.0,
+            "max": 3000.0
+        },
+        {
+            "current": 2849.047,
+            "min": 1200.0,
+            "max": 3000.0
+        },
+        {
+            "current": 2634.228,
+            "min": 1200.0,
+            "max": 3000.0
+        },
+        {
+            "current": 1690.228,
+            "min": 1200.0,
+            "max": 3000.0
+        }
+    ],
+    "disk": {
+        "total": 99.96337890625,
+        "used": 86.28825378417969
+    },
+    "gpu": "Quadro RTX 5000",
+    "gpu_count": 4,
+    "gpu_devices": [
+        {
+            "name": "Quadro RTX 5000",
+            "memory_total": 16908615680
+        },
+        {
+            "name": "Quadro RTX 5000",
+            "memory_total": 16908615680
+        },
+        {
+            "name": "Quadro RTX 5000",
+            "memory_total": 16908615680
+        },
+        {
+            "name": "Quadro RTX 5000",
+            "memory_total": 16908615680
+        }
+    ],
+    "memory": {
+        "total": 125.62745666503906
+    }
+}

@@ -1,0 +1,66 @@
+Traceback (most recent call last):
+  File "/scratch1/07169/wgl/adjoint/python/Main_FD_with_net.py", line 156, in <module>
+    t_state = trainStep(t_state, dt_n, u0_batches[b], true_batches[b])
+  File "/scratch1/07169/wgl/adjoint/python/Main_FD_with_net.py", line 97, in trainStep
+    grads = grad(lossFunction)(state.params, u0_batch, true_batch)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 659, in grad_f
+    _, g = value_and_grad_f(*args, **kwargs)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 735, in value_and_grad_f
+    ans, vjp_py = _vjp(f_partial, *dyn_args, reduce_axes=reduce_axes)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 2258, in _vjp
+    out_primal, out_vjp = ad.vjp(
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/interpreters/ad.py", line 139, in vjp
+    out_primals, pvals, jaxpr, consts = linearize(traceable, *primals)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/interpreters/ad.py", line 128, in linearize
+    jaxpr, out_pvals, consts = pe.trace_to_jaxpr_nounits(jvpfun_flat, in_pvals)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/profiler.py", line 314, in wrapper
+    return func(*args, **kwargs)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/interpreters/partial_eval.py", line 771, in trace_to_jaxpr_nounits
+    jaxpr, (out_pvals, consts, env) = fun.call_wrapped(pvals)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/linear_util.py", line 166, in call_wrapped
+    ans = self.f(*args, **dict(self.params, **kwargs))
+  File "/scratch1/07169/wgl/adjoint/python/Main_FD_with_net.py", line 93, in lossFunction
+    u = state.apply_fn(funs, dt_n, u0_batch, net, params)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 1253, in vmap_f
+    out_flat = batching.batch(
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/linear_util.py", line 166, in call_wrapped
+    ans = self.f(*args, **dict(self.params, **kwargs))
+  File "/scratch1/07169/wgl/adjoint/python/factory.py", line 571, in forwardSolve
+    return solve(u0, net, params)
+  File "/scratch1/07169/wgl/adjoint/python/factory.py", line 561, in solve
+    u_vec = u_vec.at[n].set(funs.fwdUpdate(dt_n, u_vec, n, net, params))
+  File "/scratch1/07169/wgl/adjoint/python/factory.py", line 224, in fwdUpdate
+    return jnp.squeeze(net.apply({'params': params}, u_in, dt_in))
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/flax/linen/module.py", line 1470, in apply
+    return apply(
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/flax/core/scope.py", line 933, in wrapper
+    y = fn(root, *args, **kwargs)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/flax/linen/module.py", line 2041, in scope_fn
+    return fn(module.clone(parent=scope), *args, **kwargs)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/flax/linen/module.py", line 427, in wrapped_module_method
+    return self._call_wrapped_method(fun, args, kwargs)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/flax/linen/module.py", line 845, in _call_wrapped_method
+    y = fun(self, *args, **kwargs)
+  File "/scratch1/07169/wgl/adjoint/python/models.py", line 18, in __call__
+    f = nn.Dense(features=size)(f)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/flax/linen/module.py", line 427, in wrapped_module_method
+    return self._call_wrapped_method(fun, args, kwargs)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/flax/linen/module.py", line 845, in _call_wrapped_method
+    y = fun(self, *args, **kwargs)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/flax/linen/linear.py", line 196, in __call__
+    kernel = self.param('kernel',
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/flax/linen/module.py", line 1222, in param
+    v = self.scope.param(name, init_fn, *init_args, unbox=unbox)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/flax/core/scope.py", line 827, in param
+    abs_value = jax.eval_shape(lambda rng: init_fn(rng, *init_args), abs_rng)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+KeyboardInterrupt

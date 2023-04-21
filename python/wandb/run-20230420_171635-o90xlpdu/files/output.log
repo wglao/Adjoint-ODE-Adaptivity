@@ -1,0 +1,87 @@
+Traceback (most recent call last):
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api_util.py", line 559, in shaped_abstractify
+    return _shaped_abstractify_handlers[type(x)](x)
+KeyError: <class 'int'>
+During handling of the above exception, another exception occurred:
+Traceback (most recent call last):
+  File "/scratch1/07169/wgl/adjoint/python/Main_FD_with_net.py", line 162, in <module>
+    u_plot = afuns.forwardSolve(funs, dt_n, u0_train[0], net, t_state.params)
+  File "/scratch1/07169/wgl/adjoint/python/factory.py", line 571, in forwardSolve
+    return solve(u0, net, params)
+  File "/scratch1/07169/wgl/adjoint/python/factory.py", line 561, in solve
+    u_vec = u_vec.at[n].set(funs.fwdUpdate(u_vec, dt_n, n, net, params))
+  File "/scratch1/07169/wgl/adjoint/python/factory.py", line 224, in fwdUpdate
+    return jnp.squeeze(net.apply({'params': params}, u_in, dt_in))
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/flax/linen/module.py", line 1470, in apply
+    return apply(
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/flax/core/scope.py", line 933, in wrapper
+    y = fn(root, *args, **kwargs)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/flax/linen/module.py", line 2041, in scope_fn
+    return fn(module.clone(parent=scope), *args, **kwargs)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/flax/linen/module.py", line 427, in wrapped_module_method
+    return self._call_wrapped_method(fun, args, kwargs)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/flax/linen/module.py", line 845, in _call_wrapped_method
+    y = fun(self, *args, **kwargs)
+  File "/scratch1/07169/wgl/adjoint/python/models.py", line 16, in __call__
+    res = nn.Dense(features=self.feature_sizes[0])(x)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/flax/linen/module.py", line 427, in wrapped_module_method
+    return self._call_wrapped_method(fun, args, kwargs)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/flax/linen/module.py", line 845, in _call_wrapped_method
+    y = fun(self, *args, **kwargs)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/flax/linen/linear.py", line 196, in __call__
+    kernel = self.param('kernel',
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/flax/linen/module.py", line 1222, in param
+    v = self.scope.param(name, init_fn, *init_args, unbox=unbox)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/flax/core/scope.py", line 827, in param
+    abs_value = jax.eval_shape(lambda rng: init_fn(rng, *init_args), abs_rng)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 2829, in eval_shape
+    out = pe.abstract_eval_fun(wrapped_fun.call_wrapped,
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/interpreters/partial_eval.py", line 664, in abstract_eval_fun
+    _, avals_out, _ = trace_to_jaxpr_dynamic(
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/profiler.py", line 314, in wrapper
+    return func(*args, **kwargs)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/interpreters/partial_eval.py", line 2049, in trace_to_jaxpr_dynamic
+    jaxpr, out_avals, consts = trace_to_subjaxpr_dynamic(
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/interpreters/partial_eval.py", line 2066, in trace_to_subjaxpr_dynamic
+    ans = fun.call_wrapped(*in_tracers_)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/linear_util.py", line 166, in call_wrapped
+    ans = self.f(*args, **dict(self.params, **kwargs))
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/linear_util.py", line 166, in call_wrapped
+    ans = self.f(*args, **dict(self.params, **kwargs))
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/flax/core/scope.py", line 827, in <lambda>
+    abs_value = jax.eval_shape(lambda rng: init_fn(rng, *init_args), abs_rng)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/nn/initializers.py", line 281, in init
+    return random.truncated_normal(key, -2, 2, named_shape, dtype) * stddev
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/random.py", line 724, in truncated_normal
+    return _truncated_normal(key, lower, upper, shape, dtype)  # type: ignore
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/pjit.py", line 238, in cache_miss
+    outs, out_flat, out_tree, args_flat = _python_pjit_helper(
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/pjit.py", line 180, in _python_pjit_helper
+    args_flat, _, params, in_tree, out_tree, _ = infer_params_fn(
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 311, in infer_params
+    return pjit.common_infer_params(pjit_info_args, *args, **kwargs)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/pjit.py", line 475, in common_infer_params
+    in_type = in_avals = tuple(shaped_abstractify(a) for a in explicit_args)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/pjit.py", line 475, in <genexpr>
+    in_type = in_avals = tuple(shaped_abstractify(a) for a in explicit_args)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api_util.py", line 561, in shaped_abstractify
+    return _shaped_abstractify_slow(x)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api_util.py", line 541, in _shaped_abstractify_slow
+    x if isinstance(x, core.AbstractValue) else core.get_aval(x))
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/core.py", line 1358, in get_aval
+    return concrete_aval(x)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/core.py", line 1347, in concrete_aval
+    if handler: return handler(x)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/abstract_arrays.py", line 75, in _make_concrete_python_scalar
+    dtype = dtypes._scalar_type_to_dtype(t, x)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/dtypes.py", line 182, in _scalar_type_to_dtype
+    if value < np.iinfo(dtype).min or value > np.iinfo(dtype).max:
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/numpy/core/getlimits.py", line 670, in __init__
+    self.dtype = numeric.dtype(int_type)
+KeyboardInterrupt

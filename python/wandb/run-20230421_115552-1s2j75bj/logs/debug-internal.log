@@ -1,0 +1,52 @@
+2023-04-21 11:55:52,296 INFO    StreamThr :13862 [internal.py:wandb_internal():86] W&B internal server running at pid: 13862, started at: 2023-04-21 11:55:52.295208
+2023-04-21 11:55:52,298 DEBUG   HandlerThread:13862 [handler.py:handle_request():144] handle_request: status
+2023-04-21 11:55:52,305 INFO    WriterThread:13862 [datastore.py:open_for_write():85] open: /scratch1/07169/wgl/adjoint/python/wandb/run-20230421_115552-1s2j75bj/run-1s2j75bj.wandb
+2023-04-21 11:55:52,306 DEBUG   SenderThread:13862 [sender.py:send():375] send: header
+2023-04-21 11:55:52,353 DEBUG   SenderThread:13862 [sender.py:send():375] send: run
+2023-04-21 11:55:52,649 INFO    SenderThread:13862 [dir_watcher.py:__init__():219] watching files in: /scratch1/07169/wgl/adjoint/python/wandb/run-20230421_115552-1s2j75bj/files
+2023-04-21 11:55:52,650 INFO    SenderThread:13862 [sender.py:_start_run_threads():1124] run started: 1s2j75bj with start time 1682096152.297095
+2023-04-21 11:55:52,650 DEBUG   SenderThread:13862 [sender.py:send_request():402] send_request: summary_record
+2023-04-21 11:55:52,651 INFO    SenderThread:13862 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-04-21 11:55:52,656 DEBUG   HandlerThread:13862 [handler.py:handle_request():144] handle_request: check_version
+2023-04-21 11:55:52,656 DEBUG   SenderThread:13862 [sender.py:send_request():402] send_request: check_version
+2023-04-21 11:55:52,744 DEBUG   HandlerThread:13862 [handler.py:handle_request():144] handle_request: run_start
+2023-04-21 11:55:52,748 DEBUG   HandlerThread:13862 [system_info.py:__init__():31] System info init
+2023-04-21 11:55:52,749 DEBUG   HandlerThread:13862 [system_info.py:__init__():46] System info init done
+2023-04-21 11:55:52,749 INFO    HandlerThread:13862 [system_monitor.py:start():181] Starting system monitor
+2023-04-21 11:55:52,749 INFO    SystemMonitor:13862 [system_monitor.py:_start():145] Starting system asset monitoring threads
+2023-04-21 11:55:52,749 INFO    HandlerThread:13862 [system_monitor.py:probe():201] Collecting system info
+2023-04-21 11:55:52,750 INFO    SystemMonitor:13862 [interfaces.py:start():190] Started cpu monitoring
+2023-04-21 11:55:52,751 INFO    SystemMonitor:13862 [interfaces.py:start():190] Started disk monitoring
+2023-04-21 11:55:52,752 INFO    SystemMonitor:13862 [interfaces.py:start():190] Started gpu monitoring
+2023-04-21 11:55:52,753 INFO    SystemMonitor:13862 [interfaces.py:start():190] Started memory monitoring
+2023-04-21 11:55:52,754 INFO    SystemMonitor:13862 [interfaces.py:start():190] Started network monitoring
+2023-04-21 11:55:52,771 DEBUG   HandlerThread:13862 [system_info.py:probe():195] Probing system
+2023-04-21 11:55:52,778 DEBUG   HandlerThread:13862 [system_info.py:_probe_git():180] Probing git
+2023-04-21 11:55:52,805 DEBUG   HandlerThread:13862 [system_info.py:_probe_git():188] Probing git done
+2023-04-21 11:55:52,805 DEBUG   HandlerThread:13862 [system_info.py:probe():240] Probing system done
+2023-04-21 11:55:52,805 DEBUG   HandlerThread:13862 [system_monitor.py:probe():210] {'os': 'Linux-3.10.0-1127.13.1.el7.x86_64-x86_64-with-glibc2.17', 'python': '3.9.2', 'heartbeatAt': '2023-04-21T16:55:52.771988', 'startedAt': '2023-04-21T16:55:52.271983', 'docker': None, 'cuda': None, 'args': (), 'state': 'running', 'program': '/scratch1/07169/wgl/adjoint/python/Main_FD_with_net.py', 'codePath': 'python/Main_FD_with_net.py', 'git': {'remote': 'https://github.com/wglao/Adjoint-ODE-Adaptivity.git', 'commit': '3084b5cf0e2341c1a10f6cd53dd02324790d9519'}, 'email': 'wesleygarlao@utexas.edu', 'root': '/scratch1/07169/wgl/adjoint', 'host': 'c196-021.frontera.tacc.utexas.edu', 'username': 'wgl', 'executable': '/work2/07169/wgl/frontera/PHO-ICES/adj-env/bin/python3', 'cpu_count': 16, 'cpu_count_logical': 32, 'cpu_freq': {'current': 2283.1759375, 'min': 1200.0, 'max': 3000.0}, 'cpu_freq_per_core': [{'current': 2515.411, 'min': 1200.0, 'max': 3000.0}, {'current': 2002.972, 'min': 1200.0, 'max': 3000.0}, {'current': 2664.349, 'min': 1200.0, 'max': 3000.0}, {'current': 2675.628, 'min': 1200.0, 'max': 3000.0}, {'current': 2660.632, 'min': 1200.0, 'max': 3000.0}, {'current': 2114.611, 'min': 1200.0, 'max': 3000.0}, {'current': 2587.188, 'min': 1200.0, 'max': 3000.0}, {'current': 2072.827, 'min': 1200.0, 'max': 3000.0}, {'current': 1443.493, 'min': 1200.0, 'max': 3000.0}, {'current': 1949.011, 'min': 1200.0, 'max': 3000.0}, {'current': 2617.822, 'min': 1200.0, 'max': 3000.0}, {'current': 2300.463, 'min': 1200.0, 'max': 3000.0}, {'current': 2029.888, 'min': 1200.0, 'max': 3000.0}, {'current': 2980.169, 'min': 1200.0, 'max': 3000.0}, {'current': 2247.143, 'min': 1200.0, 'max': 3000.0}, {'current': 2295.849, 'min': 1200.0, 'max': 3000.0}, {'current': 2815.338, 'min': 1200.0, 'max': 3000.0}, {'current': 2755.48, 'min': 1200.0, 'max': 3000.0}, {'current': 2902.88, 'min': 1200.0, 'max': 3000.0}, {'current': 2495.8, 'min': 1200.0, 'max': 3000.0}, {'current': 2367.883, 'min': 1200.0, 'max': 3000.0}, {'current': 2656.274, 'min': 1200.0, 'max': 3000.0}, {'current': 2598.852, 'min': 1200.0, 'max': 3000.0}, {'current': 2099.743, 'min': 1200.0, 'max': 3000.0}, {'current': 2026.684, 'min': 1200.0, 'max': 3000.0}, {'current': 1256.488, 'min': 1200.0, 'max': 3000.0}, {'current': 2820.977, 'min': 1200.0, 'max': 3000.0}, {'current': 2274.316, 'min': 1200.0, 'max': 3000.0}, {'current': 1651.007, 'min': 1200.0, 'max': 3000.0}, {'current': 2165.753, 'min': 1200.0, 'max': 3000.0}, {'current': 2059.368, 'min': 1200.0, 'max': 3000.0}, {'current': 2535.406, 'min': 1200.0, 'max': 3000.0}], 'disk': {'total': 99.96337890625, 'used': 86.19270324707031}, 'gpu': 'Quadro RTX 5000', 'gpu_count': 4, 'gpu_devices': [{'name': 'Quadro RTX 5000', 'memory_total': 16908615680}, {'name': 'Quadro RTX 5000', 'memory_total': 16908615680}, {'name': 'Quadro RTX 5000', 'memory_total': 16908615680}, {'name': 'Quadro RTX 5000', 'memory_total': 16908615680}], 'memory': {'total': 125.62745666503906}}
+2023-04-21 11:55:52,805 INFO    HandlerThread:13862 [system_monitor.py:probe():211] Finished collecting system info
+2023-04-21 11:55:52,805 INFO    HandlerThread:13862 [system_monitor.py:probe():214] Publishing system info
+2023-04-21 11:55:52,805 DEBUG   HandlerThread:13862 [system_info.py:_save_pip():51] Saving list of pip packages installed into the current environment
+2023-04-21 11:55:52,807 DEBUG   HandlerThread:13862 [system_info.py:_save_pip():67] Saving pip packages done
+2023-04-21 11:55:52,809 INFO    HandlerThread:13862 [system_monitor.py:probe():216] Finished publishing system info
+2023-04-21 11:55:52,815 DEBUG   SenderThread:13862 [sender.py:send():375] send: files
+2023-04-21 11:55:52,815 INFO    SenderThread:13862 [sender.py:_save_file():1378] saving file wandb-metadata.json with policy now
+2023-04-21 11:55:52,825 DEBUG   HandlerThread:13862 [handler.py:handle_request():144] handle_request: stop_status
+2023-04-21 11:55:52,826 DEBUG   SenderThread:13862 [sender.py:send_request():402] send_request: stop_status
+2023-04-21 11:55:52,908 DEBUG   SenderThread:13862 [sender.py:send():375] send: telemetry
+2023-04-21 11:55:52,908 DEBUG   SenderThread:13862 [sender.py:send():375] send: telemetry
+2023-04-21 11:55:52,908 DEBUG   SenderThread:13862 [sender.py:send():375] send: config
+2023-04-21 11:55:52,908 DEBUG   SenderThread:13862 [sender.py:send():375] send: config
+2023-04-21 11:55:52,908 DEBUG   SenderThread:13862 [sender.py:send():375] send: config
+2023-04-21 11:55:53,107 INFO    wandb-upload_0:13862 [upload_job.py:push():137] Uploaded file /tmp/tmp1vd22bw6wandb/7p98qdye-wandb-metadata.json
+2023-04-21 11:55:53,653 INFO    Thread-12 :13862 [dir_watcher.py:_on_file_created():278] file/dir created: /scratch1/07169/wgl/adjoint/python/wandb/run-20230421_115552-1s2j75bj/files/wandb-summary.json
+2023-04-21 11:55:53,653 INFO    Thread-12 :13862 [dir_watcher.py:_on_file_created():278] file/dir created: /scratch1/07169/wgl/adjoint/python/wandb/run-20230421_115552-1s2j75bj/files/requirements.txt
+2023-04-21 11:55:53,653 INFO    Thread-12 :13862 [dir_watcher.py:_on_file_created():278] file/dir created: /scratch1/07169/wgl/adjoint/python/wandb/run-20230421_115552-1s2j75bj/files/wandb-metadata.json
+2023-04-21 11:55:56,757 INFO    cpu       :13862 [interfaces.py:monitor():140] Process cpu has exited.
+2023-04-21 11:55:56,758 DEBUG   SystemMonitor:13862 [system_monitor.py:_start():159] Starting system metrics aggregation loop
+2023-04-21 11:55:56,758 DEBUG   SystemMonitor:13862 [system_monitor.py:_start():166] Finished system metrics aggregation loop
+2023-04-21 11:55:56,759 DEBUG   SystemMonitor:13862 [system_monitor.py:_start():170] Publishing last batch of metrics
+2023-04-21 11:55:56,761 DEBUG   SenderThread:13862 [sender.py:send():375] send: stats
+2023-04-21 11:55:57,745 INFO    MainThread:13862 [internal.py:handle_exit():76] Internal process exited
+2023-04-21 11:55:57,762 DEBUG   HandlerThread:13862 [handler.py:handle_request():144] handle_request: status_report

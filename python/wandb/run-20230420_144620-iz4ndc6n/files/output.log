@@ -1,0 +1,124 @@
+Traceback (most recent call last):
+  File "/scratch1/07169/wgl/adjoint/python/Main_FD_with_net.py", line 154, in <module>
+    t_state = trainStep(t_state, dt_n, u0_batches, true_train)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/pjit.py", line 238, in cache_miss
+    outs, out_flat, out_tree, args_flat = _python_pjit_helper(
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/pjit.py", line 180, in _python_pjit_helper
+    args_flat, _, params, in_tree, out_tree, _ = infer_params_fn(
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 311, in infer_params
+    return pjit.common_infer_params(pjit_info_args, *args, **kwargs)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/pjit.py", line 480, in common_infer_params
+    jaxpr, consts, canonicalized_out_shardings_flat = _pjit_jaxpr(
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/pjit.py", line 918, in _pjit_jaxpr
+    jaxpr, final_consts, out_type = _create_pjit_jaxpr(
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/linear_util.py", line 322, in memoized_fun
+    ans = call(fun, *args)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/pjit.py", line 874, in _create_pjit_jaxpr
+    jaxpr, global_out_avals, consts = pe.trace_to_jaxpr_dynamic(
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/profiler.py", line 314, in wrapper
+    return func(*args, **kwargs)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/interpreters/partial_eval.py", line 2049, in trace_to_jaxpr_dynamic
+    jaxpr, out_avals, consts = trace_to_subjaxpr_dynamic(
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/interpreters/partial_eval.py", line 2066, in trace_to_subjaxpr_dynamic
+    ans = fun.call_wrapped(*in_tracers_)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/linear_util.py", line 166, in call_wrapped
+    ans = self.f(*args, **dict(self.params, **kwargs))
+  File "/scratch1/07169/wgl/adjoint/python/Main_FD_with_net.py", line 102, in trainStep
+    grads = grad(loss)(state.params, u0_batches)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 659, in grad_f
+    _, g = value_and_grad_f(*args, **kwargs)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 735, in value_and_grad_f
+    ans, vjp_py = _vjp(f_partial, *dyn_args, reduce_axes=reduce_axes)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 2258, in _vjp
+    out_primal, out_vjp = ad.vjp(
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/interpreters/ad.py", line 139, in vjp
+    out_primals, pvals, jaxpr, consts = linearize(traceable, *primals)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/interpreters/ad.py", line 128, in linearize
+    jaxpr, out_pvals, consts = pe.trace_to_jaxpr_nounits(jvpfun_flat, in_pvals)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/profiler.py", line 314, in wrapper
+    return func(*args, **kwargs)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/interpreters/partial_eval.py", line 771, in trace_to_jaxpr_nounits
+    jaxpr, (out_pvals, consts, env) = fun.call_wrapped(pvals)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/linear_util.py", line 166, in call_wrapped
+    ans = self.f(*args, **dict(self.params, **kwargs))
+  File "/scratch1/07169/wgl/adjoint/python/Main_FD_with_net.py", line 101, in <lambda>
+    loss = lambda p, u: jnp.mean(vmap(lossFunction, in_axes=(None, 0))(p, u))
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 1253, in vmap_f
+    out_flat = batching.batch(
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/linear_util.py", line 166, in call_wrapped
+    ans = self.f(*args, **dict(self.params, **kwargs))
+  File "/scratch1/07169/wgl/adjoint/python/Main_FD_with_net.py", line 98, in lossFunction
+    loss = jnp.mean(jnp.square(u - true_train))
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/core.py", line 647, in __sub__
+    def __sub__(self, other): return self.aval._sub(self, other)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/numpy/array_methods.py", line 251, in deferring_binary_op
+    return binary_op(*args)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/pjit.py", line 238, in cache_miss
+    outs, out_flat, out_tree, args_flat = _python_pjit_helper(
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/pjit.py", line 180, in _python_pjit_helper
+    args_flat, _, params, in_tree, out_tree, _ = infer_params_fn(
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 311, in infer_params
+    return pjit.common_infer_params(pjit_info_args, *args, **kwargs)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/pjit.py", line 480, in common_infer_params
+    jaxpr, consts, canonicalized_out_shardings_flat = _pjit_jaxpr(
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/pjit.py", line 918, in _pjit_jaxpr
+    jaxpr, final_consts, out_type = _create_pjit_jaxpr(
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/linear_util.py", line 322, in memoized_fun
+    ans = call(fun, *args)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/pjit.py", line 874, in _create_pjit_jaxpr
+    jaxpr, global_out_avals, consts = pe.trace_to_jaxpr_dynamic(
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/profiler.py", line 314, in wrapper
+    return func(*args, **kwargs)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/interpreters/partial_eval.py", line 2049, in trace_to_jaxpr_dynamic
+    jaxpr, out_avals, consts = trace_to_subjaxpr_dynamic(
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/interpreters/partial_eval.py", line 2066, in trace_to_subjaxpr_dynamic
+    ans = fun.call_wrapped(*in_tracers_)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/linear_util.py", line 166, in call_wrapped
+    ans = self.f(*args, **dict(self.params, **kwargs))
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/numpy/ufuncs.py", line 81, in <lambda>
+    fn = lambda x1, x2, /: lax_fn(*promote_args(numpy_fn.__name__, x1, x2))
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/lax/lax.py", line 406, in sub
+    return sub_p.bind(x, y)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/core.py", line 360, in bind
+    return self.bind_with_trace(find_top_trace(args), args, params)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/core.py", line 363, in bind_with_trace
+    out = trace.process_primitive(self, map(trace.full_raise, args), params)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/interpreters/partial_eval.py", line 1791, in process_primitive
+    return self.default_process_primitive(primitive, tracers, params)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/interpreters/partial_eval.py", line 1795, in default_process_primitive
+    out_avals, effects = primitive.abstract_eval(*avals, **params)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/core.py", line 396, in abstract_eval_
+    return abstract_eval(*args, **kwargs), no_effects
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/lax/utils.py", line 67, in standard_abstract_eval
+    return core.ShapedArray(shape_rule(*avals, **kwargs),
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/lax/lax.py", line 1558, in broadcasting_shape_rule
+    raise TypeError(f'{name} got incompatible shapes for broadcasting: '
+jax._src.traceback_util.UnfilteredStackTrace: TypeError: sub got incompatible shapes for broadcasting: (10, 11, 1), (90, 11, 1).
+The stack trace below excludes JAX-internal frames.
+The preceding is the original exception that occurred, unmodified.
+--------------------
+The above exception was the direct cause of the following exception:
+Traceback (most recent call last):
+  File "/scratch1/07169/wgl/adjoint/python/Main_FD_with_net.py", line 154, in <module>
+    t_state = trainStep(t_state, dt_n, u0_batches, true_train)
+  File "/scratch1/07169/wgl/adjoint/python/Main_FD_with_net.py", line 102, in trainStep
+    grads = grad(loss)(state.params, u0_batches)
+  File "/scratch1/07169/wgl/adjoint/python/Main_FD_with_net.py", line 101, in <lambda>
+    loss = lambda p, u: jnp.mean(vmap(lossFunction, in_axes=(None, 0))(p, u))
+  File "/scratch1/07169/wgl/adjoint/python/Main_FD_with_net.py", line 98, in lossFunction
+    loss = jnp.mean(jnp.square(u - true_train))
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/numpy/array_methods.py", line 251, in deferring_binary_op
+    return binary_op(*args)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/numpy/ufuncs.py", line 81, in <lambda>
+    fn = lambda x1, x2, /: lax_fn(*promote_args(numpy_fn.__name__, x1, x2))
+TypeError: sub got incompatible shapes for broadcasting: (10, 11, 1), (90, 11, 1).
