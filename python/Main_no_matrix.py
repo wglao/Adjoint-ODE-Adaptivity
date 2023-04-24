@@ -220,7 +220,7 @@ if __name__ == "__main__":
     # exact
     ax2.plot(
         t_span,
-        true_test[1],
+        jnp.array([u_0_test[1],true_test[1]]),
         color='black',
         marker='o',
         linestyle='None',

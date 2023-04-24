@@ -1,6 +1,0 @@
-Traceback (most recent call last):
-  File "/scratch1/07169/wgl/adjoint/python/Main_FD_with_net.py", line 159, in <module>
-    t_state = trainStep(t_state, dt_n, u0_batches[b], true_batches[b])
-  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/flax/core/frozen_dict.py", line 162, in tree_unflatten
-    @classmethod
-KeyboardInterrupt
