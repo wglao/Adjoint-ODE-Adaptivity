@@ -1,0 +1,17 @@
+2023-04-24 14:54:48,267 INFO    MainThread:2420545 [wandb_setup.py:_flush():76] Configure stats pid to 2420545
+2023-04-24 14:54:48,288 INFO    MainThread:2420545 [wandb_setup.py:_flush():76] Loading settings from /home1/07169/wgl/.config/wandb/settings
+2023-04-24 14:54:48,290 INFO    MainThread:2420545 [wandb_setup.py:_flush():76] Loading settings from /scratch/07169/wgl/adjoint/python/wandb/settings
+2023-04-24 14:54:48,291 INFO    MainThread:2420545 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2023-04-24 14:54:48,293 INFO    MainThread:2420545 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2023-04-24 14:54:48,295 INFO    MainThread:2420545 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program': '<python with no main file>'}
+2023-04-24 14:54:48,297 INFO    MainThread:2420545 [wandb_init.py:_log_setup():507] Logging user logs to /scratch/07169/wgl/adjoint/python/wandb/run-20230424_145447-acz4moia/logs/debug.log
+2023-04-24 14:54:48,298 INFO    MainThread:2420545 [wandb_init.py:_log_setup():508] Logging internal logs to /scratch/07169/wgl/adjoint/python/wandb/run-20230424_145447-acz4moia/logs/debug-internal.log
+2023-04-24 14:54:48,300 INFO    MainThread:2420545 [wandb_init.py:init():547] calling init triggers
+2023-04-24 14:54:48,302 INFO    MainThread:2420545 [wandb_init.py:init():554] wandb.init called with sweep_config: {}
+config: {}
+2023-04-24 14:54:48,304 INFO    MainThread:2420545 [wandb_init.py:init():590] wandb.init() called when a run is still active
+2023-04-24 14:54:48,306 INFO    MainThread:2420545 [wandb_config.py:__setitem__():152] config set problem = ResNet - <bound method Run._config_callback of <wandb.sdk.wandb_run.Run object at 0x14c5e416ba00>>
+2023-04-24 14:54:48,307 INFO    MainThread:2420545 [wandb_run.py:_config_callback():1285] config_cb problem ResNet None
+2023-04-24 14:54:48,309 INFO    MainThread:2420545 [wandb_config.py:__setitem__():152] config set method = Recurrent - <bound method Run._config_callback of <wandb.sdk.wandb_run.Run object at 0x14c5e416ba00>>
+2023-04-24 14:54:48,311 INFO    MainThread:2420545 [wandb_run.py:_config_callback():1285] config_cb method Recurrent None
+2023-04-24 14:55:25,489 WARNING MsgRouterThr:2420545 [router.py:message_loop():77] message_loop has been closed

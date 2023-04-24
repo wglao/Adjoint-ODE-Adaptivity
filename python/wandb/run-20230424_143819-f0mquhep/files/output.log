@@ -1,0 +1,40 @@
+Traceback (most recent call last):
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 180, in <module>
+    v = adjointSolve(u, dt, ref_factor)
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 62, in adjointSolve
+    v_next = v_next + sumTerm(v[j], u_fine, t_fine, dt_fine, i, j)
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 56, in sumTerm
+    return v_j*(grad(forwardFn)(u_prev, t_prev, dt_j))[i]
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 659, in grad_f
+    _, g = value_and_grad_f(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 735, in value_and_grad_f
+    ans, vjp_py = _vjp(f_partial, *dyn_args, reduce_axes=reduce_axes)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 2258, in _vjp
+    out_primal, out_vjp = ad.vjp(
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/interpreters/ad.py", line 139, in vjp
+    out_primals, pvals, jaxpr, consts = linearize(traceable, *primals)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/interpreters/ad.py", line 128, in linearize
+    jaxpr, out_pvals, consts = pe.trace_to_jaxpr_nounits(jvpfun_flat, in_pvals)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/profiler.py", line 314, in wrapper
+    return func(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/interpreters/partial_eval.py", line 771, in trace_to_jaxpr_nounits
+    jaxpr, (out_pvals, consts, env) = fun.call_wrapped(pvals)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/linear_util.py", line 166, in call_wrapped
+    ans = self.f(*args, **dict(self.params, **kwargs))
+jax._src.traceback_util.UnfilteredStackTrace: TypeError: forwardFn() missing 2 required positional arguments: 'params' and 'net'
+The stack trace below excludes JAX-internal frames.
+The preceding is the original exception that occurred, unmodified.
+--------------------
+The above exception was the direct cause of the following exception:
+Traceback (most recent call last):
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 180, in <module>
+    v = adjointSolve(u, dt, ref_factor)
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 62, in adjointSolve
+    v_next = v_next + sumTerm(v[j], u_fine, t_fine, dt_fine, i, j)
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 56, in sumTerm
+    return v_j*(grad(forwardFn)(u_prev, t_prev, dt_j))[i]
+TypeError: forwardFn() missing 2 required positional arguments: 'params' and 'net'

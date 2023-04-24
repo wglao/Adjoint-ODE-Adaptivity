@@ -1,0 +1,62 @@
+2023-04-24 14:50:00,869 INFO    MainThread:2420545 [wandb_setup.py:_flush():76] Configure stats pid to 2420545
+2023-04-24 14:50:00,916 INFO    MainThread:2420545 [wandb_setup.py:_flush():76] Loading settings from /home1/07169/wgl/.config/wandb/settings
+2023-04-24 14:50:00,917 INFO    MainThread:2420545 [wandb_setup.py:_flush():76] Loading settings from /scratch/07169/wgl/adjoint/python/wandb/settings
+2023-04-24 14:50:00,918 INFO    MainThread:2420545 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2023-04-24 14:50:00,919 INFO    MainThread:2420545 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2023-04-24 14:50:00,920 INFO    MainThread:2420545 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program': '<python with no main file>'}
+2023-04-24 14:50:00,921 INFO    MainThread:2420545 [wandb_init.py:_log_setup():507] Logging user logs to /scratch/07169/wgl/adjoint/python/wandb/run-20230424_145000-xm7kkf8j/logs/debug.log
+2023-04-24 14:50:00,922 INFO    MainThread:2420545 [wandb_init.py:_log_setup():508] Logging internal logs to /scratch/07169/wgl/adjoint/python/wandb/run-20230424_145000-xm7kkf8j/logs/debug-internal.log
+2023-04-24 14:50:00,923 INFO    MainThread:2420545 [wandb_init.py:init():547] calling init triggers
+2023-04-24 14:50:00,923 INFO    MainThread:2420545 [wandb_init.py:init():554] wandb.init called with sweep_config: {}
+config: {}
+2023-04-24 14:50:00,924 INFO    MainThread:2420545 [wandb_init.py:init():595] starting backend
+2023-04-24 14:50:00,925 INFO    MainThread:2420545 [wandb_init.py:init():599] setting up manager
+2023-04-24 14:50:00,938 INFO    MainThread:2420545 [backend.py:_multiprocessing_setup():106] multiprocessing start_methods=fork,spawn,forkserver, using: spawn
+2023-04-24 14:50:00,952 INFO    MainThread:2420545 [wandb_init.py:init():605] backend started and connected
+2023-04-24 14:50:00,963 INFO    MainThread:2420545 [wandb_init.py:init():695] updated telemetry
+2023-04-24 14:50:01,008 INFO    MainThread:2420545 [wandb_init.py:init():732] communicating run to backend with 60.0 second timeout
+2023-04-24 14:50:01,500 INFO    MainThread:2420545 [wandb_run.py:_on_init():2176] communicating current version
+2023-04-24 14:50:01,595 INFO    MainThread:2420545 [wandb_run.py:_on_init():2185] got version response 
+2023-04-24 14:50:01,596 INFO    MainThread:2420545 [wandb_init.py:init():782] starting run threads in backend
+2023-04-24 14:50:01,854 INFO    MainThread:2420545 [wandb_run.py:_console_start():2157] atexit reg
+2023-04-24 14:50:01,855 INFO    MainThread:2420545 [wandb_run.py:_redirect():2012] redirect: SettingsConsole.WRAP_RAW
+2023-04-24 14:50:01,856 INFO    MainThread:2420545 [wandb_run.py:_redirect():2077] Wrapping output streams.
+2023-04-24 14:50:01,856 INFO    MainThread:2420545 [wandb_run.py:_redirect():2102] Redirects installed.
+2023-04-24 14:50:01,858 INFO    MainThread:2420545 [wandb_init.py:init():824] run started, returning control to user process
+2023-04-24 14:50:01,859 INFO    MainThread:2420545 [wandb_config.py:__setitem__():152] config set problem = ResNet - <bound method Run._config_callback of <wandb.sdk.wandb_run.Run object at 0x14c5e416ba00>>
+2023-04-24 14:50:01,859 INFO    MainThread:2420545 [wandb_run.py:_config_callback():1285] config_cb problem ResNet None
+2023-04-24 14:50:01,861 INFO    MainThread:2420545 [wandb_config.py:__setitem__():152] config set method = Recurrent - <bound method Run._config_callback of <wandb.sdk.wandb_run.Run object at 0x14c5e416ba00>>
+2023-04-24 14:50:01,861 INFO    MainThread:2420545 [wandb_run.py:_config_callback():1285] config_cb method Recurrent None
+2023-04-24 14:54:43,722 INFO    MainThread:2420545 [wandb_setup.py:_flush():76] Configure stats pid to 2420545
+2023-04-24 14:54:43,744 INFO    MainThread:2420545 [wandb_setup.py:_flush():76] Loading settings from /home1/07169/wgl/.config/wandb/settings
+2023-04-24 14:54:43,745 INFO    MainThread:2420545 [wandb_setup.py:_flush():76] Loading settings from /scratch/07169/wgl/adjoint/python/wandb/settings
+2023-04-24 14:54:43,746 INFO    MainThread:2420545 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2023-04-24 14:54:43,747 INFO    MainThread:2420545 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2023-04-24 14:54:43,748 INFO    MainThread:2420545 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program': '<python with no main file>'}
+2023-04-24 14:54:43,749 INFO    MainThread:2420545 [wandb_init.py:_log_setup():507] Logging user logs to /scratch/07169/wgl/adjoint/python/wandb/run-20230424_145443-dckx68m9/logs/debug.log
+2023-04-24 14:54:43,750 INFO    MainThread:2420545 [wandb_init.py:_log_setup():508] Logging internal logs to /scratch/07169/wgl/adjoint/python/wandb/run-20230424_145443-dckx68m9/logs/debug-internal.log
+2023-04-24 14:54:43,751 INFO    MainThread:2420545 [wandb_init.py:init():547] calling init triggers
+2023-04-24 14:54:43,752 INFO    MainThread:2420545 [wandb_init.py:init():554] wandb.init called with sweep_config: {}
+config: {}
+2023-04-24 14:54:43,753 INFO    MainThread:2420545 [wandb_init.py:init():590] wandb.init() called when a run is still active
+2023-04-24 14:54:43,754 INFO    MainThread:2420545 [wandb_config.py:__setitem__():152] config set problem = ResNet - <bound method Run._config_callback of <wandb.sdk.wandb_run.Run object at 0x14c5e416ba00>>
+2023-04-24 14:54:43,755 INFO    MainThread:2420545 [wandb_run.py:_config_callback():1285] config_cb problem ResNet None
+2023-04-24 14:54:43,756 INFO    MainThread:2420545 [wandb_config.py:__setitem__():152] config set method = Recurrent - <bound method Run._config_callback of <wandb.sdk.wandb_run.Run object at 0x14c5e416ba00>>
+2023-04-24 14:54:43,757 INFO    MainThread:2420545 [wandb_run.py:_config_callback():1285] config_cb method Recurrent None
+2023-04-24 14:54:48,267 INFO    MainThread:2420545 [wandb_setup.py:_flush():76] Configure stats pid to 2420545
+2023-04-24 14:54:48,288 INFO    MainThread:2420545 [wandb_setup.py:_flush():76] Loading settings from /home1/07169/wgl/.config/wandb/settings
+2023-04-24 14:54:48,290 INFO    MainThread:2420545 [wandb_setup.py:_flush():76] Loading settings from /scratch/07169/wgl/adjoint/python/wandb/settings
+2023-04-24 14:54:48,291 INFO    MainThread:2420545 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2023-04-24 14:54:48,293 INFO    MainThread:2420545 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2023-04-24 14:54:48,295 INFO    MainThread:2420545 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program': '<python with no main file>'}
+2023-04-24 14:54:48,297 INFO    MainThread:2420545 [wandb_init.py:_log_setup():507] Logging user logs to /scratch/07169/wgl/adjoint/python/wandb/run-20230424_145447-acz4moia/logs/debug.log
+2023-04-24 14:54:48,298 INFO    MainThread:2420545 [wandb_init.py:_log_setup():508] Logging internal logs to /scratch/07169/wgl/adjoint/python/wandb/run-20230424_145447-acz4moia/logs/debug-internal.log
+2023-04-24 14:54:48,300 INFO    MainThread:2420545 [wandb_init.py:init():547] calling init triggers
+2023-04-24 14:54:48,302 INFO    MainThread:2420545 [wandb_init.py:init():554] wandb.init called with sweep_config: {}
+config: {}
+2023-04-24 14:54:48,304 INFO    MainThread:2420545 [wandb_init.py:init():590] wandb.init() called when a run is still active
+2023-04-24 14:54:48,306 INFO    MainThread:2420545 [wandb_config.py:__setitem__():152] config set problem = ResNet - <bound method Run._config_callback of <wandb.sdk.wandb_run.Run object at 0x14c5e416ba00>>
+2023-04-24 14:54:48,307 INFO    MainThread:2420545 [wandb_run.py:_config_callback():1285] config_cb problem ResNet None
+2023-04-24 14:54:48,309 INFO    MainThread:2420545 [wandb_config.py:__setitem__():152] config set method = Recurrent - <bound method Run._config_callback of <wandb.sdk.wandb_run.Run object at 0x14c5e416ba00>>
+2023-04-24 14:54:48,311 INFO    MainThread:2420545 [wandb_run.py:_config_callback():1285] config_cb method Recurrent None
+2023-04-24 14:55:25,489 WARNING MsgRouterThr:2420545 [router.py:message_loop():77] message_loop has been closed

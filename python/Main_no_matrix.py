@@ -13,8 +13,10 @@ import optax
 import scipy.integrate as integrate
 from jax import grad, jit, vmap
 from jax.lax import dynamic_slice_in_dim as dySlice
+from jax.lax import scan
 from matplotlib.patches import Rectangle
 
+import animate
 from models import ResNetBlock, ResNetODE
 
 
@@ -22,24 +24,37 @@ def forwardFn(u, t, dt, params: dict, net: nn.Module):
   return net.apply({'params': params}, u[-1], t[-1], dt)
 
 
-# @jit
 def forwardSolve(u_0, dt, params: dict, net: nn.Module):
   # return net.apply({'params': params}, u0, return_all=True)
   u = u_0*jnp.ones((len(dt) + 1, 1))
   t = jnp.pad(jnp.cumsum(dt), (1, 0), constant_values=0)
   u_prev = u
+
+  # for loop
   for l, dt_l in enumerate(dt):
     u_next = forwardFn(u[:l + 1], t[:l + 1], dt_l, params, net)
     u = u.at[l + 1].set(u_next)
+
+  # scan
+  # def scanFn(u, l):
+  #   u_next = forwardFn(u[:l + 1], t[:l + 1], dt[l], params, net)
+  #   u = u.at[l + 1].set(u_next)
+  #   return u, u_next
+  
+  # u, _ = scan(scanFn,u,jnp.arange(len(dt)))
+
   return u
 
 
 def outFnl(u, t=None):
-  return u[-1]
+  # return u[-1]
+  true = jnp.sin(t) + u[0]
+  loss = jnp.mean(jnp.square(u - true))
+  return loss
 
 
 # @partial(jit, static_argnums=2)
-def adjointSolve(u, dt, ref_factor):
+def adjointSolve(u, dt, ref_factor, params, net):
   # refine u
   _, dt_fine, t_fine, u_fine = refineSolution(u, dt, ref_factor)
 
@@ -49,17 +64,21 @@ def adjointSolve(u, dt, ref_factor):
 
   # t = jnp.concatenate((jnp.zeros(1), jnp.cumsum(dt)), None)
 
-  def sumTerm(v_j, u, t, dt, i, j):
+  def sumTerm(u, t, dt, i, j):
     u_prev = u[:j]
     t_prev = t[:j]
     dt_j = dt[j - 1]
-    return v_j*(grad(forwardFn)(u_prev, t_prev, dt_j))[i]
+    return (grad(lambda u, t, dt, p, n: forwardFn(u, t, dt, p, n)[0])(u_prev,
+                                                                      t_prev,
+                                                                      dt_j,
+                                                                      params,
+                                                                      net))[i]
 
   for i in jnp.arange(len(v) - 2, -1, -1):
     js = jnp.arange(i + 1, len(v), dtype=jnp.int32)
     v_next = dJdU[i]
     for j in js:
-      v_next = v_next + sumTerm(v[j], u_fine, t_fine, dt_fine, i, j)
+      v_next = v_next + v[j]*sumTerm(u_fine, t_fine, dt_fine, i, j)
     v = v.at[i].set(v_next)
   return v
 
@@ -82,13 +101,14 @@ def refineSolution(u, dt, ref_factor):
 
 
 # @partial(jit, static_argnums=2)
-def errorIndicator(u, v, dt, ref_factor):
+def errorIndicator(u, v, dt, ref_factor, params, net):
   err = jnp.zeros(len(u) - 1)
   t_coarse, dt_fine, t_fine, u_fine = refineSolution(u, dt, ref_factor)
   res_u = jnp.zeros_like(u_fine)
   for n in jnp.arange(1, len(res_u)):
-    residual = u_fine[n] - forwardFn(u_fine[:n], t_fine[:n], dt_fine[n - 1])
-    res_u = res_u.at[n].set(residual)
+    residual = u_fine[n] - forwardFn(u_fine[:n], t_fine[:n], dt_fine[n - 1],
+                                     params, net)
+    res_u = res_u.at[n].set(jnp.squeeze(residual))
   err_fine = res_u*v
   for i in jnp.arange(len(err)):
     err = err.at[i].set(
@@ -98,7 +118,7 @@ def errorIndicator(u, v, dt, ref_factor):
 
 def lossFn(u_0, t, dt, params, net):
   u = forwardSolve(u_0, dt, params, net)
-  true = jnp.sin(t) + u[0]
+  true = jnp.sin(t) + u_0
   loss = jnp.mean(jnp.square(u - true))
   return loss
 
@@ -147,7 +167,7 @@ if __name__ == "__main__":
   os.mkdir(case)
 
   # net and training
-  rng = jrand.PRNGKey(0)
+  rng = jrand.PRNGKey(1)
   net = ResNetBlock((10,))
   params = net.init(rng, jnp.ones(1), jnp.ones(1), jnp.ones(1))['params']
 
@@ -177,8 +197,8 @@ if __name__ == "__main__":
 
     # solve
     u = forwardSolve(u_0_test[1], dt, params, net)
-    v = adjointSolve(u, dt, ref_factor)
-    err = errorIndicator(u, v, dt, ref_factor)
+    v = adjointSolve(u, dt, ref_factor, params, net)
+    err = errorIndicator(u, v, dt, ref_factor, params, net)
 
     # plot
     fig, ax1 = plt.subplots()
@@ -191,8 +211,12 @@ if __name__ == "__main__":
       ax1.set_ylim(*bar_ylim)
 
     ax2 = ax1.twinx()
-    ax2.plot(t, u, '-', marker='.', color='tab:blue', label='Forward')
-    ax2.plot(t_fine, v, '-', marker='.', color='tab:orange', label='Ajoint')
+    
+    # exact
+    ax2.plot(t, jnp.sin(t)+u[0], '-', color='black', label='Exact Forward', linewidth=4)
+
+    ax2.plot(t, u, '-', marker='.', color='tab:blue', label='Forward', linewidth=1.25)
+    ax2.plot(t_fine, v, '-', marker='.', color='tab:orange', label='Ajoint', linewidth=1.25)
     ax2.set_ylabel('Solution')
     ax2.set_xlabel('Time')
 
@@ -200,6 +224,8 @@ if __name__ == "__main__":
 
     f_name = case + '_{:d}'.format(it)
     fig.savefig(case + '/' + f_name + '.png')
+    if wandb_upload:
+      wandb.log({'Refinement Plot': fig})
     plt.close(fig)
 
     # adapt
@@ -216,17 +242,4 @@ if __name__ == "__main__":
     err_total = jnp.sum(err)
     it += 1
 
-  plots = os.listdir(case)
-  frame = cv2.imread(os.path.join(case, plots[0]))
-  height, width, _ = frame.shape
-  video = cv2.VideoWriter(case + '/' + case + '.mp4',
-                          cv2.VideoWriter_fourcc('m', 'p', '4', 'v'), 12,
-                          (width, height))
-  for i, p in enumerate(plots):
-    p_path = os.path.join(case, p)
-    video.write(cv2.imread(p_path))
-    if i > 0 and i < len(plots) - 1:
-      os.remove(p_path)
-
-  cv2.destroyAllWindows()
-  video.release()
+  animate.animate(case)
