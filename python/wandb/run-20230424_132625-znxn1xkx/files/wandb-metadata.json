@@ -1,0 +1,297 @@
+{
+    "os": "Linux-5.15.0-69-generic-x86_64-with-glibc2.35",
+    "python": "3.10.6",
+    "heartbeatAt": "2023-04-24T18:26:28.006509",
+    "startedAt": "2023-04-24T18:26:25.046060",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "/org/groups/ceo/wlao/adjoint/python/Main_no_matrix.py",
+    "codePath": "python/Main_no_matrix.py",
+    "git": {
+        "remote": "https://github.com/wglao/Adjoint-ODE-Adaptivity.git",
+        "commit": "25872c584bb7838bd102efd8ab5a76e6e4aa5e4b"
+    },
+    "email": "=wesleygarlao@utexas.edu",
+    "root": "/org/groups/ceo/wlao/adjoint",
+    "host": "photai",
+    "username": "wlao",
+    "executable": "/org/groups/ceo/wlao/adj-env/bin/python3",
+    "cpu_count": 24,
+    "cpu_count_logical": 48,
+    "cpu_freq": {
+        "current": 1303.2680416666667,
+        "min": 1200.0,
+        "max": 3500.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 1200.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 1200.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 1200.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 1200.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 1200.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 1200.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 1200.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 2200.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 1200.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 1200.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 1200.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 1200.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 1200.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 1199.971,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 1200.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 1200.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 1200.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 1200.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 1200.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 1600.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 1200.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 1200.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 1200.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 2200.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 1200.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 1200.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 1200.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 1200.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 1200.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 2200.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 1200.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 1200.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 1200.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 1200.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 1200.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 1200.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 1200.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 1200.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 1200.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 1200.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 1200.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 1300.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 1200.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 1200.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 1200.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 2200.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 1200.0,
+            "min": 1200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 1200.0,
+            "min": 1200.0,
+            "max": 3500.0
+        }
+    ],
+    "disk": {
+        "total": 73.27222061157227,
+        "used": 30.993793487548828
+    },
+    "gpu": "Tesla K80",
+    "gpu_count": 4,
+    "gpu_devices": [
+        {
+            "name": "Tesla K80",
+            "memory_total": 11997020160
+        },
+        {
+            "name": "Tesla K80",
+            "memory_total": 11997020160
+        },
+        {
+            "name": "Tesla K80",
+            "memory_total": 11997020160
+        },
+        {
+            "name": "Tesla K80",
+            "memory_total": 11997020160
+        }
+    ],
+    "memory": {
+        "total": 251.79379653930664
+    }
+}

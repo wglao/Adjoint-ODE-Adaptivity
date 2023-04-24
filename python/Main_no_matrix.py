@@ -3,29 +3,33 @@ import shutil
 from functools import partial
 
 import cv2
+import flax.linen as nn
 import jax.numpy as jnp
+import jax.random as jrand
 import matplotlib.pyplot as plt
 import numpy as np
+import optax
 import scipy.integrate as integrate
 from jax import grad, jit, vmap
 from jax.lax import dynamic_slice_in_dim as dySlice
 from matplotlib.patches import Rectangle
 
-
-def forwardFn(u, t, dt):
-  if len(u) == 1:
-    return u[-1]
-  return u[-1] + jnp.trapz(u, t)*dt
-  # return u[-1] + dt*u[-1]
+from models import ResNetBlock, ResNetODE
 
 
-@jit
-def forwardSolve(u0, dt_n):
-  u = u0*jnp.ones((len(dt_n) + 1))
-  times = jnp.concatenate((jnp.zeros(1), jnp.cumsum(dt_n)), None)
-  for n, dt in enumerate(dt_n):
-    u_next = forwardFn(u[:n + 1], times[:n + 1], dt)
-    u = u.at[n + 1].set(u_next)
+def forwardFn(u, t, dt, params: dict, net: nn.Module):
+  return net.apply({'params': params}, u[-1], t[-1], dt)
+
+
+# @jit
+def forwardSolve(u_0, dt, params: dict, net: nn.Module):
+  # return net.apply({'params': params}, u0, return_all=True)
+  u = u_0*jnp.ones((len(dt) + 1))
+  t = jnp.pad(jnp.cumsum(dt), (1, 0), constant_values=0)
+  u_prev = u
+  for l, dt_l in enumerate(dt):
+    u_next = forwardFn(u[:l + 1], t[:l + 1], dt_l, params, net)
+    u = u.at[l + 1].set(u_next)
   return u
 
 
@@ -34,14 +38,15 @@ def outFnl(u, t=None):
 
 
 # @partial(jit, static_argnums=2)
-def adjointSolve(u, dt_n, ref_factor):
+def adjointSolve(u, dt, ref_factor):
   # refine u
-  _, dt_fine, t_fine, u_fine = refineSolution(u, dt_n, ref_factor)
+  _, dt_fine, t_fine, u_fine = refineSolution(u, dt, ref_factor)
 
   dJdU = grad(outFnl)(u_fine, t_fine)
   v0 = dJdU[-1]
   v = v0*jnp.ones_like(u_fine)
-  times = jnp.concatenate((jnp.zeros(1), jnp.cumsum(dt_n)), None)
+
+  # t = jnp.concatenate((jnp.zeros(1), jnp.cumsum(dt)), None)
 
   def sumTerm(v_j, u, t, dt, i, j):
     u_prev = u[:j]
@@ -85,20 +90,48 @@ def errorIndicator(u, v, ref_factor):
     res_u = res_u.at[n].set(residual)
   err_fine = res_u*v
   for i in jnp.arange(len(err)):
-    err = err.at[i].set(
-        jnp.sum(err_fine[i*ref_factor + 1:(i+1)*ref_factor + 1]))
+    err = err.at[i].set(jnp.sum(err_fine[i*ref_factor + 1:(i+1)*ref_factor +
+                                         1]))
   return jnp.abs(err)
 
 
+def lossFn(u_0, t, dt, params, net):
+  u = vmap(forwardSolve, in_axes=(0, None, None, None))(u_0, dt, params, net)
+  true = jnp.sin(t) + u[0]
+  loss = jnp.mean(jnp.square(u - true))
+  return loss
+
+
+def trainStep(u_0, t, dt, params, net, opt_state):
+  grads = jnp.mean(
+      vmap(grad(lossFn, argnums=(3,)), in_axes=(0, None))(u_0, t, dt, params,
+                                                          net))
+  updates, opt_state = optimizer.update(grads, opt_state)
+  params = optax.apply_updates(params, updates)
+  return params, opt_state
+
+
+def metricCalc(u_0, t, dt, params, net):
+  loss = lossFn(u_0[0], t, dt, params, net)
+  err = lossFn(u_0[1], t, dt, params, net)
+  return loss, err
+
+
 if __name__ == "__main__":
-  case = "no_matrix"
-  u0 = 1
+  case = "ResNet_no_matrix"
+  wandb_upload = True
+  if wandb_upload:
+    import wandb
+    wandb.init(project="Adjoint Adaptivity", entity="wglao", name=case)
+    wandb.config.problem = 'ResNet'
+    wandb.config.method = 'Recurrent'
+
   t_span = jnp.array([0, 1])
-  n_steps = 4
-  times = jnp.linspace(t_span[0], t_span[1], n_steps + 1)
-  dt_n = jnp.diff(times)
+  n_steps = 2
+  t = jnp.linspace(t_span[0], t_span[1], n_steps + 1)
+  dt = jnp.diff(t)
   ref_factor = 4
-  dt_fine, t_fine = refineTime(dt_n, ref_factor)
+  dt_fine, t_fine = refineTime(dt, ref_factor)
 
   it = 0
   maxit = 100
@@ -110,20 +143,45 @@ if __name__ == "__main__":
     shutil.rmtree(case)
   os.mkdir(case)
 
+  # net and training
+  rng = jrand.PRNGKey(0)
+  net = ResNetBlock(250)
+  params = net.init(rng, jnp.ones(1), jnp.ones(1), jnp.ones(1))
+
+  n_epochs = 100
+  learning_rate = 1e-3
+  optimizer = optax.adam(learning_rate)
+  opt_state = optimizer.init(params)
+
+  u_0_train = jrand.normal(rng, (100,))
+  u_0_test = jnp.concatenate((u_0_train[0], jnp.ones((1,))), None)
+
   while err_total > tol and it <= maxit:
+    # train
+    for ep in range(n_epochs):
+      params, opt_state = trainStep(u_0_train, t, dt, params, net, opt_state)
+      loss, err = metricCalc(u_0_test, t, dt, params, net)
+
+      if wandb_upload:
+        wandb.log({
+            'Epoch': ep + it*n_epochs,
+            'Loss': loss,
+            'Error': err,
+            'Refinements': it,
+        })
+
     # solve
-    u = forwardSolve(u0, dt_n)
-    v = adjointSolve(u, dt_n, ref_factor)
+    u = forwardSolve(u_0_test[1], dt)
+    v = adjointSolve(u, dt, ref_factor)
     err = errorIndicator(u, v, ref_factor)
 
     # plot
     fig, ax1 = plt.subplots()
-    ax1.bar(
-        times[:-1] + dt_n/2,
-        err,
-        dt_n,
-        color='darkseagreen',
-        label='Error Indicator')
+    ax1.bar(t[:-1] + dt/2,
+            err,
+            dt,
+            color='darkseagreen',
+            label='Error Indicator')
     ax1.set_ylabel('Error Contribution')
     if it == 0:
       bar_ylim = ax1.get_ylim()
@@ -131,7 +189,7 @@ if __name__ == "__main__":
       ax1.set_ylim(*bar_ylim)
 
     ax2 = ax1.twinx()
-    ax2.plot(times, u, '-', marker='.', color='tab:blue', label='Forward')
+    ax2.plot(t, u, '-', marker='.', color='tab:blue', label='Forward')
     ax2.plot(t_fine, v, '-', marker='.', color='tab:orange', label='Ajoint')
     ax2.set_ylabel('Solution')
     ax2.set_xlabel('Time')
@@ -143,15 +201,15 @@ if __name__ == "__main__":
     plt.close(fig)
 
     # adapt
-    times_new = jnp.zeros(len(times) + 1)
+    t_new = jnp.zeros(len(t) + 1)
     idx = jnp.argmax(err) + 1
-    times_new = times_new.at[0:idx].set(times[0:idx])
-    times_new = times_new.at[idx + 1:].set(times[idx:])
-    times_new = times_new.at[idx].set(jnp.mean(times[idx - 1:idx + 1]))
+    t_new = t_new.at[0:idx].set(t[0:idx])
+    t_new = t_new.at[idx + 1:].set(t[idx:])
+    t_new = t_new.at[idx].set(jnp.mean(t[idx - 1:idx + 1]))
 
-    times = times_new
-    dt_n = jnp.diff(times)
-    dt_fine, t_fine = refineTime(dt_n, ref_factor)
+    t = t_new
+    dt = jnp.diff(t)
+    dt_fine, t_fine = refineTime(dt, ref_factor)
 
     err_total = jnp.sum(err)
     it += 1
