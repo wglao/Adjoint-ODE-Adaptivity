@@ -6,6 +6,7 @@ import cv2
 import flax.linen as nn
 import jax.numpy as jnp
 import jax.random as jrand
+import jax.tree_util as jtr
 import matplotlib.pyplot as plt
 import numpy as np
 import optax
@@ -24,7 +25,7 @@ def forwardFn(u, t, dt, params: dict, net: nn.Module):
 # @jit
 def forwardSolve(u_0, dt, params: dict, net: nn.Module):
   # return net.apply({'params': params}, u0, return_all=True)
-  u = u_0*jnp.ones((len(dt) + 1))
+  u = u_0*jnp.ones((len(dt) + 1, 1))
   t = jnp.pad(jnp.cumsum(dt), (1, 0), constant_values=0)
   u_prev = u
   for l, dt_l in enumerate(dt):
@@ -63,50 +64,52 @@ def adjointSolve(u, dt, ref_factor):
   return v
 
 
-def refineTime(dt_n, ref_factor):
-  dt_fine = jnp.zeros((len(dt_n)*ref_factor))
-  for i, dt in enumerate(dt_n):
-    dt_fine = dt_fine.at[i*ref_factor:(i+1)*ref_factor].set(dt / ref_factor)
+def refineTime(dt, ref_factor):
+  dt_fine = jnp.zeros((len(dt)*ref_factor))
+  for i, dt_i in enumerate(dt):
+    dt_fine = dt_fine.at[i*ref_factor:(i+1)*ref_factor].set(dt_i / ref_factor)
   t_fine = jnp.cumsum(dt_fine)
   t_fine = jnp.pad(t_fine, (1, 0), constant_values=0)
   return dt_fine, t_fine
 
 
-def refineSolution(u, dt_n, ref_factor):
-  t_coarse = jnp.cumsum(dt_n)
+def refineSolution(u, dt, ref_factor):
+  t_coarse = jnp.cumsum(dt)
   t_coarse = jnp.pad(t_coarse, (1, 0), constant_values=0)
-  dt_fine, t_fine = refineTime(dt_n, ref_factor)
-  u_fine = jnp.interp(t_fine, t_coarse, u)
+  dt_fine, t_fine = refineTime(dt, ref_factor)
+  u_fine = jnp.interp(t_fine, jnp.squeeze(t_coarse), jnp.squeeze(u))
   return t_coarse, dt_fine, t_fine, u_fine
 
 
 # @partial(jit, static_argnums=2)
-def errorIndicator(u, v, ref_factor):
+def errorIndicator(u, v, dt, ref_factor):
   err = jnp.zeros(len(u) - 1)
-  t_coarse, dt_fine, t_fine, u_fine = refineSolution(u, dt_n, ref_factor)
+  t_coarse, dt_fine, t_fine, u_fine = refineSolution(u, dt, ref_factor)
   res_u = jnp.zeros_like(u_fine)
   for n in jnp.arange(1, len(res_u)):
     residual = u_fine[n] - forwardFn(u_fine[:n], t_fine[:n], dt_fine[n - 1])
     res_u = res_u.at[n].set(residual)
   err_fine = res_u*v
   for i in jnp.arange(len(err)):
-    err = err.at[i].set(jnp.sum(err_fine[i*ref_factor + 1:(i+1)*ref_factor +
-                                         1]))
+    err = err.at[i].set(
+        jnp.sum(err_fine[i*ref_factor + 1:(i+1)*ref_factor + 1]))
   return jnp.abs(err)
 
 
 def lossFn(u_0, t, dt, params, net):
-  u = vmap(forwardSolve, in_axes=(0, None, None, None))(u_0, dt, params, net)
+  u = forwardSolve(u_0, dt, params, net)
   true = jnp.sin(t) + u[0]
   loss = jnp.mean(jnp.square(u - true))
   return loss
 
 
-def trainStep(u_0, t, dt, params, net, opt_state):
-  grads = jnp.mean(
-      vmap(grad(lossFn, argnums=(3,)), in_axes=(0, None))(u_0, t, dt, params,
-                                                          net))
-  updates, opt_state = optimizer.update(grads, opt_state)
+def trainStep(u_0, t, dt, params, net, opt_state,
+              tx: optax.GradientTransformation):
+  grads = jtr.tree_map(
+      lambda m: jnp.mean(m, axis=0),
+      vmap(grad(lossFn, argnums=(3,)),
+           in_axes=(0, None, None, None, None))(u_0, t, dt, params, net))[0]
+  updates, opt_state = tx.update(grads, opt_state)
   params = optax.apply_updates(params, updates)
   return params, opt_state
 
@@ -145,8 +148,8 @@ if __name__ == "__main__":
 
   # net and training
   rng = jrand.PRNGKey(0)
-  net = ResNetBlock(250)
-  params = net.init(rng, jnp.ones(1), jnp.ones(1), jnp.ones(1))
+  net = ResNetBlock((10,))
+  params = net.init(rng, jnp.ones(1), jnp.ones(1), jnp.ones(1))['params']
 
   n_epochs = 100
   learning_rate = 1e-3
@@ -154,12 +157,14 @@ if __name__ == "__main__":
   opt_state = optimizer.init(params)
 
   u_0_train = jrand.normal(rng, (100,))
-  u_0_test = jnp.concatenate((u_0_train[0], jnp.ones((1,))), None)
+  u_0_test = jnp.concatenate((jnp.array([u_0_train[0]]), jnp.ones((1, 1))),
+                             None)
 
   while err_total > tol and it <= maxit:
     # train
     for ep in range(n_epochs):
-      params, opt_state = trainStep(u_0_train, t, dt, params, net, opt_state)
+      params, opt_state = trainStep(u_0_train, t, dt, params, net, opt_state,
+                                    optimizer)
       loss, err = metricCalc(u_0_test, t, dt, params, net)
 
       if wandb_upload:
@@ -171,17 +176,14 @@ if __name__ == "__main__":
         })
 
     # solve
-    u = forwardSolve(u_0_test[1], dt)
+    u = forwardSolve(u_0_test[1], dt, params, net)
     v = adjointSolve(u, dt, ref_factor)
-    err = errorIndicator(u, v, ref_factor)
+    err = errorIndicator(u, v, dt, ref_factor)
 
     # plot
     fig, ax1 = plt.subplots()
-    ax1.bar(t[:-1] + dt/2,
-            err,
-            dt,
-            color='darkseagreen',
-            label='Error Indicator')
+    ax1.bar(
+        t[:-1] + dt/2, err, dt, color='darkseagreen', label='Error Indicator')
     ax1.set_ylabel('Error Contribution')
     if it == 0:
       bar_ylim = ax1.get_ylim()

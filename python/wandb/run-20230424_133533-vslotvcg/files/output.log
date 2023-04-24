@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/scratch1/07169/wgl/adjoint/python/Main_no_matrix.py", line 157, in <module>
+    u_0_test = jnp.concatenate((u_0_train[0], jnp.ones((1,))), None)
+  File "/work2/07169/wgl/frontera/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/numpy/lax_numpy.py", line 1759, in concatenate
+    raise ValueError("Zero-dimensional arrays cannot be concatenated.")
+ValueError: Zero-dimensional arrays cannot be concatenated.
