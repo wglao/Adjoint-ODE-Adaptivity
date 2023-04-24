@@ -1,0 +1,62 @@
+/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/plotly/matplotlylib/renderer.py:647: UserWarning:
+Looks like the annotation(s) you are trying
+to draw lies/lay outside the given figure size.
+Therefore, the resulting Plotly figure may not be
+large enough to view the full text. To adjust
+the size of the figure, use the 'width' and
+'height' keys in the Layout object. Alternatively,
+use the Margin object to adjust the figure's margins.
+Traceback (most recent call last):
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/pdb.py", line 1723, in main
+    pdb._runscript(mainpyfile)
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/pdb.py", line 1583, in _runscript
+    self.run(statement)
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/bdb.py", line 580, in run
+    exec(cmd, globals, locals)
+  File "<string>", line 1, in <module>
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 1, in <module>
+    import os
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/wandb/sdk/wandb_run.py", line 393, in wrapper
+    return func(self, *args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/wandb/sdk/wandb_run.py", line 344, in wrapper_fn
+    return func(self, *args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/wandb/sdk/wandb_run.py", line 334, in wrapper
+    return func(self, *args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/wandb/sdk/wandb_run.py", line 1750, in log
+    self._log(data=data, step=step, commit=commit)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/wandb/sdk/wandb_run.py", line 1531, in _log
+    self._partial_history_callback(data, step, commit)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/wandb/sdk/wandb_run.py", line 1401, in _partial_history_callback
+    self._backend.interface.publish_partial_history(
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/wandb/sdk/interface/interface.py", line 567, in publish_partial_history
+    data = history_dict_to_json(run, data, step=user_step, ignore_copy_err=True)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/wandb/sdk/data_types/utils.py", line 52, in history_dict_to_json
+    payload[key] = val_to_json(
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/wandb/sdk/data_types/utils.py", line 80, in val_to_json
+    val = Plotly.make_plot_media(val)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/wandb/sdk/data_types/plotly.py", line 48, in make_plot_media
+    val = util.matplotlib_to_plotly(val)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/wandb/util.py", line 507, in matplotlib_to_plotly
+    return tools.mpl_to_plotly(obj)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/plotly/tools.py", line 111, in mpl_to_plotly
+    matplotlylib.Exporter(renderer).run(fig)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/plotly/matplotlylib/mplexporter/exporter.py", line 53, in run
+    self.crawl_fig(fig)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/plotly/matplotlylib/mplexporter/exporter.py", line 124, in crawl_fig
+    self.crawl_ax(ax)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/plotly/matplotlylib/mplexporter/exporter.py", line 146, in crawl_ax
+    self.draw_collection(ax, collection)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/plotly/matplotlylib/mplexporter/exporter.py", line 289, in draw_collection
+    offset_order = offset_dict[collection.get_offset_position()]
+AttributeError: 'PathCollection' object has no attribute 'get_offset_position'
+Uncaught exception. Entering post mortem debugging
+Running 'cont' or 'step' will restart the program
+> /work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/plotly/matplotlylib/mplexporter/exporter.py(289)draw_collection()
+-> offset_order = offset_dict[collection.get_offset_position()]
+Post mortem debugger finished. The /scratch/07169/wgl/adjoint/python/Main_no_matrix.py will be restarted
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(1)<module>()
+-> import os
+Program interrupted. (Use 'cont' to resume).
+--Return--
+> /work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/flax/ids.py(38)__call__()->FlaxId(13294)
+-> return FlaxId(self._id)

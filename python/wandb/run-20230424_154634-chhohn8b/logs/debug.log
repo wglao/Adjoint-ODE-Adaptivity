@@ -14,3 +14,4 @@ config: {}
 2023-04-24 15:46:34,545 INFO    MainThread:2921113 [wandb_run.py:_config_callback():1285] config_cb problem ResNet None
 2023-04-24 15:46:34,548 INFO    MainThread:2921113 [wandb_config.py:__setitem__():152] config set method = final_value_loss - <bound method Run._config_callback of <wandb.sdk.wandb_run.Run object at 0x147ee34b9a60>>
 2023-04-24 15:46:34,551 INFO    MainThread:2921113 [wandb_run.py:_config_callback():1285] config_cb method final_value_loss None
+2023-04-24 16:00:28,883 WARNING MsgRouterThr:2921113 [router.py:message_loop():77] message_loop has been closed

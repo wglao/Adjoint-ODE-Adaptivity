@@ -1,0 +1,17 @@
+2023-04-24 16:24:40,183 INFO    MainThread:2928382 [wandb_setup.py:_flush():76] Configure stats pid to 2928382
+2023-04-24 16:24:40,246 INFO    MainThread:2928382 [wandb_setup.py:_flush():76] Loading settings from /home1/07169/wgl/.config/wandb/settings
+2023-04-24 16:24:40,260 INFO    MainThread:2928382 [wandb_setup.py:_flush():76] Loading settings from /scratch/07169/wgl/adjoint/python/wandb/settings
+2023-04-24 16:24:40,273 INFO    MainThread:2928382 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2023-04-24 16:24:40,286 INFO    MainThread:2928382 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2023-04-24 16:24:40,298 INFO    MainThread:2928382 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program': '<python with no main file>'}
+2023-04-24 16:24:40,311 INFO    MainThread:2928382 [wandb_init.py:_log_setup():507] Logging user logs to /scratch/07169/wgl/adjoint/python/wandb/run-20230424_162440-bmk9t6iq/logs/debug.log
+2023-04-24 16:24:40,323 INFO    MainThread:2928382 [wandb_init.py:_log_setup():508] Logging internal logs to /scratch/07169/wgl/adjoint/python/wandb/run-20230424_162440-bmk9t6iq/logs/debug-internal.log
+2023-04-24 16:24:40,335 INFO    MainThread:2928382 [wandb_init.py:init():547] calling init triggers
+2023-04-24 16:24:40,347 INFO    MainThread:2928382 [wandb_init.py:init():554] wandb.init called with sweep_config: {}
+config: {}
+2023-04-24 16:24:40,360 INFO    MainThread:2928382 [wandb_init.py:init():590] wandb.init() called when a run is still active
+2023-04-24 16:24:40,373 INFO    MainThread:2928382 [wandb_config.py:__setitem__():152] config set problem = ResNet - <bound method Run._config_callback of <wandb.sdk.wandb_run.Run object at 0x14bf8aef0a00>>
+2023-04-24 16:24:40,386 INFO    MainThread:2928382 [wandb_run.py:_config_callback():1285] config_cb problem ResNet None
+2023-04-24 16:24:40,400 INFO    MainThread:2928382 [wandb_config.py:__setitem__():152] config set method = final_value_loss - <bound method Run._config_callback of <wandb.sdk.wandb_run.Run object at 0x14bf8aef0a00>>
+2023-04-24 16:24:40,414 INFO    MainThread:2928382 [wandb_run.py:_config_callback():1285] config_cb method final_value_loss None
+2023-04-24 16:25:10,274 WARNING MsgRouterThr:2928382 [router.py:message_loop():77] message_loop has been closed

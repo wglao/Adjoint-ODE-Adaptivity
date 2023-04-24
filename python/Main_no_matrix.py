@@ -20,6 +20,10 @@ import animate
 from models import ResNetBlock, ResNetODE
 
 
+def odeFn(u, t):
+  return jnp.sin(2*jnp.pi*u*t) / jnp.where(jnp.abs(u) > 1e-12, u, 1e-12)
+
+
 def forwardFn(u, t, dt, params: dict, net: nn.Module):
   return net.apply({'params': params}, u[-1], t[-1], dt)
 
@@ -46,18 +50,17 @@ def forwardSolve(u_0, dt, params: dict, net: nn.Module):
   return u
 
 
-def outFnl(u, t=None):
-  # return u[-1]
-  loss = jnp.abs(jnp.squeeze(u[-1]) - jnp.squeeze(jnp.sin(t[-1] + u[0])))
+def outFnl(u, t, true):
+  loss = jnp.abs(jnp.squeeze(u[-1]) - jnp.squeeze(true))
   return loss
 
 
 # @partial(jit, static_argnums=2)
-def adjointSolve(u, dt, ref_factor, params, net):
+def adjointSolve(u, dt, true, ref_factor, params, net):
   # refine u
   _, dt_fine, t_fine, u_fine = refineSolution(u, dt, ref_factor)
 
-  dJdU = grad(outFnl)(u_fine, t_fine)
+  dJdU = grad(outFnl)(u_fine, t_fine, true)
   v0 = dJdU[-1]
   v = v0*jnp.ones_like(u_fine)
 
@@ -115,28 +118,27 @@ def errorIndicator(u, v, dt, ref_factor, params, net):
   return jnp.abs(err)
 
 
-def lossFn(u_0, t, dt, params, net):
+def lossFn(u_0, t, dt, true, params, net):
   u = forwardSolve(u_0, dt, params, net)
-  true = jnp.sin(t[-1]) + u_0
-  # loss = jnp.mean(jnp.square(u - true))
   loss = jnp.abs(jnp.squeeze(u[-1]) - jnp.squeeze(true))
   return loss
 
 
-def trainStep(u_0, t, dt, params, net, opt_state,
+def trainStep(u_0, t, dt, true, params, net, opt_state,
               tx: optax.GradientTransformation):
   grads = jtr.tree_map(
       lambda m: jnp.mean(m, axis=0),
-      vmap(grad(lossFn, argnums=(3,)),
-           in_axes=(0, None, None, None, None))(u_0, t, dt, params, net))[0]
+      vmap(
+          grad(partial(lossFn, net=net), argnums=(4,)),
+          in_axes=(0, None, None, 0, None))(u_0, t, dt, true, params))[0]
   updates, opt_state = tx.update(grads, opt_state)
   params = optax.apply_updates(params, updates)
   return params, opt_state
 
 
-def metricCalc(u_0, t, dt, params, net):
-  loss = lossFn(u_0[0], t, dt, params, net)
-  err = lossFn(u_0[1], t, dt, params, net)
+def metricCalc(u_0, t, dt, true, params, net):
+  loss = lossFn(u_0[0], t, dt, true[0], params, net)
+  err = lossFn(u_0[1], t, dt, true[1], params, net)
   return loss, err
 
 
@@ -180,12 +182,15 @@ if __name__ == "__main__":
   u_0_test = jnp.concatenate((jnp.array([u_0_train[0]]), jnp.ones((1, 1))),
                              None)
 
+  true_train = integrate.odeint(odeFn, u_0_train, t_span)[-1]
+  true_test = integrate.odeint(odeFn, u_0_test, t_span)[-1]
+
   while err_total > tol and it <= maxit:
     # train
     for ep in range(n_epochs):
-      params, opt_state = trainStep(u_0_train, t, dt, params, net, opt_state,
-                                    optimizer)
-      loss, err = metricCalc(u_0_test, t, dt, params, net)
+      params, opt_state = trainStep(u_0_train, t, dt, true_train, params, net,
+                                    opt_state, optimizer)
+      loss, err = metricCalc(u_0_test, t, dt, true_test, params, net)
 
       if wandb_upload:
         wandb.log({
@@ -197,7 +202,7 @@ if __name__ == "__main__":
 
     # solve
     u = forwardSolve(u_0_test[1], dt, params, net)
-    v = adjointSolve(u, dt, ref_factor, params, net)
+    v = adjointSolve(u, dt, true_test[1], ref_factor, params, net)
     err = errorIndicator(u, v, dt, ref_factor, params, net)
 
     # plot
@@ -214,12 +219,12 @@ if __name__ == "__main__":
 
     # exact
     ax2.plot(
-        t,
-        jnp.sin(t) + u[0],
-        '-',
+        t_span,
+        true_test[1],
         color='black',
-        label='Exact Forward',
-        linewidth=4)
+        marker='o',
+        linestyle='None',
+        label='Exact Forward')
 
     ax2.plot(
         t,

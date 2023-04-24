@@ -1,0 +1,2079 @@
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 1, in <module>
+    import os
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 134, in trainStep
+    vmap(grad(lossFn, argnums=(3,)),
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 1253, in vmap_f
+    out_flat = batching.batch(
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/linear_util.py", line 166, in call_wrapped
+    ans = self.f(*args, **dict(self.params, **kwargs))
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 659, in grad_f
+    _, g = value_and_grad_f(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 735, in value_and_grad_f
+    ans, vjp_py = _vjp(f_partial, *dyn_args, reduce_axes=reduce_axes)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 2258, in _vjp
+    out_primal, out_vjp = ad.vjp(
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/interpreters/ad.py", line 139, in vjp
+    out_primals, pvals, jaxpr, consts = linearize(traceable, *primals)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/interpreters/ad.py", line 128, in linearize
+    jaxpr, out_pvals, consts = pe.trace_to_jaxpr_nounits(jvpfun_flat, in_pvals)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/profiler.py", line 314, in wrapper
+    return func(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/interpreters/partial_eval.py", line 771, in trace_to_jaxpr_nounits
+    jaxpr, (out_pvals, consts, env) = fun.call_wrapped(pvals)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/linear_util.py", line 166, in call_wrapped
+    ans = self.f(*args, **dict(self.params, **kwargs))
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 125, in lossFn
+    true = integrate.odeint(odeFn,u[0],t[[0,-1]])
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/array.py", line 343, in __getitem__
+    return lax_numpy._rewriting_take(self, idx)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/numpy/lax_numpy.py", line 3907, in _rewriting_take
+    treedef, static_idx, dynamic_idx = _split_index_for_jit(idx, arr.shape)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/numpy/lax_numpy.py", line 3979, in _split_index_for_jit
+    idx = _eliminate_deprecated_list_indexing(idx)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/numpy/lax_numpy.py", line 4262, in _eliminate_deprecated_list_indexing
+    raise TypeError(msg)
+jax._src.traceback_util.UnfilteredStackTrace: TypeError: Using a non-tuple sequence for multidimensional indexing is not allowed; use `arr[array(seq)]` instead of `arr[seq]`. See https://github.com/google/jax/issues/4564 for more information.
+The stack trace below excludes JAX-internal frames.
+The preceding is the original exception that occurred, unmodified.
+--------------------
+The above exception was the direct cause of the following exception:
+Traceback (most recent call last):
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/pdb.py", line 1723, in main
+    pdb._runscript(mainpyfile)
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/pdb.py", line 1583, in _runscript
+    self.run(statement)
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/bdb.py", line 580, in run
+    exec(cmd, globals, locals)
+  File "<string>", line 1, in <module>
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 1, in <module>
+    import os
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 134, in trainStep
+    vmap(grad(lossFn, argnums=(3,)),
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 125, in lossFn
+    true = integrate.odeint(odeFn,u[0],t[[0,-1]])
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/array.py", line 343, in __getitem__
+    return lax_numpy._rewriting_take(self, idx)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/numpy/lax_numpy.py", line 3907, in _rewriting_take
+    treedef, static_idx, dynamic_idx = _split_index_for_jit(idx, arr.shape)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/numpy/lax_numpy.py", line 3979, in _split_index_for_jit
+    idx = _eliminate_deprecated_list_indexing(idx)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/numpy/lax_numpy.py", line 4262, in _eliminate_deprecated_list_indexing
+    raise TypeError(msg)
+TypeError: Using a non-tuple sequence for multidimensional indexing is not allowed; use `arr[array(seq)]` instead of `arr[seq]`. See https://github.com/google/jax/issues/4564 for more information.
+Uncaught exception. Entering post mortem debugging
+Running 'cont' or 'step' will restart the program
+> /work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/numpy/lax_numpy.py(4262)_eliminate_deprecated_list_indexing()
+-> raise TypeError(msg)
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 1, in <module>
+    import os
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 134, in trainStep
+    vmap(grad(lossFn, argnums=(3,)),
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 1253, in vmap_f
+    out_flat = batching.batch(
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/linear_util.py", line 166, in call_wrapped
+    ans = self.f(*args, **dict(self.params, **kwargs))
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 659, in grad_f
+    _, g = value_and_grad_f(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 735, in value_and_grad_f
+    ans, vjp_py = _vjp(f_partial, *dyn_args, reduce_axes=reduce_axes)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 2258, in _vjp
+    out_primal, out_vjp = ad.vjp(
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/interpreters/ad.py", line 139, in vjp
+    out_primals, pvals, jaxpr, consts = linearize(traceable, *primals)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/interpreters/ad.py", line 128, in linearize
+    jaxpr, out_pvals, consts = pe.trace_to_jaxpr_nounits(jvpfun_flat, in_pvals)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/profiler.py", line 314, in wrapper
+    return func(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/interpreters/partial_eval.py", line 771, in trace_to_jaxpr_nounits
+    jaxpr, (out_pvals, consts, env) = fun.call_wrapped(pvals)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/linear_util.py", line 166, in call_wrapped
+    ans = self.f(*args, **dict(self.params, **kwargs))
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 125, in lossFn
+    true = integrate.odeint(odeFn,u[0],t[jnp.array([0,-1])])
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/scipy/integrate/_odepack_py.py", line 242, in odeint
+    output = _odepack.odeint(func, y0, t, args, Dfun, col_deriv, ml, mu,
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/core.py", line 576, in __array__
+    raise TracerArrayConversionError(self)
+jax._src.traceback_util.UnfilteredStackTrace: jax._src.errors.TracerArrayConversionError: The numpy.ndarray conversion method __array__() was called on the JAX Tracer object Traced<ShapedArray(float32[1])>with<JVPTrace(level=3/0)> with
+  primal = Traced<ShapedArray(float32[1])>with<BatchTrace(level=1/0)> with
+    val = Array([[-1.8315924 ],
+       [-0.1945556 ],
+       [-1.689627  ],
+       [-1.341975  ],
+       [ 0.7480396 ],
+       [ 0.62496936],
+       [-0.8549421 ],
+       [ 1.7891555 ],
+       [-0.25009313],
+       [ 0.30042216],
+       [-0.5435825 ],
+       [ 0.48230746],
+       [-1.0461814 ],
+       [-0.45321622],
+       [-0.96305263],
+       [ 0.70720404],
+       [-0.5832393 ],
+       [-1.9153779 ],
+       [ 0.86839205],
+       [-0.8620794 ],
+       [ 0.00356313],
+       [-0.9709372 ],
+       [ 0.6864045 ],
+       [-0.23982936],
+       [-0.5712965 ],
+       [ 0.70485234],
+       [ 1.681367  ],
+       [ 1.0245626 ],
+       [ 0.44954523],
+       [ 1.8193872 ],
+       [-1.5887414 ],
+       [-0.11622155],
+       [-0.47183546],
+       [ 1.2526692 ],
+       [-0.68714654],
+       [ 1.50682   ],
+       [-1.1421199 ],
+       [ 0.966971  ],
+       [-0.6417875 ],
+       [-0.32777554],
+       [ 0.07776388],
+       [-0.19298087],
+       [ 0.6450959 ],
+       [ 0.7954554 ],
+       [ 0.6728499 ],
+       [ 0.1413189 ],
+       [-0.1303851 ],
+       [-1.362822  ],
+       [ 0.92622817],
+       [-0.36347324],
+       [-0.9384819 ],
+       [-0.1389774 ],
+       [-0.36984143],
+       [ 0.1220726 ],
+       [-0.32229573],
+       [-2.5421538 ],
+       [ 2.890573  ],
+       [ 0.3719327 ],
+       [ 0.67268765],
+       [-0.5279769 ],
+       [-1.40523   ],
+       [-0.67364067],
+       [ 0.96195656],
+       [-0.76662403],
+       [-0.3603929 ],
+       [-1.0970298 ],
+       [ 0.10806042],
+       [ 0.46539393],
+       [ 0.13008511],
+       [ 1.0207694 ],
+       [-0.07444536],
+       [ 0.9436928 ],
+       [ 0.34633514],
+       [ 0.87745774],
+       [ 1.6334982 ],
+       [-0.46158537],
+       [ 0.87801427],
+       [-0.6438015 ],
+       [-0.08783897],
+       [-0.08745982],
+       [ 0.193793  ],
+       [ 0.7504384 ],
+       [ 0.24485764],
+       [-0.18318185],
+       [-1.6849389 ],
+       [-1.0161854 ],
+       [ 0.78211445],
+       [-0.3220106 ],
+       [-0.8868068 ],
+       [-0.1634932 ],
+       [-0.58770967],
+       [ 0.7696147 ],
+       [ 0.63297564],
+       [ 0.5232262 ],
+       [ 1.3614049 ],
+       [-0.7784242 ],
+       [-2.4276361 ],
+       [-1.4724922 ],
+       [ 1.6659166 ],
+       [-0.15243985]], dtype=float32)
+    batch_dim = 0
+  tangent = Traced<ShapedArray(float32[1])>with<JaxprTrace(level=2/0)> with
+    pval = (ShapedArray(float32[1]), None)
+    recipe = JaxprEqnRecipe(eqn_id=<object object at 0x14bea8091d10>, in_tracers=(Traced<ShapedArray(float32[1]):JaxprTrace(level=2/0)>,), out_tracer_refs=[<weakref at 0x14be280b6770; to 'JaxprTracer' at 0x14be280b6860>], out_avals=[ShapedArray(float32[1])], primitive=copy, params={}, effects=set(), source_info=SourceInfo(traceback=<jaxlib.xla_extension.Traceback object at 0x14be280b0ef0>, name_stack=NameStack(stack=(Transform(name='jvp'),))))
+See https://jax.readthedocs.io/en/latest/errors.html#jax.errors.TracerArrayConversionError
+The stack trace below excludes JAX-internal frames.
+The preceding is the original exception that occurred, unmodified.
+--------------------
+The above exception was the direct cause of the following exception:
+Traceback (most recent call last):
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/pdb.py", line 1723, in main
+    pdb._runscript(mainpyfile)
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/pdb.py", line 1583, in _runscript
+    self.run(statement)
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/bdb.py", line 580, in run
+    exec(cmd, globals, locals)
+  File "<string>", line 1, in <module>
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 1, in <module>
+    import os
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 134, in trainStep
+    vmap(grad(lossFn, argnums=(3,)),
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 125, in lossFn
+    true = integrate.odeint(odeFn,u[0],t[jnp.array([0,-1])])
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/scipy/integrate/_odepack_py.py", line 242, in odeint
+    output = _odepack.odeint(func, y0, t, args, Dfun, col_deriv, ml, mu,
+jax._src.errors.TracerArrayConversionError: The numpy.ndarray conversion method __array__() was called on the JAX Tracer object Traced<ShapedArray(float32[1])>with<JVPTrace(level=3/0)> with
+  primal = Traced<ShapedArray(float32[1])>with<BatchTrace(level=1/0)> with
+    val = Array([[-1.8315924 ],
+       [-0.1945556 ],
+       [-1.689627  ],
+       [-1.341975  ],
+       [ 0.7480396 ],
+       [ 0.62496936],
+       [-0.8549421 ],
+       [ 1.7891555 ],
+       [-0.25009313],
+       [ 0.30042216],
+       [-0.5435825 ],
+       [ 0.48230746],
+       [-1.0461814 ],
+       [-0.45321622],
+       [-0.96305263],
+       [ 0.70720404],
+       [-0.5832393 ],
+       [-1.9153779 ],
+       [ 0.86839205],
+       [-0.8620794 ],
+       [ 0.00356313],
+       [-0.9709372 ],
+       [ 0.6864045 ],
+       [-0.23982936],
+       [-0.5712965 ],
+       [ 0.70485234],
+       [ 1.681367  ],
+       [ 1.0245626 ],
+       [ 0.44954523],
+       [ 1.8193872 ],
+       [-1.5887414 ],
+       [-0.11622155],
+       [-0.47183546],
+       [ 1.2526692 ],
+       [-0.68714654],
+       [ 1.50682   ],
+       [-1.1421199 ],
+       [ 0.966971  ],
+       [-0.6417875 ],
+       [-0.32777554],
+       [ 0.07776388],
+       [-0.19298087],
+       [ 0.6450959 ],
+       [ 0.7954554 ],
+       [ 0.6728499 ],
+       [ 0.1413189 ],
+       [-0.1303851 ],
+       [-1.362822  ],
+       [ 0.92622817],
+       [-0.36347324],
+       [-0.9384819 ],
+       [-0.1389774 ],
+       [-0.36984143],
+       [ 0.1220726 ],
+       [-0.32229573],
+       [-2.5421538 ],
+       [ 2.890573  ],
+       [ 0.3719327 ],
+       [ 0.67268765],
+       [-0.5279769 ],
+       [-1.40523   ],
+       [-0.67364067],
+       [ 0.96195656],
+       [-0.76662403],
+       [-0.3603929 ],
+       [-1.0970298 ],
+       [ 0.10806042],
+       [ 0.46539393],
+       [ 0.13008511],
+       [ 1.0207694 ],
+       [-0.07444536],
+       [ 0.9436928 ],
+       [ 0.34633514],
+       [ 0.87745774],
+       [ 1.6334982 ],
+       [-0.46158537],
+       [ 0.87801427],
+       [-0.6438015 ],
+       [-0.08783897],
+       [-0.08745982],
+       [ 0.193793  ],
+       [ 0.7504384 ],
+       [ 0.24485764],
+       [-0.18318185],
+       [-1.6849389 ],
+       [-1.0161854 ],
+       [ 0.78211445],
+       [-0.3220106 ],
+       [-0.8868068 ],
+       [-0.1634932 ],
+       [-0.58770967],
+       [ 0.7696147 ],
+       [ 0.63297564],
+       [ 0.5232262 ],
+       [ 1.3614049 ],
+       [-0.7784242 ],
+       [-2.4276361 ],
+       [-1.4724922 ],
+       [ 1.6659166 ],
+       [-0.15243985]], dtype=float32)
+    batch_dim = 0
+  tangent = Traced<ShapedArray(float32[1])>with<JaxprTrace(level=2/0)> with
+    pval = (ShapedArray(float32[1]), None)
+    recipe = JaxprEqnRecipe(eqn_id=<object object at 0x14bea8091d10>, in_tracers=(Traced<ShapedArray(float32[1]):JaxprTrace(level=2/0)>,), out_tracer_refs=[<weakref at 0x14be280b6770; to 'JaxprTracer' at 0x14be280b6860>], out_avals=[ShapedArray(float32[1])], primitive=copy, params={}, effects=set(), source_info=SourceInfo(traceback=<jaxlib.xla_extension.Traceback object at 0x14be280b0ef0>, name_stack=NameStack(stack=(Transform(name='jvp'),))))
+See https://jax.readthedocs.io/en/latest/errors.html#jax.errors.TracerArrayConversionError
+Post mortem debugger finished. The /scratch/07169/wgl/adjoint/python/Main_no_matrix.py will be restarted
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(1)<module>()
+-> import os
+Uncaught exception. Entering post mortem debugging
+Running 'cont' or 'step' will restart the program
+> /work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/scipy/integrate/_odepack_py.py(242)odeint()
+-> output = _odepack.odeint(func, y0, t, args, Dfun, col_deriv, ml, mu,
+Post mortem debugger finished. The /scratch/07169/wgl/adjoint/python/Main_no_matrix.py will be restarted
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(1)<module>()
+-> import os
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 1, in <module>
+    import os
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 134, in trainStep
+    vmap(grad(lossFn, argnums=(3,)),
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 1253, in vmap_f
+    out_flat = batching.batch(
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/linear_util.py", line 166, in call_wrapped
+    ans = self.f(*args, **dict(self.params, **kwargs))
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 659, in grad_f
+    _, g = value_and_grad_f(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 735, in value_and_grad_f
+    ans, vjp_py = _vjp(f_partial, *dyn_args, reduce_axes=reduce_axes)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 2258, in _vjp
+    out_primal, out_vjp = ad.vjp(
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/interpreters/ad.py", line 139, in vjp
+    out_primals, pvals, jaxpr, consts = linearize(traceable, *primals)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/interpreters/ad.py", line 128, in linearize
+    jaxpr, out_pvals, consts = pe.trace_to_jaxpr_nounits(jvpfun_flat, in_pvals)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/profiler.py", line 314, in wrapper
+    return func(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/interpreters/partial_eval.py", line 771, in trace_to_jaxpr_nounits
+    jaxpr, (out_pvals, consts, env) = fun.call_wrapped(pvals)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/linear_util.py", line 166, in call_wrapped
+    ans = self.f(*args, **dict(self.params, **kwargs))
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 125, in lossFn
+    true = integrate.odeint(odeFn,u_0,t[jnp.array([0,-1])])
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/scipy/integrate/_odepack_py.py", line 242, in odeint
+    output = _odepack.odeint(func, y0, t, args, Dfun, col_deriv, ml, mu,
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/core.py", line 576, in __array__
+    raise TracerArrayConversionError(self)
+jax._src.traceback_util.UnfilteredStackTrace: jax._src.errors.TracerArrayConversionError: The numpy.ndarray conversion method __array__() was called on the JAX Tracer object Traced<ShapedArray(float32[])>with<BatchTrace(level=1/0)> with
+  val = Array([-1.8315924 , -0.1945556 , -1.689627  , -1.341975  ,  0.7480396 ,
+        0.62496936, -0.8549421 ,  1.7891555 , -0.25009313,  0.30042216,
+       -0.5435825 ,  0.48230746, -1.0461814 , -0.45321622, -0.96305263,
+        0.70720404, -0.5832393 , -1.9153779 ,  0.86839205, -0.8620794 ,
+        0.00356313, -0.9709372 ,  0.6864045 , -0.23982936, -0.5712965 ,
+        0.70485234,  1.681367  ,  1.0245626 ,  0.44954523,  1.8193872 ,
+       -1.5887414 , -0.11622155, -0.47183546,  1.2526692 , -0.68714654,
+        1.50682   , -1.1421199 ,  0.966971  , -0.6417875 , -0.32777554,
+        0.07776388, -0.19298087,  0.6450959 ,  0.7954554 ,  0.6728499 ,
+        0.1413189 , -0.1303851 , -1.362822  ,  0.92622817, -0.36347324,
+       -0.9384819 , -0.1389774 , -0.36984143,  0.1220726 , -0.32229573,
+       -2.5421538 ,  2.890573  ,  0.3719327 ,  0.67268765, -0.5279769 ,
+       -1.40523   , -0.67364067,  0.96195656, -0.76662403, -0.3603929 ,
+       -1.0970298 ,  0.10806042,  0.46539393,  0.13008511,  1.0207694 ,
+       -0.07444536,  0.9436928 ,  0.34633514,  0.87745774,  1.6334982 ,
+       -0.46158537,  0.87801427, -0.6438015 , -0.08783897, -0.08745982,
+        0.193793  ,  0.7504384 ,  0.24485764, -0.18318185, -1.6849389 ,
+       -1.0161854 ,  0.78211445, -0.3220106 , -0.8868068 , -0.1634932 ,
+       -0.58770967,  0.7696147 ,  0.63297564,  0.5232262 ,  1.3614049 ,
+       -0.7784242 , -2.4276361 , -1.4724922 ,  1.6659166 , -0.15243985],      dtype=float32)
+  batch_dim = 0
+This BatchTracer with object id 22812897380128 was created on line:
+  /work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/scipy/integrate/_odepack_py.py:241 (odeint)
+See https://jax.readthedocs.io/en/latest/errors.html#jax.errors.TracerArrayConversionError
+The stack trace below excludes JAX-internal frames.
+The preceding is the original exception that occurred, unmodified.
+--------------------
+The above exception was the direct cause of the following exception:
+Traceback (most recent call last):
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/pdb.py", line 1723, in main
+    pdb._runscript(mainpyfile)
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/pdb.py", line 1583, in _runscript
+    self.run(statement)
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/bdb.py", line 580, in run
+    exec(cmd, globals, locals)
+  File "<string>", line 1, in <module>
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 1, in <module>
+    import os
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 134, in trainStep
+    vmap(grad(lossFn, argnums=(3,)),
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 125, in lossFn
+    true = integrate.odeint(odeFn,u_0,t[jnp.array([0,-1])])
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/scipy/integrate/_odepack_py.py", line 242, in odeint
+    output = _odepack.odeint(func, y0, t, args, Dfun, col_deriv, ml, mu,
+jax._src.errors.TracerArrayConversionError: The numpy.ndarray conversion method __array__() was called on the JAX Tracer object Traced<ShapedArray(float32[])>with<BatchTrace(level=1/0)> with
+  val = Array([-1.8315924 , -0.1945556 , -1.689627  , -1.341975  ,  0.7480396 ,
+        0.62496936, -0.8549421 ,  1.7891555 , -0.25009313,  0.30042216,
+       -0.5435825 ,  0.48230746, -1.0461814 , -0.45321622, -0.96305263,
+        0.70720404, -0.5832393 , -1.9153779 ,  0.86839205, -0.8620794 ,
+        0.00356313, -0.9709372 ,  0.6864045 , -0.23982936, -0.5712965 ,
+        0.70485234,  1.681367  ,  1.0245626 ,  0.44954523,  1.8193872 ,
+       -1.5887414 , -0.11622155, -0.47183546,  1.2526692 , -0.68714654,
+        1.50682   , -1.1421199 ,  0.966971  , -0.6417875 , -0.32777554,
+        0.07776388, -0.19298087,  0.6450959 ,  0.7954554 ,  0.6728499 ,
+        0.1413189 , -0.1303851 , -1.362822  ,  0.92622817, -0.36347324,
+       -0.9384819 , -0.1389774 , -0.36984143,  0.1220726 , -0.32229573,
+       -2.5421538 ,  2.890573  ,  0.3719327 ,  0.67268765, -0.5279769 ,
+       -1.40523   , -0.67364067,  0.96195656, -0.76662403, -0.3603929 ,
+       -1.0970298 ,  0.10806042,  0.46539393,  0.13008511,  1.0207694 ,
+       -0.07444536,  0.9436928 ,  0.34633514,  0.87745774,  1.6334982 ,
+       -0.46158537,  0.87801427, -0.6438015 , -0.08783897, -0.08745982,
+        0.193793  ,  0.7504384 ,  0.24485764, -0.18318185, -1.6849389 ,
+       -1.0161854 ,  0.78211445, -0.3220106 , -0.8868068 , -0.1634932 ,
+       -0.58770967,  0.7696147 ,  0.63297564,  0.5232262 ,  1.3614049 ,
+       -0.7784242 , -2.4276361 , -1.4724922 ,  1.6659166 , -0.15243985],      dtype=float32)
+  batch_dim = 0
+This BatchTracer with object id 22812897380128 was created on line:
+  /work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/scipy/integrate/_odepack_py.py:241 (odeint)
+See https://jax.readthedocs.io/en/latest/errors.html#jax.errors.TracerArrayConversionError
+Uncaught exception. Entering post mortem debugging
+Running 'cont' or 'step' will restart the program
+> /work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/scipy/integrate/_odepack_py.py(242)odeint()
+-> output = _odepack.odeint(func, y0, t, args, Dfun, col_deriv, ml, mu,
+Post mortem debugger finished. The /scratch/07169/wgl/adjoint/python/Main_no_matrix.py will be restarted
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(1)<module>()
+-> import os
+Uncaught exception. Entering post mortem debugging
+Running 'cont' or 'step' will restart the program
+> /work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/numpy/util.py(343)check_arraylike()
+-> raise TypeError(msg.format(fun_name, type(arg), pos))
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 1, in <module>
+    import os
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/scipy/integrate/_odepack_py.py", line 242, in odeint
+    output = _odepack.odeint(func, y0, t, args, Dfun, col_deriv, ml, mu,
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 24, in odeFn
+    return jnp.sin(2*jnp.pi*u*t) / jnp.max([u, 1e-12])
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/numpy/reductions.py", line 260, in max
+    return _reduce_max(a, axis=_ensure_optional_axes(axis), out=out,
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/pjit.py", line 238, in cache_miss
+    outs, out_flat, out_tree, args_flat = _python_pjit_helper(
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/pjit.py", line 180, in _python_pjit_helper
+    args_flat, _, params, in_tree, out_tree, _ = infer_params_fn(
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 311, in infer_params
+    return pjit.common_infer_params(pjit_info_args, *args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/pjit.py", line 480, in common_infer_params
+    jaxpr, consts, canonicalized_out_shardings_flat = _pjit_jaxpr(
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/pjit.py", line 918, in _pjit_jaxpr
+    jaxpr, final_consts, out_type = _create_pjit_jaxpr(
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/linear_util.py", line 322, in memoized_fun
+    ans = call(fun, *args)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/pjit.py", line 874, in _create_pjit_jaxpr
+    jaxpr, global_out_avals, consts = pe.trace_to_jaxpr_dynamic(
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/profiler.py", line 314, in wrapper
+    return func(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/interpreters/partial_eval.py", line 2049, in trace_to_jaxpr_dynamic
+    jaxpr, out_avals, consts = trace_to_subjaxpr_dynamic(
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/interpreters/partial_eval.py", line 2066, in trace_to_subjaxpr_dynamic
+    ans = fun.call_wrapped(*in_tracers_)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/linear_util.py", line 166, in call_wrapped
+    ans = self.f(*args, **dict(self.params, **kwargs))
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/numpy/reductions.py", line 252, in _reduce_max
+    return _reduction(a, "max", np.max, lax.max, -np.inf, has_identity=False,
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/numpy/reductions.py", line 87, in _reduction
+    check_arraylike(name, a)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/numpy/util.py", line 343, in check_arraylike
+    raise TypeError(msg.format(fun_name, type(arg), pos))
+jax._src.traceback_util.UnfilteredStackTrace: TypeError: max requires ndarray or scalar arguments, got <class 'list'> at position 0.
+The stack trace below excludes JAX-internal frames.
+The preceding is the original exception that occurred, unmodified.
+--------------------
+The above exception was the direct cause of the following exception:
+Traceback (most recent call last):
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/pdb.py", line 1723, in main
+    pdb._runscript(mainpyfile)
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/pdb.py", line 1583, in _runscript
+    self.run(statement)
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/bdb.py", line 580, in run
+    exec(cmd, globals, locals)
+  File "<string>", line 1, in <module>
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 1, in <module>
+    import os
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/scipy/integrate/_odepack_py.py", line 242, in odeint
+    output = _odepack.odeint(func, y0, t, args, Dfun, col_deriv, ml, mu,
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 24, in odeFn
+    return jnp.sin(2*jnp.pi*u*t) / jnp.max([u, 1e-12])
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/numpy/reductions.py", line 260, in max
+    return _reduce_max(a, axis=_ensure_optional_axes(axis), out=out,
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/numpy/reductions.py", line 252, in _reduce_max
+    return _reduction(a, "max", np.max, lax.max, -np.inf, has_identity=False,
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/numpy/reductions.py", line 87, in _reduction
+    check_arraylike(name, a)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/numpy/util.py", line 343, in check_arraylike
+    raise TypeError(msg.format(fun_name, type(arg), pos))
+TypeError: max requires ndarray or scalar arguments, got <class 'list'> at position 0.
+Post mortem debugger finished. The /scratch/07169/wgl/adjoint/python/Main_no_matrix.py will be restarted
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(1)<module>()
+-> import os
+Uncaught exception. Entering post mortem debugging
+Running 'cont' or 'step' will restart the program
+> /work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/numpy/lax_numpy.py(1973)array()
+-> out = np.array(object, dtype=dtype, ndmin=ndmin, copy=False)
+Traceback (most recent call last):
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/pdb.py", line 1723, in main
+    pdb._runscript(mainpyfile)
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/pdb.py", line 1583, in _runscript
+    self.run(statement)
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/bdb.py", line 580, in run
+    exec(cmd, globals, locals)
+  File "<string>", line 1, in <module>
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 1, in <module>
+    import os
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/scipy/integrate/_odepack_py.py", line 242, in odeint
+    output = _odepack.odeint(func, y0, t, args, Dfun, col_deriv, ml, mu,
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 24, in odeFn
+    return jnp.sin(2*jnp.pi*u*t) / jnp.max(jnp.array([u, 1e-12]))
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/numpy/lax_numpy.py", line 1973, in array
+    out = np.array(object, dtype=dtype, ndmin=ndmin, copy=False)
+ValueError: setting an array element with a sequence. The requested array has an inhomogeneous shape after 1 dimensions. The detected shape was (2,) + inhomogeneous part.
+Post mortem debugger finished. The /scratch/07169/wgl/adjoint/python/Main_no_matrix.py will be restarted
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(1)<module>()
+-> import os
+Breakpoint 1 at /scratch/07169/wgl/adjoint/python/Main_no_matrix.py:24
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(24)odeFn()
+-> return jnp.sin(2*jnp.pi*u*t) / jnp.max(jnp.array([u, 1e-12]))
+*** ValueError: setting an array element with a sequence. The requested array has an inhomogeneous shape after 1 dimensions. The detected shape was (2,) + inhomogeneous part.
+*** ValueError: setting an array element with a sequence. The requested array has an inhomogeneous shape after 1 dimensions. The detected shape was (2,) + inhomogeneous part.
+Array([-0., -0., -0., -0.,  0.,  0., -0.,  0., -0.,  0., -0.,  0., -0.,
+       -0., -0.,  0., -0., -0.,  0., -0.,  0., -0.,  0., -0., -0.,  0.,
+        0.,  0.,  0.,  0., -0., -0., -0.,  0., -0.,  0., -0.,  0., -0.,
+       -0.,  0., -0.,  0.,  0.,  0.,  0., -0., -0.,  0., -0., -0., -0.,
+       -0.,  0., -0., -0.,  0.,  0.,  0., -0., -0., -0.,  0., -0., -0.,
+       -0.,  0.,  0.,  0.,  0., -0.,  0.,  0.,  0.,  0., -0.,  0., -0.,
+       -0., -0.,  0.,  0.,  0., -0., -0., -0.,  0., -0., -0., -0., -0.,
+        0.,  0.,  0.,  0., -0., -0., -0.,  0., -0.], dtype=float32)
+0.0
+array([-1.83159244, -0.1945556 , -1.68962705, -1.34197497,  0.7480396 ,
+        0.62496936, -0.85494208,  1.78915548, -0.25009313,  0.30042216,
+       -0.5435825 ,  0.48230746, -1.04618144, -0.45321622, -0.96305263,
+        0.70720404, -0.58323932, -1.91537786,  0.86839205, -0.86207938,
+        0.00356313, -0.97093719,  0.68640453, -0.23982936, -0.57129651,
+        0.70485234,  1.68136704,  1.0245626 ,  0.44954523,  1.8193872 ,
+       -1.58874142, -0.11622155, -0.47183546,  1.25266922, -0.68714654,
+        1.50681996, -1.14211988,  0.96697098, -0.64178753, -0.32777554,
+        0.07776388, -0.19298087,  0.64509588,  0.7954554 ,  0.67284989,
+        0.1413189 , -0.1303851 , -1.36282206,  0.92622817, -0.36347324,
+       -0.93848193, -0.13897739, -0.36984143,  0.1220726 , -0.32229573,
+       -2.54215384,  2.89057302,  0.37193269,  0.67268765, -0.52797687,
+       -1.40523005, -0.67364067,  0.96195656, -0.76662403, -0.3603929 ,
+       -1.09702981,  0.10806042,  0.46539393,  0.13008511,  1.02076936,
+       -0.07444536,  0.9436928 ,  0.34633514,  0.87745774,  1.63349819,
+       -0.46158537,  0.87801427, -0.64380151, -0.08783897, -0.08745982,
+        0.193793  ,  0.75043839,  0.24485764, -0.18318185, -1.68493891,
+       -1.0161854 ,  0.78211445, -0.32201061, -0.88680679, -0.1634932 ,
+       -0.58770967,  0.7696147 ,  0.63297564,  0.5232262 ,  1.3614049 ,
+       -0.7784242 , -2.42763615, -1.47249222,  1.66591656, -0.15243985])
+Uncaught exception. Entering post mortem debugging
+Running 'cont' or 'step' will restart the program
+> /work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/numpy/lax_numpy.py(1973)array()
+-> out = np.array(object, dtype=dtype, ndmin=ndmin, copy=False)
+Post mortem debugger finished. The /scratch/07169/wgl/adjoint/python/Main_no_matrix.py will be restarted
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(1)<module>()
+-> import os
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(24)odeFn()
+-> return jnp.sin(2*jnp.pi*u*t) / jnp.where(jnp.abs(u)>1e-12,u,1e-12)
+Traceback (most recent call last):
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/pdb.py", line 1723, in main
+    pdb._runscript(mainpyfile)
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/pdb.py", line 1583, in _runscript
+    self.run(statement)
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/bdb.py", line 580, in run
+    exec(cmd, globals, locals)
+  File "<string>", line 1, in <module>
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 187, in <module>
+    true_train = integrate.odeint(odeFn, u_0_train, t_span)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/scipy/integrate/_odepack_py.py", line 242, in odeint
+    output = _odepack.odeint(func, y0, t, args, Dfun, col_deriv, ml, mu,
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 24, in odeFn
+    return jnp.sin(2*jnp.pi*u*t) / jnp.where(jnp.abs(u)>1e-12,u,1e-12)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/numpy/lax_numpy.py", line 1973, in array
+    out = np.array(object, dtype=dtype, ndmin=ndmin, copy=False)
+ValueError: setting an array element with a sequence. The requested array has an inhomogeneous shape after 1 dimensions. The detected shape was (2,) + inhomogeneous part.
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(24)odeFn()
+-> return jnp.sin(2*jnp.pi*u*t) / jnp.where(jnp.abs(u)>1e-12,u,1e-12)
+Deleted breakpoint 1 at /scratch/07169/wgl/adjoint/python/Main_no_matrix.py:24
+Uncaught exception. Entering post mortem debugging
+Running 'cont' or 'step' will restart the program
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(133)trainStep()
+-> vmap(grad(lossFn, argnums=(3,)),
+Traceback (most recent call last):
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api_util.py", line 559, in shaped_abstractify
+    return _shaped_abstractify_handlers[type(x)](x)
+KeyError: <class 'models.ResNetBlock'>
+During handling of the above exception, another exception occurred:
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 193, in <module>
+    params, opt_state = trainStep(u_0_train, t, dt, true_train, params, net,
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 133, in trainStep
+    vmap(grad(lossFn, argnums=(3,)),
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 1252, in vmap_f
+    _mapped_axis_size(fun, in_tree, args_flat, in_axes_flat, "vmap"))
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 1306, in _mapped_axis_size
+    key_paths = [f'argument {name}{keystr(p)} '
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 1307, in <listcomp>
+    f'of type {shaped_abstractify(x).str_short()}'
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api_util.py", line 561, in shaped_abstractify
+    return _shaped_abstractify_slow(x)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api_util.py", line 550, in _shaped_abstractify_slow
+    raise TypeError(
+jax._src.traceback_util.UnfilteredStackTrace: TypeError: Cannot interpret value of type <class 'models.ResNetBlock'> as an abstract array; it does not have a dtype attribute
+The stack trace below excludes JAX-internal frames.
+The preceding is the original exception that occurred, unmodified.
+--------------------
+The above exception was the direct cause of the following exception:
+Traceback (most recent call last):
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/pdb.py", line 1723, in main
+    pdb._runscript(mainpyfile)
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/pdb.py", line 1583, in _runscript
+    self.run(statement)
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/bdb.py", line 580, in run
+    exec(cmd, globals, locals)
+  File "<string>", line 1, in <module>
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 193, in <module>
+    params, opt_state = trainStep(u_0_train, t, dt, true_train, params, net,
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 133, in trainStep
+    vmap(grad(lossFn, argnums=(3,)),
+TypeError: Cannot interpret value of type <class 'models.ResNetBlock'> as an abstract array; it does not have a dtype attribute
+Breakpoint 2 at /scratch/07169/wgl/adjoint/python/Main_no_matrix.py:133
+Post mortem debugger finished. The /scratch/07169/wgl/adjoint/python/Main_no_matrix.py will be restarted
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(1)<module>()
+-> import os
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(133)trainStep()
+-> vmap(grad(lossFn, argnums=(3,)),
+*** TypeError: Cannot interpret value of type <class 'models.ResNetBlock'> as an abstract array; it does not have a dtype attribute
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(133)trainStep()
+-> vmap(grad(lossFn, argnums=(3,)),
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(133)trainStep()
+-> vmap(grad(lossFn, argnums=(3,)),
+Uncaught exception. Entering post mortem debugging
+Running 'cont' or 'step' will restart the program
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(133)trainStep()
+-> vmap(grad(partial(lossFn, params=params, net=net), argnums=(3,)),
+Traceback (most recent call last):
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api_util.py", line 559, in shaped_abstractify
+    return _shaped_abstractify_handlers[type(x)](x)
+KeyError: <class 'models.ResNetBlock'>
+During handling of the above exception, another exception occurred:
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 193, in <module>
+    opt_state, optimizer)
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 133, in trainStep
+    vmap(grad(partial(lossFn, params=params, net=net), argnums=(3,)),
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 1252, in vmap_f
+    _mapped_axis_size(fun, in_tree, args_flat, in_axes_flat, "vmap"))
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 1306, in _mapped_axis_size
+    key_paths = [f'argument {name}{keystr(p)} '
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 1307, in <listcomp>
+    f'of type {shaped_abstractify(x).str_short()}'
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api_util.py", line 561, in shaped_abstractify
+    return _shaped_abstractify_slow(x)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api_util.py", line 550, in _shaped_abstractify_slow
+    raise TypeError(
+jax._src.traceback_util.UnfilteredStackTrace: TypeError: Cannot interpret value of type <class 'models.ResNetBlock'> as an abstract array; it does not have a dtype attribute
+The stack trace below excludes JAX-internal frames.
+The preceding is the original exception that occurred, unmodified.
+--------------------
+The above exception was the direct cause of the following exception:
+Traceback (most recent call last):
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/pdb.py", line 1723, in main
+    pdb._runscript(mainpyfile)
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/pdb.py", line 1583, in _runscript
+    self.run(statement)
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/bdb.py", line 580, in run
+    exec(cmd, globals, locals)
+  File "<string>", line 1, in <module>
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 193, in <module>
+    opt_state, optimizer)
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 133, in trainStep
+    vmap(grad(partial(lossFn, params=params, net=net), argnums=(3,)),
+TypeError: Cannot interpret value of type <class 'models.ResNetBlock'> as an abstract array; it does not have a dtype attribute
+Post mortem debugger finished. The /scratch/07169/wgl/adjoint/python/Main_no_matrix.py will be restarted
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(1)<module>()
+-> import os
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(133)trainStep()
+-> vmap(grad(partial(lossFn, net=net), argnums=(4,)),
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(133)trainStep()
+-> vmap(grad(partial(lossFn, net=net), argnums=(4,)),
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(133)trainStep()
+-> vmap(grad(partial(lossFn, net=net), argnums=(4,)),
+Uncaught exception. Entering post mortem debugging
+Running 'cont' or 'step' will restart the program
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(133)trainStep()
+-> vmap(grad(partial(lossFn, net=net), argnums=(4,)),
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 192, in <module>
+    params, opt_state = trainStep(u_0_train, t, dt, true_train, params, net,
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 133, in trainStep
+    vmap(grad(partial(lossFn, net=net), argnums=(4,)),
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 1250, in vmap_f
+    in_axes_flat = flatten_axes("vmap in_axes", in_tree, (in_axes, 0), kws=True)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api_util.py", line 438, in flatten_axes
+    raise ValueError(f"{name} specification must be a tree prefix of the "
+jax._src.traceback_util.UnfilteredStackTrace: ValueError: vmap in_axes specification must be a tree prefix of the corresponding value, got specification (0, None, None, 0, None, None) for value tree PyTreeDef((*, *, *, *, CustomNode(FrozenDict[('Dense_0', 'Dense_1', 'Dense_2')], [{'bias': *, 'kernel': *}, {'bias': *, 'kernel': *}, {'bias': *, 'kernel': *}]))).
+The stack trace below excludes JAX-internal frames.
+The preceding is the original exception that occurred, unmodified.
+--------------------
+The above exception was the direct cause of the following exception:
+Traceback (most recent call last):
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/pdb.py", line 1723, in main
+    pdb._runscript(mainpyfile)
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/pdb.py", line 1583, in _runscript
+    self.run(statement)
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/bdb.py", line 580, in run
+    exec(cmd, globals, locals)
+  File "<string>", line 1, in <module>
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 192, in <module>
+    params, opt_state = trainStep(u_0_train, t, dt, true_train, params, net,
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 133, in trainStep
+    vmap(grad(partial(lossFn, net=net), argnums=(4,)),
+ValueError: vmap in_axes specification must be a tree prefix of the corresponding value, got specification (0, None, None, 0, None, None) for value tree PyTreeDef((*, *, *, *, CustomNode(FrozenDict[('Dense_0', 'Dense_1', 'Dense_2')], [{'bias': *, 'kernel': *}, {'bias': *, 'kernel': *}, {'bias': *, 'kernel': *}]))).
+Post mortem debugger finished. The /scratch/07169/wgl/adjoint/python/Main_no_matrix.py will be restarted
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(1)<module>()
+-> import os
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(133)trainStep()
+-> vmap(grad(partial(lossFn, net=net), argnums=(4,)),
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(133)trainStep()
+-> vmap(grad(partial(lossFn, net=net), argnums=(4,)),
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(133)trainStep()
+-> vmap(grad(partial(lossFn, net=net), argnums=(4,)),
+Uncaught exception. Entering post mortem debugging
+Running 'cont' or 'step' will restart the program
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(133)trainStep()
+-> vmap(grad(partial(lossFn, net=net), argnums=(4,)),
+Traceback (most recent call last):
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/core.py", line 1905, in _dim_handler_and_canonical
+    canonical.append(operator.index(d))
+TypeError: 'NoneType' object cannot be interpreted as an integer
+During handling of the above exception, another exception occurred:
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 192, in <module>
+    params, opt_state = trainStep(u_0_train, t, dt, true_train, params, net,
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 133, in trainStep
+    vmap(grad(partial(lossFn, net=net), argnums=(4,)),
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 1252, in vmap_f
+    _mapped_axis_size(fun, in_tree, args_flat, in_axes_flat, "vmap"))
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 1319, in _mapped_axis_size
+    ex, *examples = [key_paths[_all_sizes_index(sz)] for sz, _ in counts]
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 1319, in <listcomp>
+    ex, *examples = [key_paths[_all_sizes_index(sz)] for sz, _ in counts]
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 1316, in _all_sizes_index
+    if core.symbolic_equal_dim(isz, sz): return i
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/core.py", line 1936, in symbolic_equal_dim
+    handler, ds = _dim_handler_and_canonical(d1, d2)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/core.py", line 1907, in _dim_handler_and_canonical
+    raise _invalid_shape_error(dlist)
+jax._src.traceback_util.UnfilteredStackTrace: TypeError: Shapes must be 1D sequences of concrete values of integer type, got (None, 2).
+The stack trace below excludes JAX-internal frames.
+The preceding is the original exception that occurred, unmodified.
+--------------------
+The above exception was the direct cause of the following exception:
+Traceback (most recent call last):
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/pdb.py", line 1723, in main
+    pdb._runscript(mainpyfile)
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/pdb.py", line 1583, in _runscript
+    self.run(statement)
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/bdb.py", line 580, in run
+    exec(cmd, globals, locals)
+  File "<string>", line 1, in <module>
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 192, in <module>
+    params, opt_state = trainStep(u_0_train, t, dt, true_train, params, net,
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 133, in trainStep
+    vmap(grad(partial(lossFn, net=net), argnums=(4,)),
+TypeError: Shapes must be 1D sequences of concrete values of integer type, got (None, 2).
+Post mortem debugger finished. The /scratch/07169/wgl/adjoint/python/Main_no_matrix.py will be restarted
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(1)<module>()
+-> import os
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(133)trainStep()
+-> vmap(grad(lossFn, argnums=(4,)),
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(133)trainStep()
+-> vmap(grad(lossFn, argnums=(4,)),
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(133)trainStep()
+-> vmap(grad(lossFn, argnums=(4,)),
+Uncaught exception. Entering post mortem debugging
+Running 'cont' or 'step' will restart the program
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(133)trainStep()
+-> vmap(grad(lossFn, argnums=(4,)),
+Traceback (most recent call last):
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api_util.py", line 559, in shaped_abstractify
+    return _shaped_abstractify_handlers[type(x)](x)
+KeyError: <class 'models.ResNetBlock'>
+During handling of the above exception, another exception occurred:
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 193, in <module>
+    params, opt_state = trainStep(u_0_train, t, dt, true_train, params, net,
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 133, in trainStep
+    vmap(grad(lossFn, argnums=(4,)),
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 1252, in vmap_f
+    _mapped_axis_size(fun, in_tree, args_flat, in_axes_flat, "vmap"))
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 1306, in _mapped_axis_size
+    key_paths = [f'argument {name}{keystr(p)} '
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 1307, in <listcomp>
+    f'of type {shaped_abstractify(x).str_short()}'
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api_util.py", line 561, in shaped_abstractify
+    return _shaped_abstractify_slow(x)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api_util.py", line 550, in _shaped_abstractify_slow
+    raise TypeError(
+jax._src.traceback_util.UnfilteredStackTrace: TypeError: Cannot interpret value of type <class 'models.ResNetBlock'> as an abstract array; it does not have a dtype attribute
+The stack trace below excludes JAX-internal frames.
+The preceding is the original exception that occurred, unmodified.
+--------------------
+The above exception was the direct cause of the following exception:
+Traceback (most recent call last):
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/pdb.py", line 1723, in main
+    pdb._runscript(mainpyfile)
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/pdb.py", line 1583, in _runscript
+    self.run(statement)
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/bdb.py", line 580, in run
+    exec(cmd, globals, locals)
+  File "<string>", line 1, in <module>
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 193, in <module>
+    params, opt_state = trainStep(u_0_train, t, dt, true_train, params, net,
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 133, in trainStep
+    vmap(grad(lossFn, argnums=(4,)),
+TypeError: Cannot interpret value of type <class 'models.ResNetBlock'> as an abstract array; it does not have a dtype attribute
+Post mortem debugger finished. The /scratch/07169/wgl/adjoint/python/Main_no_matrix.py will be restarted
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(1)<module>()
+-> import os
+Deleted breakpoint 2 at /scratch/07169/wgl/adjoint/python/Main_no_matrix.py:133
+Uncaught exception. Entering post mortem debugging
+Running 'cont' or 'step' will restart the program
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(133)trainStep()
+-> vmap(grad(lossFn, argnums=(4,)),
+Traceback (most recent call last):
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api_util.py", line 559, in shaped_abstractify
+    return _shaped_abstractify_handlers[type(x)](x)
+KeyError: <class 'models.ResNetBlock'>
+During handling of the above exception, another exception occurred:
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 1, in <module>
+    import os
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 133, in trainStep
+    vmap(grad(lossFn, argnums=(4,)),
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 1252, in vmap_f
+    _mapped_axis_size(fun, in_tree, args_flat, in_axes_flat, "vmap"))
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 1306, in _mapped_axis_size
+    key_paths = [f'argument {name}{keystr(p)} '
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 1307, in <listcomp>
+    f'of type {shaped_abstractify(x).str_short()}'
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api_util.py", line 561, in shaped_abstractify
+    return _shaped_abstractify_slow(x)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api_util.py", line 550, in _shaped_abstractify_slow
+    raise TypeError(
+jax._src.traceback_util.UnfilteredStackTrace: TypeError: Cannot interpret value of type <class 'models.ResNetBlock'> as an abstract array; it does not have a dtype attribute
+The stack trace below excludes JAX-internal frames.
+The preceding is the original exception that occurred, unmodified.
+--------------------
+The above exception was the direct cause of the following exception:
+Traceback (most recent call last):
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/pdb.py", line 1723, in main
+    pdb._runscript(mainpyfile)
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/pdb.py", line 1583, in _runscript
+    self.run(statement)
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/bdb.py", line 580, in run
+    exec(cmd, globals, locals)
+  File "<string>", line 1, in <module>
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 1, in <module>
+    import os
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 133, in trainStep
+    vmap(grad(lossFn, argnums=(4,)),
+TypeError: Cannot interpret value of type <class 'models.ResNetBlock'> as an abstract array; it does not have a dtype attribute
+Post mortem debugger finished. The /scratch/07169/wgl/adjoint/python/Main_no_matrix.py will be restarted
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(1)<module>()
+-> import os
+Traceback (most recent call last):
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api_util.py", line 559, in shaped_abstractify
+    return _shaped_abstractify_handlers[type(x)](x)
+KeyError: <class 'models.ResNetBlock'>
+During handling of the above exception, another exception occurred:
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 1, in <module>
+    import os
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 133, in trainStep
+    grad(vmap(lossFn, in_axes=(0, None, None, 0, None, None)),
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 1252, in vmap_f
+    _mapped_axis_size(fun, in_tree, args_flat, in_axes_flat, "vmap"))
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 1306, in _mapped_axis_size
+    key_paths = [f'argument {name}{keystr(p)} '
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 1307, in <listcomp>
+    f'of type {shaped_abstractify(x).str_short()}'
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api_util.py", line 561, in shaped_abstractify
+    return _shaped_abstractify_slow(x)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api_util.py", line 550, in _shaped_abstractify_slow
+    raise TypeError(
+jax._src.traceback_util.UnfilteredStackTrace: TypeError: Cannot interpret value of type <class 'models.ResNetBlock'> as an abstract array; it does not have a dtype attribute
+The stack trace below excludes JAX-internal frames.
+The preceding is the original exception that occurred, unmodified.
+--------------------
+The above exception was the direct cause of the following exception:
+Traceback (most recent call last):
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/pdb.py", line 1723, in main
+    pdb._runscript(mainpyfile)
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/pdb.py", line 1583, in _runscript
+    self.run(statement)
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/bdb.py", line 580, in run
+    exec(cmd, globals, locals)
+  File "<string>", line 1, in <module>
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 1, in <module>
+    import os
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 133, in trainStep
+    grad(vmap(lossFn, in_axes=(0, None, None, 0, None, None)),
+TypeError: Cannot interpret value of type <class 'models.ResNetBlock'> as an abstract array; it does not have a dtype attribute
+Uncaught exception. Entering post mortem debugging
+Running 'cont' or 'step' will restart the program
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(133)trainStep()
+-> grad(vmap(lossFn, in_axes=(0, None, None, 0, None, None)),
+Post mortem debugger finished. The /scratch/07169/wgl/adjoint/python/Main_no_matrix.py will be restarted
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(1)<module>()
+-> import os
+Uncaught exception. Entering post mortem debugging
+Running 'cont' or 'step' will restart the program
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(133)trainStep()
+-> grad(vmap(partial(lossFn, net=net), in_axes=(0, None, None, 0, None)),
+Traceback (most recent call last):
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api_util.py", line 559, in shaped_abstractify
+    return _shaped_abstractify_handlers[type(x)](x)
+KeyError: <class 'models.ResNetBlock'>
+During handling of the above exception, another exception occurred:
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 1, in <module>
+    import os
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 133, in trainStep
+    grad(vmap(partial(lossFn, net=net), in_axes=(0, None, None, 0, None)),
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 659, in grad_f
+    _, g = value_and_grad_f(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 735, in value_and_grad_f
+    ans, vjp_py = _vjp(f_partial, *dyn_args, reduce_axes=reduce_axes)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 2258, in _vjp
+    out_primal, out_vjp = ad.vjp(
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/interpreters/ad.py", line 139, in vjp
+    out_primals, pvals, jaxpr, consts = linearize(traceable, *primals)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/interpreters/ad.py", line 128, in linearize
+    jaxpr, out_pvals, consts = pe.trace_to_jaxpr_nounits(jvpfun_flat, in_pvals)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/profiler.py", line 314, in wrapper
+    return func(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/interpreters/partial_eval.py", line 771, in trace_to_jaxpr_nounits
+    jaxpr, (out_pvals, consts, env) = fun.call_wrapped(pvals)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/linear_util.py", line 166, in call_wrapped
+    ans = self.f(*args, **dict(self.params, **kwargs))
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 1252, in vmap_f
+    _mapped_axis_size(fun, in_tree, args_flat, in_axes_flat, "vmap"))
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 1306, in _mapped_axis_size
+    key_paths = [f'argument {name}{keystr(p)} '
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 1307, in <listcomp>
+    f'of type {shaped_abstractify(x).str_short()}'
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api_util.py", line 561, in shaped_abstractify
+    return _shaped_abstractify_slow(x)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api_util.py", line 550, in _shaped_abstractify_slow
+    raise TypeError(
+jax._src.traceback_util.UnfilteredStackTrace: TypeError: Cannot interpret value of type <class 'models.ResNetBlock'> as an abstract array; it does not have a dtype attribute
+The stack trace below excludes JAX-internal frames.
+The preceding is the original exception that occurred, unmodified.
+--------------------
+The above exception was the direct cause of the following exception:
+Traceback (most recent call last):
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/pdb.py", line 1723, in main
+    pdb._runscript(mainpyfile)
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/pdb.py", line 1583, in _runscript
+    self.run(statement)
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/bdb.py", line 580, in run
+    exec(cmd, globals, locals)
+  File "<string>", line 1, in <module>
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 1, in <module>
+    import os
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 133, in trainStep
+    grad(vmap(partial(lossFn, net=net), in_axes=(0, None, None, 0, None)),
+TypeError: Cannot interpret value of type <class 'models.ResNetBlock'> as an abstract array; it does not have a dtype attribute
+Post mortem debugger finished. The /scratch/07169/wgl/adjoint/python/Main_no_matrix.py will be restarted
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(1)<module>()
+-> import os
+Uncaught exception. Entering post mortem debugging
+Running 'cont' or 'step' will restart the program
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(133)trainStep()
+-> grad(vmap(partial(lossFn, net=net), in_axes=(0, None, None, 0, None)),
+Traceback (most recent call last):
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/core.py", line 1905, in _dim_handler_and_canonical
+    canonical.append(operator.index(d))
+TypeError: 'NoneType' object cannot be interpreted as an integer
+During handling of the above exception, another exception occurred:
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 1, in <module>
+    import os
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 133, in trainStep
+    grad(vmap(partial(lossFn, net=net), in_axes=(0, None, None, 0, None)),
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 659, in grad_f
+    _, g = value_and_grad_f(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 735, in value_and_grad_f
+    ans, vjp_py = _vjp(f_partial, *dyn_args, reduce_axes=reduce_axes)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 2258, in _vjp
+    out_primal, out_vjp = ad.vjp(
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/interpreters/ad.py", line 139, in vjp
+    out_primals, pvals, jaxpr, consts = linearize(traceable, *primals)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/interpreters/ad.py", line 128, in linearize
+    jaxpr, out_pvals, consts = pe.trace_to_jaxpr_nounits(jvpfun_flat, in_pvals)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/profiler.py", line 314, in wrapper
+    return func(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/interpreters/partial_eval.py", line 771, in trace_to_jaxpr_nounits
+    jaxpr, (out_pvals, consts, env) = fun.call_wrapped(pvals)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/linear_util.py", line 166, in call_wrapped
+    ans = self.f(*args, **dict(self.params, **kwargs))
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 1252, in vmap_f
+    _mapped_axis_size(fun, in_tree, args_flat, in_axes_flat, "vmap"))
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 1319, in _mapped_axis_size
+    ex, *examples = [key_paths[_all_sizes_index(sz)] for sz, _ in counts]
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 1319, in <listcomp>
+    ex, *examples = [key_paths[_all_sizes_index(sz)] for sz, _ in counts]
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 1316, in _all_sizes_index
+    if core.symbolic_equal_dim(isz, sz): return i
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/core.py", line 1936, in symbolic_equal_dim
+    handler, ds = _dim_handler_and_canonical(d1, d2)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/core.py", line 1907, in _dim_handler_and_canonical
+    raise _invalid_shape_error(dlist)
+jax._src.traceback_util.UnfilteredStackTrace: TypeError: Shapes must be 1D sequences of concrete values of integer type, got (None, 2).
+The stack trace below excludes JAX-internal frames.
+The preceding is the original exception that occurred, unmodified.
+--------------------
+The above exception was the direct cause of the following exception:
+Traceback (most recent call last):
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/pdb.py", line 1723, in main
+    pdb._runscript(mainpyfile)
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/pdb.py", line 1583, in _runscript
+    self.run(statement)
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/bdb.py", line 580, in run
+    exec(cmd, globals, locals)
+  File "<string>", line 1, in <module>
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 1, in <module>
+    import os
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 133, in trainStep
+    grad(vmap(partial(lossFn, net=net), in_axes=(0, None, None, 0, None)),
+TypeError: Shapes must be 1D sequences of concrete values of integer type, got (None, 2).
+--KeyboardInterrupt--
+Post mortem debugger finished. The /scratch/07169/wgl/adjoint/python/Main_no_matrix.py will be restarted
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(1)<module>()
+-> import os
+Breakpoint 3 at /scratch/07169/wgl/adjoint/python/Main_no_matrix.py:192
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(192)<module>()
+-> params, opt_state = trainStep(u_0_train, t, dt, true_train, params, net,
+*** SyntaxError: unexpected EOF while parsing
+*** SyntaxError: unexpected EOF while parsing
+*** NameError: name 'u_train' is not defined
+(100,)
+(2, 100)
+(2, 2)
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(192)<module>()
+-> params, opt_state = trainStep(u_0_train, t, dt, true_train, params, net,
+Uncaught exception. Entering post mortem debugging
+Running 'cont' or 'step' will restart the program
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(133)trainStep()
+-> grad(
+Post mortem debugger finished. The /scratch/07169/wgl/adjoint/python/Main_no_matrix.py will be restarted
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(1)<module>()
+-> import os
+Traceback (most recent call last):
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/core.py", line 1905, in _dim_handler_and_canonical
+    canonical.append(operator.index(d))
+TypeError: 'NoneType' object cannot be interpreted as an integer
+During handling of the above exception, another exception occurred:
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 192, in <module>
+    for ep in range(n_epochs):
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 133, in trainStep
+    grad(
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 659, in grad_f
+    _, g = value_and_grad_f(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 735, in value_and_grad_f
+    ans, vjp_py = _vjp(f_partial, *dyn_args, reduce_axes=reduce_axes)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 2258, in _vjp
+    out_primal, out_vjp = ad.vjp(
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/interpreters/ad.py", line 139, in vjp
+    out_primals, pvals, jaxpr, consts = linearize(traceable, *primals)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/interpreters/ad.py", line 128, in linearize
+    jaxpr, out_pvals, consts = pe.trace_to_jaxpr_nounits(jvpfun_flat, in_pvals)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/profiler.py", line 314, in wrapper
+    return func(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/interpreters/partial_eval.py", line 771, in trace_to_jaxpr_nounits
+    jaxpr, (out_pvals, consts, env) = fun.call_wrapped(pvals)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/linear_util.py", line 166, in call_wrapped
+    ans = self.f(*args, **dict(self.params, **kwargs))
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 1252, in vmap_f
+    _mapped_axis_size(fun, in_tree, args_flat, in_axes_flat, "vmap"))
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 1319, in _mapped_axis_size
+    ex, *examples = [key_paths[_all_sizes_index(sz)] for sz, _ in counts]
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 1319, in <listcomp>
+    ex, *examples = [key_paths[_all_sizes_index(sz)] for sz, _ in counts]
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 1316, in _all_sizes_index
+    if core.symbolic_equal_dim(isz, sz): return i
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/core.py", line 1936, in symbolic_equal_dim
+    handler, ds = _dim_handler_and_canonical(d1, d2)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/core.py", line 1907, in _dim_handler_and_canonical
+    raise _invalid_shape_error(dlist)
+jax._src.traceback_util.UnfilteredStackTrace: TypeError: Shapes must be 1D sequences of concrete values of integer type, got (None, 2).
+The stack trace below excludes JAX-internal frames.
+The preceding is the original exception that occurred, unmodified.
+--------------------
+The above exception was the direct cause of the following exception:
+Traceback (most recent call last):
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/pdb.py", line 1723, in main
+    pdb._runscript(mainpyfile)
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/pdb.py", line 1583, in _runscript
+    self.run(statement)
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/bdb.py", line 580, in run
+    exec(cmd, globals, locals)
+  File "<string>", line 1, in <module>
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 192, in <module>
+    for ep in range(n_epochs):
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 133, in trainStep
+    grad(
+TypeError: Shapes must be 1D sequences of concrete values of integer type, got (None, 2).
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(192)<module>()
+-> for ep in range(n_epochs):
+(100,)
+(100,)
+Uncaught exception. Entering post mortem debugging
+Running 'cont' or 'step' will restart the program
+> /work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/numpy/lax_numpy.py(4351)_canonicalize_tuple_index()
+-> raise IndexError(
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 193, in <module>
+    params, opt_state = trainStep(u_0_train, t, dt, true_train, params, net,
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 133, in trainStep
+    grad(
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 659, in grad_f
+    _, g = value_and_grad_f(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 735, in value_and_grad_f
+    ans, vjp_py = _vjp(f_partial, *dyn_args, reduce_axes=reduce_axes)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 2258, in _vjp
+    out_primal, out_vjp = ad.vjp(
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/interpreters/ad.py", line 139, in vjp
+    out_primals, pvals, jaxpr, consts = linearize(traceable, *primals)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/interpreters/ad.py", line 128, in linearize
+    jaxpr, out_pvals, consts = pe.trace_to_jaxpr_nounits(jvpfun_flat, in_pvals)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/profiler.py", line 314, in wrapper
+    return func(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/interpreters/partial_eval.py", line 771, in trace_to_jaxpr_nounits
+    jaxpr, (out_pvals, consts, env) = fun.call_wrapped(pvals)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/linear_util.py", line 166, in call_wrapped
+    ans = self.f(*args, **dict(self.params, **kwargs))
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 1253, in vmap_f
+    out_flat = batching.batch(
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/linear_util.py", line 166, in call_wrapped
+    ans = self.f(*args, **dict(self.params, **kwargs))
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 125, in lossFn
+    loss = jnp.abs(jnp.squeeze(u[-1]) - jnp.squeeze(true[-1]))
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/core.py", line 676, in __getitem__
+    def __getitem__(self, idx): return self.aval._getitem(self, idx)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/numpy/lax_numpy.py", line 3908, in _rewriting_take
+    return _gather(arr, treedef, static_idx, dynamic_idx, indices_are_sorted,
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/numpy/lax_numpy.py", line 3917, in _gather
+    indexer = _index_to_gather(shape(arr), idx)  # shared with _scatter_update
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/numpy/lax_numpy.py", line 4018, in _index_to_gather
+    idx = _canonicalize_tuple_index(len(x_shape), idx)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/numpy/lax_numpy.py", line 4351, in _canonicalize_tuple_index
+    raise IndexError(
+jax._src.traceback_util.UnfilteredStackTrace: IndexError: Too many indices for array: 1 non-None/Ellipsis indices for dim 0.
+The stack trace below excludes JAX-internal frames.
+The preceding is the original exception that occurred, unmodified.
+--------------------
+The above exception was the direct cause of the following exception:
+Traceback (most recent call last):
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/pdb.py", line 1723, in main
+    pdb._runscript(mainpyfile)
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/pdb.py", line 1583, in _runscript
+    self.run(statement)
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/bdb.py", line 580, in run
+    exec(cmd, globals, locals)
+  File "<string>", line 1, in <module>
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 193, in <module>
+    params, opt_state = trainStep(u_0_train, t, dt, true_train, params, net,
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 133, in trainStep
+    grad(
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 125, in lossFn
+    loss = jnp.abs(jnp.squeeze(u[-1]) - jnp.squeeze(true[-1]))
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/numpy/lax_numpy.py", line 3908, in _rewriting_take
+    return _gather(arr, treedef, static_idx, dynamic_idx, indices_are_sorted,
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/numpy/lax_numpy.py", line 3917, in _gather
+    indexer = _index_to_gather(shape(arr), idx)  # shared with _scatter_update
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/numpy/lax_numpy.py", line 4018, in _index_to_gather
+    idx = _canonicalize_tuple_index(len(x_shape), idx)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/numpy/lax_numpy.py", line 4351, in _canonicalize_tuple_index
+    raise IndexError(
+IndexError: Too many indices for array: 1 non-None/Ellipsis indices for dim 0.
+Breakpoint 4 at /work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/numpy/lax_numpy.py:125
+Post mortem debugger finished. The /scratch/07169/wgl/adjoint/python/Main_no_matrix.py will be restarted
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(1)<module>()
+-> import os
+Deleted breakpoint 3 at /scratch/07169/wgl/adjoint/python/Main_no_matrix.py:192
+Deleted breakpoint 4 at /work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/numpy/lax_numpy.py:125
+Breakpoint 5 at /scratch/07169/wgl/adjoint/python/Main_no_matrix.py:125
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(125)lossFn()
+-> loss = jnp.abs(jnp.squeeze(u[-1]) - jnp.squeeze(true[-1]))
+Traced<ShapedArray(float32[3,1])>with<BatchTrace(level=3/0)> with
+  val = Traced<ConcreteArray([[[-1.83159244e+00]
+  [-1.79069555e+00]
+  [-1.82416177e+00]]
+ [[-1.94555596e-01]
+  [-1.90198570e-01]
+  [-2.38178983e-01]]
+ [[-1.68962705e+00]
+  [-1.65191448e+00]
+  [-1.69077897e+00]]
+ [[-1.34197497e+00]
+  [-1.31211519e+00]
+  [-1.36718464e+00]]
+ [[ 7.48039603e-01]
+  [ 8.80052686e-01]
+  [ 1.03129828e+00]]
+ [[ 6.24969363e-01]
+  [ 7.35295415e-01]
+  [ 8.59728694e-01]]
+ [[-8.54942083e-01]
+  [-8.35799456e-01]
+  [-9.22103882e-01]]
+ [[ 1.78915548e+00]
+  [ 2.10471821e+00]
+  [ 2.48268747e+00]]
+ [[-2.50093132e-01]
+  [-2.44504198e-01]
+  [-2.97288239e-01]]
+ [[ 3.00422162e-01]
+  [ 3.53434980e-01]
+  [ 3.89147639e-01]]
+ [[-5.43582499e-01]
+  [-5.31435668e-01]
+  [-6.16595745e-01]]
+ [[ 4.82307464e-01]
+  [ 5.67435086e-01]
+  [ 6.49395764e-01]]
+ [[-1.04618144e+00]
+  [-1.02280760e+00]
+  [-1.09376681e+00]]
+ [[-4.53216225e-01]
+  [-4.43081796e-01]
+  [-5.15805602e-01]]
+ [[-9.63052630e-01]
+  [-9.41594720e-01]
+  [-1.01900768e+00]]
+ [[ 7.07204044e-01]
+  [ 8.31927419e-01]
+  [ 9.74247336e-01]]
+ [[-5.83239317e-01]
+  [-5.70208788e-01]
+  [-6.58218503e-01]]
+ [[-1.91537786e+00]
+  [-1.87259471e+00]
+  [-1.90382802e+00]]
+ [[ 8.68392050e-01]
+  [ 1.02156568e+00]
+  [ 1.19918191e+00]]
+ [[-8.62079382e-01]
+  [-8.42822194e-01]
+  [-9.28419054e-01]]
+ [[ 3.56313260e-03]
+  [ 4.19184286e-03]
+  [-3.17604989e-02]]
+ [[-9.70937192e-01]
+  [-9.49201405e-01]
+  [-1.02599502e+00]]
+ [[ 6.86404526e-01]
+  [ 8.07534277e-01]
+  [ 9.45469379e-01]]
+ [[-2.39829361e-01]
+  [-2.34463900e-01]
+  [-2.86409527e-01]]
+ [[-5.71296513e-01]
+  [-5.58567643e-01]
+  [-6.45848155e-01]]
+ [[ 7.04852343e-01]
+  [ 8.29245746e-01]
+  [ 9.71161366e-01]]
+ [[ 1.68136704e+00]
+  [ 1.97811842e+00]
+  [ 2.33364606e+00]]
+ [[ 1.02456260e+00]
+  [ 1.20530701e+00]
+  [ 1.41692924e+00]]
+ [[ 4.49545234e-01]
+  [ 5.28871536e-01]
+  [ 6.00442886e-01]]
+ [[ 1.81938720e+00]
+  [ 2.14046335e+00]
+  [ 2.52459311e+00]]
+ [[-1.58874142e+00]
+  [-1.55317962e+00]
+  [-1.59679198e+00]]
+ [[-1.16221547e-01]
+  [-1.13611184e-01]
+  [-1.58063382e-01]]
+ [[-4.71835464e-01]
+  [-4.61324960e-01]
+  [-5.37064373e-01]]
+ [[ 1.25266922e+00]
+  [ 1.47387362e+00]
+  [ 1.73643160e+00]]
+ [[-6.87146544e-01]
+  [-6.71808064e-01]
+  [-7.64877200e-01]]
+ [[ 1.50681996e+00]
+  [ 1.77273226e+00]
+  [ 2.09085417e+00]]
+ [[-1.14211988e+00]
+  [-1.11666226e+00]
+  [-1.18152726e+00]]
+ [[ 9.66970980e-01]
+  [ 1.13764739e+00]
+  [ 1.33677959e+00]]
+ [[-6.41787529e-01]
+  [-6.27412677e-01]
+  [-7.18890071e-01]]
+ [[-3.27775538e-01]
+  [-3.20487797e-01]
+  [-3.75691384e-01]]
+ [[ 7.77638778e-02]
+  [ 9.14903805e-02]
+  [ 6.94321096e-02]]
+ [[-1.92980871e-01]
+  [-1.88667387e-01]
+  [-2.36481518e-01]]
+ [[ 6.45095885e-01]
+  [ 7.58957505e-01]
+  [ 8.87715876e-01]]
+ [[ 7.95455396e-01]
+  [ 9.35757697e-01]
+  [ 1.09745789e+00]]
+ [[ 6.72849894e-01]
+  [ 7.91548312e-01]
+  [ 9.26444173e-01]]
+ [[ 1.41318902e-01]
+  [ 1.66278452e-01]
+  [ 1.58439577e-01]]
+ [[-1.30385101e-01]
+  [-1.27478629e-01]
+  [-1.72130689e-01]]
+ [[-1.36282206e+00]
+  [-1.33228302e+00]
+  [-1.38640475e+00]]
+ [[ 9.26228166e-01]
+  [ 1.08963251e+00]
+  [ 1.27999771e+00]]
+ [[-3.63473237e-01]
+  [-3.55326623e-01]
+  [-4.13548380e-01]]
+ [[-9.38481927e-01]
+  [-9.17499304e-01]
+  [-9.96849418e-01]]
+ [[-1.38977394e-01]
+  [-1.35866225e-01]
+  [-1.80449694e-01]]
+ [[-3.69841427e-01]
+  [-3.61574292e-01]
+  [-4.20915574e-01]]
+ [[ 1.22072600e-01]
+  [ 1.43614367e-01]
+  [ 1.31492540e-01]]
+ [[-3.22295725e-01]
+  [-3.15078288e-01]
+  [-3.70149732e-01]]
+ [[-2.54215384e+00]
+  [-2.48549461e+00]
+  [-2.49247813e+00]]
+ [[ 2.89057302e+00]
+  [ 3.40056562e+00]
+  [ 4.00433445e+00]]
+ [[ 3.71932685e-01]
+  [ 4.37556565e-01]
+  [ 4.88894790e-01]]
+ [[ 6.72687650e-01]
+  [ 7.91386068e-01]
+  [ 9.26281929e-01]]
+ [[-5.27976871e-01]
+  [-5.16219079e-01]
+  [-5.99989116e-01]]
+ [[-1.40523005e+00]
+  [-1.37382126e+00]
+  [-1.42612445e+00]]
+ [[-6.73640668e-01]
+  [-6.58519864e-01]
+  [-7.51127958e-01]]
+ [[ 9.61956561e-01]
+  [ 1.13162553e+00]
+  [ 1.32964993e+00]]
+ [[-7.66624033e-01]
+  [-7.49473393e-01]
+  [-8.42313051e-01]]
+ [[-3.60392898e-01]
+  [-3.52353662e-01]
+  [-4.10263181e-01]]
+ [[-1.09702981e+00]
+  [-1.07250369e+00]
+  [-1.14004564e+00]]
+ [[ 1.08060420e-01]
+  [ 1.27120763e-01]
+  [ 1.11880168e-01]]
+ [[ 4.65393931e-01]
+  [ 5.47497272e-01]
+  [ 6.23661637e-01]]
+ [[ 1.30085111e-01]
+  [ 1.53047174e-01]
+  [ 1.42734081e-01]]
+ [[ 1.02076936e+00]
+  [ 1.20080125e+00]
+  [ 1.41161263e+00]]
+ [[-7.44453594e-02]
+  [-7.27794468e-02]
+  [-1.16363585e-01]]
+ [[ 9.43692803e-01]
+  [ 1.11037505e+00]
+  [ 1.30448949e+00]]
+ [[ 3.46335143e-01]
+  [ 4.07442033e-01]
+  [ 4.53128159e-01]]
+ [[ 8.77457738e-01]
+  [ 1.03227878e+00]
+  [ 1.21177459e+00]]
+ [[ 1.63349819e+00]
+  [ 1.92185998e+00]
+  [ 2.26708865e+00]]
+ [[-4.61585373e-01]
+  [-4.51279849e-01]
+  [-5.25283694e-01]]
+ [[ 8.78014266e-01]
+  [ 1.03297162e+00]
+  [ 1.21265507e+00]]
+ [[-6.43801510e-01]
+  [-6.29362404e-01]
+  [-7.20927775e-01]]
+ [[-8.78389701e-02]
+  [-8.58759210e-02]
+  [-1.29732102e-01]]
+ [[-8.74598175e-02]
+  [-8.54993388e-02]
+  [-1.29283950e-01]]
+ [[ 1.93792999e-01]
+  [ 2.27993995e-01]
+  [ 2.33343437e-01]]
+ [[ 7.50438392e-01]
+  [ 8.82838666e-01]
+  [ 1.03473949e+00]]
+ [[ 2.44857639e-01]
+  [ 2.88081437e-01]
+  [ 3.07644576e-01]]
+ [[-1.83181852e-01]
+  [-1.79105803e-01]
+  [-2.26020664e-01]]
+ [[-1.68493891e+00]
+  [-1.64732254e+00]
+  [-1.68642163e+00]]
+ [[-1.01618540e+00]
+  [-9.93464231e-01]
+  [-1.06657052e+00]]
+ [[ 7.82114446e-01]
+  [ 9.20119941e-01]
+  [ 1.07892823e+00]]
+ [[-3.22010607e-01]
+  [-3.14791054e-01]
+  [-3.69956970e-01]]
+ [[-8.86806786e-01]
+  [-8.67004216e-01]
+  [-9.50597405e-01]]
+ [[-1.63493201e-01]
+  [-1.59857616e-01]
+  [-2.05004424e-01]]
+ [[-5.87709665e-01]
+  [-5.74582458e-01]
+  [-6.62908435e-01]]
+ [[ 7.69614697e-01]
+  [ 9.05409455e-01]
+  [ 1.06132817e+00]]
+ [[ 6.32975638e-01]
+  [ 7.44598806e-01]
+  [ 8.70789468e-01]]
+ [[ 5.23226202e-01]
+  [ 6.15582287e-01]
+  [ 7.11503267e-01]]
+ [[ 1.36140490e+00]
+  [ 1.60161734e+00]
+  [ 1.88819170e+00]]
+ [[-7.78424203e-01]
+  [-7.60996103e-01]
+  [-8.53316188e-01]]
+ [[-2.42763615e+00]
+  [-2.37341380e+00]
+  [-2.38567877e+00]]
+ [[-1.47249222e+00]
+  [-1.43950164e+00]
+  [-1.48878551e+00]]
+ [[ 1.66591656e+00]
+  [ 1.96004248e+00]
+  [ 2.31236768e+00]]
+ [[-1.52439848e-01]
+  [-1.49024844e-01]
+  [-1.93495184e-01]]], dtype=float32)>with<JVPTrace(level=2/0)> with
+    primal = Array([[[-1.83159244e+00],
+        [-1.79069555e+00],
+        [-1.82416177e+00]],
+       [[-1.94555596e-01],
+        [-1.90198570e-01],
+        [-2.38178983e-01]],
+       [[-1.68962705e+00],
+        [-1.65191448e+00],
+        [-1.69077897e+00]],
+       [[-1.34197497e+00],
+        [-1.31211519e+00],
+        [-1.36718464e+00]],
+       [[ 7.48039603e-01],
+        [ 8.80052686e-01],
+        [ 1.03129828e+00]],
+       [[ 6.24969363e-01],
+        [ 7.35295415e-01],
+        [ 8.59728694e-01]],
+       [[-8.54942083e-01],
+        [-8.35799456e-01],
+        [-9.22103882e-01]],
+       [[ 1.78915548e+00],
+        [ 2.10471821e+00],
+        [ 2.48268747e+00]],
+       [[-2.50093132e-01],
+        [-2.44504198e-01],
+        [-2.97288239e-01]],
+       [[ 3.00422162e-01],
+        [ 3.53434980e-01],
+        [ 3.89147639e-01]],
+       [[-5.43582499e-01],
+        [-5.31435668e-01],
+        [-6.16595745e-01]],
+       [[ 4.82307464e-01],
+        [ 5.67435086e-01],
+        [ 6.49395764e-01]],
+       [[-1.04618144e+00],
+        [-1.02280760e+00],
+        [-1.09376681e+00]],
+       [[-4.53216225e-01],
+        [-4.43081796e-01],
+        [-5.15805602e-01]],
+       [[-9.63052630e-01],
+        [-9.41594720e-01],
+        [-1.01900768e+00]],
+       [[ 7.07204044e-01],
+        [ 8.31927419e-01],
+        [ 9.74247336e-01]],
+       [[-5.83239317e-01],
+        [-5.70208788e-01],
+        [-6.58218503e-01]],
+       [[-1.91537786e+00],
+        [-1.87259471e+00],
+        [-1.90382802e+00]],
+       [[ 8.68392050e-01],
+        [ 1.02156568e+00],
+        [ 1.19918191e+00]],
+       [[-8.62079382e-01],
+        [-8.42822194e-01],
+        [-9.28419054e-01]],
+       [[ 3.56313260e-03],
+        [ 4.19184286e-03],
+        [-3.17604989e-02]],
+       [[-9.70937192e-01],
+        [-9.49201405e-01],
+        [-1.02599502e+00]],
+       [[ 6.86404526e-01],
+        [ 8.07534277e-01],
+        [ 9.45469379e-01]],
+       [[-2.39829361e-01],
+        [-2.34463900e-01],
+        [-2.86409527e-01]],
+       [[-5.71296513e-01],
+        [-5.58567643e-01],
+        [-6.45848155e-01]],
+       [[ 7.04852343e-01],
+        [ 8.29245746e-01],
+        [ 9.71161366e-01]],
+       [[ 1.68136704e+00],
+        [ 1.97811842e+00],
+        [ 2.33364606e+00]],
+       [[ 1.02456260e+00],
+        [ 1.20530701e+00],
+        [ 1.41692924e+00]],
+       [[ 4.49545234e-01],
+        [ 5.28871536e-01],
+        [ 6.00442886e-01]],
+       [[ 1.81938720e+00],
+        [ 2.14046335e+00],
+        [ 2.52459311e+00]],
+       [[-1.58874142e+00],
+        [-1.55317962e+00],
+        [-1.59679198e+00]],
+       [[-1.16221547e-01],
+        [-1.13611184e-01],
+        [-1.58063382e-01]],
+       [[-4.71835464e-01],
+        [-4.61324960e-01],
+        [-5.37064373e-01]],
+       [[ 1.25266922e+00],
+        [ 1.47387362e+00],
+        [ 1.73643160e+00]],
+       [[-6.87146544e-01],
+        [-6.71808064e-01],
+        [-7.64877200e-01]],
+       [[ 1.50681996e+00],
+        [ 1.77273226e+00],
+        [ 2.09085417e+00]],
+       [[-1.14211988e+00],
+        [-1.11666226e+00],
+        [-1.18152726e+00]],
+       [[ 9.66970980e-01],
+        [ 1.13764739e+00],
+        [ 1.33677959e+00]],
+       [[-6.41787529e-01],
+        [-6.27412677e-01],
+        [-7.18890071e-01]],
+       [[-3.27775538e-01],
+        [-3.20487797e-01],
+        [-3.75691384e-01]],
+       [[ 7.77638778e-02],
+        [ 9.14903805e-02],
+        [ 6.94321096e-02]],
+       [[-1.92980871e-01],
+        [-1.88667387e-01],
+        [-2.36481518e-01]],
+       [[ 6.45095885e-01],
+        [ 7.58957505e-01],
+        [ 8.87715876e-01]],
+       [[ 7.95455396e-01],
+        [ 9.35757697e-01],
+        [ 1.09745789e+00]],
+       [[ 6.72849894e-01],
+        [ 7.91548312e-01],
+        [ 9.26444173e-01]],
+       [[ 1.41318902e-01],
+        [ 1.66278452e-01],
+        [ 1.58439577e-01]],
+       [[-1.30385101e-01],
+        [-1.27478629e-01],
+        [-1.72130689e-01]],
+       [[-1.36282206e+00],
+        [-1.33228302e+00],
+        [-1.38640475e+00]],
+       [[ 9.26228166e-01],
+        [ 1.08963251e+00],
+        [ 1.27999771e+00]],
+       [[-3.63473237e-01],
+        [-3.55326623e-01],
+        [-4.13548380e-01]],
+       [[-9.38481927e-01],
+        [-9.17499304e-01],
+        [-9.96849418e-01]],
+       [[-1.38977394e-01],
+        [-1.35866225e-01],
+        [-1.80449694e-01]],
+       [[-3.69841427e-01],
+        [-3.61574292e-01],
+        [-4.20915574e-01]],
+       [[ 1.22072600e-01],
+        [ 1.43614367e-01],
+        [ 1.31492540e-01]],
+       [[-3.22295725e-01],
+        [-3.15078288e-01],
+        [-3.70149732e-01]],
+       [[-2.54215384e+00],
+        [-2.48549461e+00],
+        [-2.49247813e+00]],
+       [[ 2.89057302e+00],
+        [ 3.40056562e+00],
+        [ 4.00433445e+00]],
+       [[ 3.71932685e-01],
+        [ 4.37556565e-01],
+        [ 4.88894790e-01]],
+       [[ 6.72687650e-01],
+        [ 7.91386068e-01],
+        [ 9.26281929e-01]],
+       [[-5.27976871e-01],
+        [-5.16219079e-01],
+        [-5.99989116e-01]],
+       [[-1.40523005e+00],
+        [-1.37382126e+00],
+        [-1.42612445e+00]],
+       [[-6.73640668e-01],
+        [-6.58519864e-01],
+        [-7.51127958e-01]],
+       [[ 9.61956561e-01],
+        [ 1.13162553e+00],
+        [ 1.32964993e+00]],
+       [[-7.66624033e-01],
+        [-7.49473393e-01],
+        [-8.42313051e-01]],
+       [[-3.60392898e-01],
+        [-3.52353662e-01],
+        [-4.10263181e-01]],
+       [[-1.09702981e+00],
+        [-1.07250369e+00],
+        [-1.14004564e+00]],
+       [[ 1.08060420e-01],
+        [ 1.27120763e-01],
+        [ 1.11880168e-01]],
+       [[ 4.65393931e-01],
+        [ 5.47497272e-01],
+        [ 6.23661637e-01]],
+       [[ 1.30085111e-01],
+        [ 1.53047174e-01],
+        [ 1.42734081e-01]],
+       [[ 1.02076936e+00],
+        [ 1.20080125e+00],
+        [ 1.41161263e+00]],
+       [[-7.44453594e-02],
+        [-7.27794468e-02],
+        [-1.16363585e-01]],
+       [[ 9.43692803e-01],
+        [ 1.11037505e+00],
+        [ 1.30448949e+00]],
+       [[ 3.46335143e-01],
+        [ 4.07442033e-01],
+        [ 4.53128159e-01]],
+       [[ 8.77457738e-01],
+        [ 1.03227878e+00],
+        [ 1.21177459e+00]],
+       [[ 1.63349819e+00],
+        [ 1.92185998e+00],
+        [ 2.26708865e+00]],
+       [[-4.61585373e-01],
+        [-4.51279849e-01],
+        [-5.25283694e-01]],
+       [[ 8.78014266e-01],
+        [ 1.03297162e+00],
+        [ 1.21265507e+00]],
+       [[-6.43801510e-01],
+        [-6.29362404e-01],
+        [-7.20927775e-01]],
+       [[-8.78389701e-02],
+        [-8.58759210e-02],
+        [-1.29732102e-01]],
+       [[-8.74598175e-02],
+        [-8.54993388e-02],
+        [-1.29283950e-01]],
+       [[ 1.93792999e-01],
+        [ 2.27993995e-01],
+        [ 2.33343437e-01]],
+       [[ 7.50438392e-01],
+        [ 8.82838666e-01],
+        [ 1.03473949e+00]],
+       [[ 2.44857639e-01],
+        [ 2.88081437e-01],
+        [ 3.07644576e-01]],
+       [[-1.83181852e-01],
+        [-1.79105803e-01],
+        [-2.26020664e-01]],
+       [[-1.68493891e+00],
+        [-1.64732254e+00],
+        [-1.68642163e+00]],
+       [[-1.01618540e+00],
+        [-9.93464231e-01],
+        [-1.06657052e+00]],
+       [[ 7.82114446e-01],
+        [ 9.20119941e-01],
+        [ 1.07892823e+00]],
+       [[-3.22010607e-01],
+        [-3.14791054e-01],
+        [-3.69956970e-01]],
+       [[-8.86806786e-01],
+        [-8.67004216e-01],
+        [-9.50597405e-01]],
+       [[-1.63493201e-01],
+        [-1.59857616e-01],
+        [-2.05004424e-01]],
+       [[-5.87709665e-01],
+        [-5.74582458e-01],
+        [-6.62908435e-01]],
+       [[ 7.69614697e-01],
+        [ 9.05409455e-01],
+        [ 1.06132817e+00]],
+       [[ 6.32975638e-01],
+        [ 7.44598806e-01],
+        [ 8.70789468e-01]],
+       [[ 5.23226202e-01],
+        [ 6.15582287e-01],
+        [ 7.11503267e-01]],
+       [[ 1.36140490e+00],
+        [ 1.60161734e+00],
+        [ 1.88819170e+00]],
+       [[-7.78424203e-01],
+        [-7.60996103e-01],
+        [-8.53316188e-01]],
+       [[-2.42763615e+00],
+        [-2.37341380e+00],
+        [-2.38567877e+00]],
+       [[-1.47249222e+00],
+        [-1.43950164e+00],
+        [-1.48878551e+00]],
+       [[ 1.66591656e+00],
+        [ 1.96004248e+00],
+        [ 2.31236768e+00]],
+       [[-1.52439848e-01],
+        [-1.49024844e-01],
+        [-1.93495184e-01]]], dtype=float32)
+    tangent = Traced<ShapedArray(float32[100,3,1])>with<JaxprTrace(level=1/0)> with
+      pval = (ShapedArray(float32[100,3,1]), None)
+      recipe = JaxprEqnRecipe(eqn_id=<object object at 0x14bdd01210d0>, in_tracers=(Traced<ShapedArray(float32[100,3,1]):JaxprTrace(level=1/0)>, Traced<ConcreteArray([2], dtype=int32):JaxprTrace(level=1/0)>, Traced<ShapedArray(float32[100,1]):JaxprTrace(level=1/0)>), out_tracer_refs=[<weakref at 0x14bdd00dccc0; to 'JaxprTracer' at 0x14bdd00dcdb0>], out_avals=[ShapedArray(float32[100,3,1])], primitive=scatter, params={'update_jaxpr': { lambda ; a:f32[] b:f32[]. let  in (b,) }, 'update_consts': (), 'dimension_numbers': ScatterDimensionNumbers(update_window_dims=(0, 1), inserted_window_dims=(1,), scatter_dims_to_operand_dims=(1,)), 'indices_are_sorted': True, 'unique_indices': True, 'mode': <GatherScatterMode.FILL_OR_DROP: 2>}, effects=set(), source_info=SourceInfo(traceback=<jaxlib.xla_extension.Traceback object at 0x14bdd00c65b0>, name_stack=NameStack(stack=(Transform(name='jvp'), Transform(name='vmap')))))
+  batch_dim = 0
+(3, 1)
+(1,)
+()
+Traced<ShapedArray(float32[])>with<BatchTrace(level=3/0)> with
+  val = array([-1.7307857 ,  0.56199091, -1.50118858, -1.171873  ,  0.61781064,
+        0.60152955,  0.54052337,  1.78248142,  0.56046537,  0.57903712,
+        0.55233568,  0.58937321,  0.52250654,  0.554926  ,  0.5330836 ,
+        0.61154139,  0.55113973, -1.85797514,  0.64480947,  0.54013335,
+        0.56779534,  0.53235391,  0.60871833,  0.56074555,  0.55150474,
+        0.61121074,  1.70396194,  0.72619627,  0.58718874,  1.80575837,
+       -1.37188639,  0.56419995,  0.55440406,  1.20063006,  0.5477265 ,
+        1.57259909,  0.46403944,  0.6855652 ,  0.54927651,  0.55835804,
+        0.57021961,  0.56203456,  0.60371659,  0.62661414,  0.60699415,
+        0.57246153,  0.56379404, -1.18644693,  0.66556026,  0.55739048,
+        0.53514347,  0.56354936,  0.55721747,  0.57176409,  0.55850638,
+       -2.47558965,  2.88439674,  0.58263173,  0.60697403,  0.55279477,
+       -1.21590145,  0.54819958,  0.68278835,  0.54468498,  0.55747411,
+        0.50843808,  0.57126681,  0.58822353,  0.57205237,  0.72292099,
+        0.56541799,  0.67346112,  0.58128714,  0.64760943,  1.6697839 ,
+        0.554692  ,  0.64778607,  0.5492099 ,  0.56502386,  0.56503497,
+        0.57445688,  0.61821303,  0.57655126,  0.56230678, -1.4943118 ,
+        0.52724621,  0.6239431 ,  0.5585141 ,  0.53869742,  0.56285708,
+        0.55100194,  0.62158499,  0.60238179,  0.59237047,  1.41514744,
+        0.54418657, -2.3621167 , -1.26530403,  1.69295829,  0.56316817])
+  batch_dim = 0
+Traced<ShapedArray(float32[])>with<BatchTrace(level=3/0)> with
+  val = Array([-1.7307857 ,  0.5619909 , -1.5011886 , -1.171873  ,  0.61781067,
+        0.60152954,  0.54052335,  1.7824814 ,  0.5604654 ,  0.57903713,
+        0.5523357 ,  0.58937323,  0.52250654,  0.554926  ,  0.5330836 ,
+        0.6115414 ,  0.5511397 , -1.8579751 ,  0.6448095 ,  0.54013336,
+        0.56779534,  0.53235394,  0.60871834,  0.56074554,  0.55150473,
+        0.61121076,  1.703962  ,  0.7261963 ,  0.5871887 ,  1.8057584 ,
+       -1.3718864 ,  0.5641999 ,  0.5544041 ,  1.2006301 ,  0.5477265 ,
+        1.572599  ,  0.46403944,  0.68556523,  0.54927653,  0.558358  ,
+        0.57021964,  0.56203455,  0.6037166 ,  0.62661415,  0.60699415,
+        0.57246155,  0.563794  , -1.1864469 ,  0.66556025,  0.5573905 ,
+        0.5351435 ,  0.56354934,  0.5572175 ,  0.5717641 ,  0.55850637,
+       -2.4755898 ,  2.8843968 ,  0.5826317 ,  0.606974  ,  0.55279475,
+       -1.2159015 ,  0.5481996 ,  0.6827884 ,  0.544685  ,  0.55747414,
+        0.50843805,  0.57126683,  0.5882235 ,  0.57205236,  0.722921  ,
+        0.565418  ,  0.67346114,  0.58128715,  0.6476094 ,  1.669784  ,
+        0.55469203,  0.6477861 ,  0.5492099 ,  0.56502384,  0.565035  ,
+        0.5744569 ,  0.61821306,  0.57655126,  0.56230676, -1.4943118 ,
+        0.52724624,  0.6239431 ,  0.5585141 ,  0.5386974 ,  0.5628571 ,
+        0.55100197,  0.621585  ,  0.60238177,  0.59237045,  1.4151474 ,
+        0.5441866 , -2.3621168 , -1.2653041 ,  1.6929582 ,  0.56316817],      dtype=float32)
+  batch_dim = 0
+Uncaught exception. Entering post mortem debugging
+Running 'cont' or 'step' will restart the program
+> /work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/numpy/lax_numpy.py(4351)_canonicalize_tuple_index()
+-> raise IndexError(
+Post mortem debugger finished. The /scratch/07169/wgl/adjoint/python/Main_no_matrix.py will be restarted
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(1)<module>()
+-> import os
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 193, in <module>
+    params, opt_state = trainStep(u_0_train, t, dt, true_train, params, net,
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 133, in trainStep
+    grad(
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 659, in grad_f
+    _, g = value_and_grad_f(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 735, in value_and_grad_f
+    ans, vjp_py = _vjp(f_partial, *dyn_args, reduce_axes=reduce_axes)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 2258, in _vjp
+    out_primal, out_vjp = ad.vjp(
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/interpreters/ad.py", line 139, in vjp
+    out_primals, pvals, jaxpr, consts = linearize(traceable, *primals)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/interpreters/ad.py", line 128, in linearize
+    jaxpr, out_pvals, consts = pe.trace_to_jaxpr_nounits(jvpfun_flat, in_pvals)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/profiler.py", line 314, in wrapper
+    return func(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/interpreters/partial_eval.py", line 771, in trace_to_jaxpr_nounits
+    jaxpr, (out_pvals, consts, env) = fun.call_wrapped(pvals)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/linear_util.py", line 166, in call_wrapped
+    ans = self.f(*args, **dict(self.params, **kwargs))
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 1253, in vmap_f
+    out_flat = batching.batch(
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/linear_util.py", line 166, in call_wrapped
+    ans = self.f(*args, **dict(self.params, **kwargs))
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 125, in lossFn
+    loss = jnp.abs(jnp.squeeze(u[-1]) - jnp.squeeze(true))
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/core.py", line 676, in __getitem__
+    def __getitem__(self, idx): return self.aval._getitem(self, idx)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/numpy/lax_numpy.py", line 3908, in _rewriting_take
+    return _gather(arr, treedef, static_idx, dynamic_idx, indices_are_sorted,
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/numpy/lax_numpy.py", line 3917, in _gather
+    indexer = _index_to_gather(shape(arr), idx)  # shared with _scatter_update
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/numpy/lax_numpy.py", line 4018, in _index_to_gather
+    idx = _canonicalize_tuple_index(len(x_shape), idx)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/numpy/lax_numpy.py", line 4351, in _canonicalize_tuple_index
+    raise IndexError(
+jax._src.traceback_util.UnfilteredStackTrace: IndexError: Too many indices for array: 1 non-None/Ellipsis indices for dim 0.
+The stack trace below excludes JAX-internal frames.
+The preceding is the original exception that occurred, unmodified.
+--------------------
+The above exception was the direct cause of the following exception:
+Traceback (most recent call last):
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/pdb.py", line 1723, in main
+    pdb._runscript(mainpyfile)
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/pdb.py", line 1583, in _runscript
+    self.run(statement)
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/bdb.py", line 580, in run
+    exec(cmd, globals, locals)
+  File "<string>", line 1, in <module>
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 193, in <module>
+    params, opt_state = trainStep(u_0_train, t, dt, true_train, params, net,
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 133, in trainStep
+    grad(
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 125, in lossFn
+    loss = jnp.abs(jnp.squeeze(u[-1]) - jnp.squeeze(true))
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/numpy/lax_numpy.py", line 3908, in _rewriting_take
+    return _gather(arr, treedef, static_idx, dynamic_idx, indices_are_sorted,
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/numpy/lax_numpy.py", line 3917, in _gather
+    indexer = _index_to_gather(shape(arr), idx)  # shared with _scatter_update
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/numpy/lax_numpy.py", line 4018, in _index_to_gather
+    idx = _canonicalize_tuple_index(len(x_shape), idx)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/numpy/lax_numpy.py", line 4351, in _canonicalize_tuple_index
+    raise IndexError(
+IndexError: Too many indices for array: 1 non-None/Ellipsis indices for dim 0.
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(125)lossFn()
+-> loss = jnp.abs(jnp.squeeze(u[-1]) - jnp.squeeze(true))
+Uncaught exception. Entering post mortem debugging
+Running 'cont' or 'step' will restart the program
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(133)trainStep()
+-> grad(
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 193, in <module>
+    params, opt_state = trainStep(u_0_train, t, dt, true_train, params, net,
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 133, in trainStep
+    grad(
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 659, in grad_f
+    _, g = value_and_grad_f(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 166, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 739, in value_and_grad_f
+    _check_scalar(ans)
+  File "/work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/api.py", line 759, in _check_scalar
+    raise TypeError(msg(f"had shape: {aval.shape}"))
+jax._src.traceback_util.UnfilteredStackTrace: TypeError: Gradient only defined for scalar-output functions. Output had shape: (100,).
+The stack trace below excludes JAX-internal frames.
+The preceding is the original exception that occurred, unmodified.
+--------------------
+The above exception was the direct cause of the following exception:
+Traceback (most recent call last):
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/pdb.py", line 1723, in main
+    pdb._runscript(mainpyfile)
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/pdb.py", line 1583, in _runscript
+    self.run(statement)
+  File "/opt/apps/intel19/python3/3.9.7/lib/python3.9/bdb.py", line 580, in run
+    exec(cmd, globals, locals)
+  File "<string>", line 1, in <module>
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 193, in <module>
+    params, opt_state = trainStep(u_0_train, t, dt, true_train, params, net,
+  File "/scratch/07169/wgl/adjoint/python/Main_no_matrix.py", line 133, in trainStep
+    grad(
+TypeError: Gradient only defined for scalar-output functions. Output had shape: (100,).
+Post mortem debugger finished. The /scratch/07169/wgl/adjoint/python/Main_no_matrix.py will be restarted
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(1)<module>()
+-> import os
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(125)lossFn()
+-> loss = jnp.abs(jnp.squeeze(u[-1]) - jnp.squeeze(true))
+> /scratch/07169/wgl/adjoint/python/Main_no_matrix.py(125)lossFn()
+-> loss = jnp.abs(jnp.squeeze(u[-1]) - jnp.squeeze(true))
+Deleted breakpoint 5 at /scratch/07169/wgl/adjoint/python/Main_no_matrix.py:125
+Program interrupted. (Use 'cont' to resume).
+--Call--
+> /work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/util.py(73)safe_map()
+-> def safe_map(f, *args):

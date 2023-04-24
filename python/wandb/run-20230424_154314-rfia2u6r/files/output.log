@@ -421,3 +421,7 @@ Therefore, the resulting Plotly figure may not be
 large enough to view the full text. To adjust
 the size of the figure, use the 'width' and
 'height' keys in the Layout object. Alternatively,
+use the Margin object to adjust the figure's margins.
+Program interrupted. (Use 'cont' to resume).
+> /work/07169/wgl/ls6/PHO-ICES/adj-env/lib/python3.9/site-packages/jax/_src/config.py(240)get_state()
+-> val = _thread_local_state.__dict__.get(name, unset)
