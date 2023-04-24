@@ -40,7 +40,7 @@ def forwardSolve(u_0, dt, params: dict, net: nn.Module):
   #   u_next = forwardFn(u[:l + 1], t[:l + 1], dt[l], params, net)
   #   u = u.at[l + 1].set(u_next)
   #   return u, u_next
-  
+
   # u, _ = scan(scanFn,u,jnp.arange(len(dt)))
 
   return u
@@ -48,8 +48,7 @@ def forwardSolve(u_0, dt, params: dict, net: nn.Module):
 
 def outFnl(u, t=None):
   # return u[-1]
-  true = jnp.sin(t) + u[0]
-  loss = jnp.mean(jnp.square(u - true))
+  loss = jnp.abs(jnp.squeeze(u[-1]) - jnp.squeeze(jnp.sin(t[-1] + u[0])))
   return loss
 
 
@@ -118,8 +117,9 @@ def errorIndicator(u, v, dt, ref_factor, params, net):
 
 def lossFn(u_0, t, dt, params, net):
   u = forwardSolve(u_0, dt, params, net)
-  true = jnp.sin(t) + u_0
-  loss = jnp.mean(jnp.square(u - true))
+  true = jnp.sin(t[-1]) + u_0
+  # loss = jnp.mean(jnp.square(u - true))
+  loss = jnp.abs(jnp.squeeze(u[-1]) - jnp.squeeze(true))
   return loss
 
 
@@ -147,7 +147,7 @@ if __name__ == "__main__":
     import wandb
     wandb.init(project="Adjoint Adaptivity", entity="wglao", name=case)
     wandb.config.problem = 'ResNet'
-    wandb.config.method = 'Recurrent'
+    wandb.config.method = 'final_value_loss'
 
   t_span = jnp.array([0, 1])
   n_steps = 2
@@ -168,7 +168,7 @@ if __name__ == "__main__":
 
   # net and training
   rng = jrand.PRNGKey(1)
-  net = ResNetBlock((10,))
+  net = ResNetBlock((100,))
   params = net.init(rng, jnp.ones(1), jnp.ones(1), jnp.ones(1))['params']
 
   n_epochs = 100
@@ -211,12 +211,32 @@ if __name__ == "__main__":
       ax1.set_ylim(*bar_ylim)
 
     ax2 = ax1.twinx()
-    
-    # exact
-    ax2.plot(t, jnp.sin(t)+u[0], '-', color='black', label='Exact Forward', linewidth=4)
 
-    ax2.plot(t, u, '-', marker='.', color='tab:blue', label='Forward', linewidth=1.25)
-    ax2.plot(t_fine, v, '-', marker='.', color='tab:orange', label='Ajoint', linewidth=1.25)
+    # exact
+    ax2.plot(
+        t,
+        jnp.sin(t) + u[0],
+        '-',
+        color='black',
+        label='Exact Forward',
+        linewidth=4)
+
+    ax2.plot(
+        t,
+        u,
+        '-',
+        marker='.',
+        color='tab:blue',
+        label='Forward',
+        linewidth=1.25)
+    ax2.plot(
+        t_fine,
+        v,
+        '-',
+        marker='.',
+        color='tab:orange',
+        label='Ajoint',
+        linewidth=1.25)
     ax2.set_ylabel('Solution')
     ax2.set_xlabel('Time')
 
