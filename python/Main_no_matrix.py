@@ -1,7 +1,22 @@
+# import argparse
+
+# parser = argparse.ArgumentParser()
+# parser.add_argument("--node", default=1, type=int)
+# parser.add_argument("--GPU_index", default=0, type=int)
+# parser.add_argument("--alpha1", default=1e-4, type=float)
+# args = parser.parse_args()
+
+# NODE = args.node
+# GPU_index = args.GPU_index
+
 import os
+
+# os.environ["CUDA_VISIBLE_DEVICES"] = str(GPU_index)
+
 import shutil
 from functools import partial
 
+import animate
 import cv2
 import flax.linen as nn
 import jax.numpy as jnp
@@ -10,13 +25,12 @@ import jax.tree_util as jtr
 import matplotlib.pyplot as plt
 import numpy as np
 import optax
+import plotly.express as px
+import plotly.graph_objects as go
 import scipy.integrate as integrate
 from jax import grad, jit, vmap
 from jax.lax import dynamic_slice_in_dim as dySlice
 from jax.lax import scan
-from matplotlib.patches import Rectangle
-
-import animate
 from models import ResNetBlock, ResNetODE
 
 
@@ -143,13 +157,13 @@ def metricCalc(u_0, t, dt, true, params, net):
 
 
 if __name__ == "__main__":
-  case = "ResNet_no_matrix"
+  case = "ResNetODE"
   wandb_upload = True
   if wandb_upload:
     import wandb
     wandb.init(project="Adjoint Adaptivity", entity="wglao", name=case)
     wandb.config.problem = 'ResNet'
-    wandb.config.method = 'final_value_loss'
+    wandb.config.method = 'adapt_with_train_set_err'
 
   t_span = jnp.array([0, 1])
   n_steps = 2
@@ -169,16 +183,17 @@ if __name__ == "__main__":
   os.mkdir(case)
 
   # net and training
-  rng = jrand.PRNGKey(1)
+  rng = jrand.PRNGKey(0)
   net = ResNetBlock((100,))
   params = net.init(rng, jnp.ones(1), jnp.ones(1), jnp.ones(1))['params']
 
-  n_epochs = 100
-  learning_rate = 1e-3
-  optimizer = optax.adam(learning_rate)
+  n_epochs = 200
+  learning_rate = 1e-4
+  schedule = optax.cosine_onecycle_schedule(n_epochs, learning_rate)
+  optimizer = optax.adam(schedule)
   opt_state = optimizer.init(params)
 
-  u_0_train = jrand.normal(rng, (100,))
+  u_0_train = jrand.normal(rng, (500,))
   u_0_test = jnp.concatenate((jnp.array([u_0_train[0]]), jnp.ones((1, 1))),
                              None)
 
@@ -198,17 +213,25 @@ if __name__ == "__main__":
             'Loss': loss,
             'Error': err,
             'Refinements': it,
+            'Learning Rate': schedule(opt_state[-1].count)
         })
 
     # solve
-    u = forwardSolve(u_0_test[1], dt, params, net)
-    v = adjointSolve(u, dt, true_test[1], ref_factor, params, net)
-    err = errorIndicator(u, v, dt, ref_factor, params, net)
-
+    u_train_plot = forwardSolve(u_0_test[0], dt, params, net)
+    v_train_plot = adjointSolve(u_train_plot, dt, true_test[0], ref_factor,
+                                params, net)
+    err_train_plot = errorIndicator(u_train_plot, v_train_plot, dt, ref_factor,
+                                    params, net)
+    u_test_plot = forwardSolve(u_0_test[1], dt, params, net)
+    v_test_plot = adjointSolve(u_test_plot, dt, true_test[1], ref_factor,
+                               params, net)
+    err_test_plot = errorIndicator(u_test_plot, v_test_plot, dt, ref_factor,
+                                   params, net)
+    err_plot = 0.5*(err_test_plot+err_train_plot)
     # plot
     fig, ax1 = plt.subplots()
     ax1.bar(
-        t[:-1] + dt/2, err, dt, color='darkseagreen', label='Error Indicator')
+        t[:-1] + dt/2, err_plot, dt, color='darkseagreen', label='Error Indicator')
     ax1.set_ylabel('Error Contribution')
     if it == 0:
       bar_ylim = ax1.get_ylim()
@@ -220,42 +243,78 @@ if __name__ == "__main__":
     # exact
     ax2.plot(
         t_span,
-        jnp.array([u_0_test[1],true_test[1]]),
-        color='black',
+        jnp.array([u_0_test[0], true_test[0]]),
+        color='midnightblue',
         marker='o',
         linestyle='None',
-        label='Exact Forward')
+        label='Seen Solution')
+    ax2.plot(
+        t_span,
+        jnp.array([u_0_test[1], true_test[1]]),
+        color='saddlebrown',
+        marker='o',
+        linestyle='None',
+        label='Unseen Solution')
 
     ax2.plot(
         t,
-        u,
+        u_train_plot,
         '-',
         marker='.',
         color='tab:blue',
-        label='Forward',
+        label='Seen ResNetODE',
         linewidth=1.25)
     ax2.plot(
         t_fine,
-        v,
+        v_train_plot,
         '-',
-        marker='.',
-        color='tab:orange',
-        label='Ajoint',
+        marker='*',
+        color='darkblue',
+        label='Seen Adjoint',
         linewidth=1.25)
     ax2.set_ylabel('Solution')
+    ax2.plot(
+        t,
+        u_test_plot,
+        '--',
+        marker='.',
+        color='tab:orange',
+        label='Unseen ResNetODE',
+        linewidth=1.25)
+    ax2.plot(
+        t_fine,
+        v_test_plot,
+        '--',
+        marker='*',
+        color='peru',
+        label='Unseen Adjoint',
+        linewidth=1)
+    ax2.set_ylabel('Solution')
+
     ax2.set_xlabel('Time')
 
     fig.legend(bbox_to_anchor=(0.65, 1), bbox_transform=ax2.transAxes)
 
     f_name = case + '_{:d}'.format(it)
     fig.savefig(case + '/' + f_name + '.png')
-    if wandb_upload:
-      wandb.log({'Refinement Plot': fig})
+    # if wandb_upload:
+    #   wandb.log({'Refinement Plot': ax2})
     plt.close(fig)
 
     # adapt
+    u_refine = vmap(
+        forwardSolve, in_axes=(0, None, None, None))(u_0_train, dt, params, net)
+    v_refine = vmap(
+        adjointSolve,
+        in_axes=(0, None, 0, None, None, None))(u_refine, dt, true_train,
+                                                ref_factor, params, net)
+    err_refine = vmap(
+        errorIndicator,
+        in_axes=(0, 0, None, None, None, None))(u_refine, v_refine, dt,
+                                                ref_factor, params, net)
+    err_refine = jnp.mean(err_refine, axis=0)
     t_new = jnp.zeros(len(t) + 1)
-    idx = jnp.argmax(err) + 1
+    idx = jnp.argmax(err_refine) + 1
     t_new = t_new.at[0:idx].set(t[0:idx])
     t_new = t_new.at[idx + 1:].set(t[idx:])
     t_new = t_new.at[idx].set(jnp.mean(t[idx - 1:idx + 1]))
@@ -264,7 +323,7 @@ if __name__ == "__main__":
     dt = jnp.diff(t)
     dt_fine, t_fine = refineTime(dt, ref_factor)
 
-    err_total = jnp.sum(err)
+    err_total = jnp.sum(err_refine)
     it += 1
 
   animate.animate(case)

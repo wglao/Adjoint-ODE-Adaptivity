@@ -1,0 +1,20 @@
+
+Currently Loaded Modules:
+  1) git/2.24.1      5) hwloc/1.11.12   9) intel/19.1.1  13) cuda/11.3   (g)
+  2) autotools/1.2   6) xalt/2.10.34   10) swig/4.0.0    14) nccl/2.9.9  (g)
+  3) cmake/3.24.2    7) TACC           11) impi/19.0.9   15) cudnn/8.2.1 (g)
+  4) pmix/3.1.4      8) python3/3.9.2  12) ffmpeg/4.3.2
+
+  Where:
+   g:  built for GPU
+
+ 
+
+wandb: Currently logged in as: wglao. Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.15.0
+wandb: Run data is saved locally in /scratch1/07169/wgl/adjoint/python/wandb/run-20230424_182339-hzenc69x
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run ResNetODE
+wandb: ⭐️ View project at https://wandb.ai/wglao/Adjoint%20Adaptivity
+wandb: 🚀 View run at https://wandb.ai/wglao/Adjoint%20Adaptivity/runs/hzenc69x
+slurmstepd: error: *** JOB 5419060 ON c196-041 CANCELLED AT 2023-04-24T18:24:17 ***
