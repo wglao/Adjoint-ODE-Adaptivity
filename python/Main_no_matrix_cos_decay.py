@@ -157,7 +157,7 @@ def metricCalc(u_0, t, dt, true, params, net):
 
 
 if __name__ == "__main__":
-  case = "ResNetODE_eve"
+  case = "ResNetODE_cos_decay"
   wandb_upload = True
   if wandb_upload:
     import wandb
@@ -189,9 +189,9 @@ if __name__ == "__main__":
 
   n_epochs = 200
   learning_rate = 1e-4
-  # schedule = optax.cosine_onecycle_schedule(n_epochs*25, learning_rate)
-  # optimizer = optax.adam(schedule)
-  optimizer = optax.eve(learning_rate)
+  schedule = optax.cosine_decay_schedule(learning_rate,n_epochs*20)
+  optimizer = optax.adam(schedule)
+  # optimizer = optax.eve(learning_rate)
   opt_state = optimizer.init(params)
 
   u_0_train = jrand.normal(rng, (500,))
@@ -218,7 +218,7 @@ if __name__ == "__main__":
       else:
         cumulative_err = err
         cumulative_loss = loss
-      opt_state.hyperparams['f'] = cumulative_loss
+      # opt_state.hyperparams['f'] = cumulative_loss
 
       if ep % (n_epochs//5) == 0 and wandb_upload:
         wandb.log({
@@ -226,7 +226,7 @@ if __name__ == "__main__":
             'Loss': cumulative_loss,
             'Error': cumulative_err,
             'Refinements': it,
-            'Learning Rate': learning_rate/(opt_state[-1][0][-2])
+            'Learning Rate': schedule(opt_state[-1].count)
         })
 
     # solve
