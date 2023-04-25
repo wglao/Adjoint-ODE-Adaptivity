@@ -200,7 +200,6 @@ if __name__ == "__main__":
   true_train = integrate.odeint(odeFn, u_0_train, t_span)[-1]
   true_test = integrate.odeint(odeFn, u_0_test, t_span)[-1]
 
-
   while err_total > tol and it <= maxit:
     # define decaying values for err and loss
     cumulative_err = 0
@@ -219,14 +218,14 @@ if __name__ == "__main__":
         cumulative_err = err
         cumulative_loss = loss
 
-    if wandb_upload:
-      wandb.log({
-          'Epoch': ep + it*n_epochs,
-          'Loss': cumulative_loss,
-          'Error': cumulative_err,
-          'Refinements': it,
-          'Learning Rate': schedule(opt_state[-1].count)
-      })
+      if ep % (n_epochs//2) == 0 and wandb_upload:
+        wandb.log({
+            'Epoch': ep + it*n_epochs,
+            'Loss': cumulative_loss,
+            'Error': cumulative_err,
+            'Refinements': it,
+            'Learning Rate': schedule(opt_state[-1].count)
+        })
 
     # solve
     u_train_plot = forwardSolve(u_0_test[0], dt, params, net)
@@ -243,7 +242,11 @@ if __name__ == "__main__":
     # plot
     fig, ax1 = plt.subplots()
     ax1.bar(
-        t[:-1] + dt/2, err_plot, dt, color='darkseagreen', label='Error Indicator')
+        t[:-1] + dt/2,
+        err_plot,
+        dt,
+        color='darkseagreen',
+        label='Error Indicator')
     ax1.set_ylabel('Error Contribution')
     if it == 0:
       bar_ylim = ax1.get_ylim()
