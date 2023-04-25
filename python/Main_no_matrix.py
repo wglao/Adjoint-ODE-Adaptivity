@@ -157,13 +157,13 @@ def metricCalc(u_0, t, dt, true, params, net):
 
 
 if __name__ == "__main__":
-  case = "ResNetODE"
+  case = "ResNetODE_eve"
   wandb_upload = True
   if wandb_upload:
     import wandb
     wandb.init(project="Adjoint Adaptivity", entity="wglao", name=case)
     wandb.config.problem = 'ResNet'
-    wandb.config.method = 'adapt_with_train_set_err'
+    wandb.config.method = 'eve'
 
   t_span = jnp.array([0, 1])
   n_steps = 2
@@ -183,14 +183,15 @@ if __name__ == "__main__":
   os.mkdir(case)
 
   # net and training
-  rng = jrand.PRNGKey(0)
+  rng = jrand.PRNGKey(1)
   net = ResNetBlock((100,))
   params = net.init(rng, jnp.ones(1), jnp.ones(1), jnp.ones(1))['params']
 
   n_epochs = 200
   learning_rate = 1e-4
-  schedule = optax.cosine_onecycle_schedule(n_epochs, learning_rate)
-  optimizer = optax.adam(schedule)
+  # schedule = optax.cosine_onecycle_schedule(n_epochs*25, learning_rate)
+  # optimizer = optax.adam(schedule)
+  optimizer = optax.eve(learning_rate)
   opt_state = optimizer.init(params)
 
   u_0_train = jrand.normal(rng, (500,))
@@ -200,10 +201,10 @@ if __name__ == "__main__":
   true_train = integrate.odeint(odeFn, u_0_train, t_span)[-1]
   true_test = integrate.odeint(odeFn, u_0_test, t_span)[-1]
 
+  # define decaying values for err and loss
+  cumulative_err = 0
+  cumulative_loss = 0
   while err_total > tol and it <= maxit:
-    # define decaying values for err and loss
-    cumulative_err = 0
-    cumulative_loss = 0
 
     # train
     for ep in range(n_epochs):
@@ -211,20 +212,21 @@ if __name__ == "__main__":
                                     opt_state, optimizer)
       loss, err = metricCalc(u_0_test, t, dt, true_test, params, net)
 
-      if ep > 0:
+      if ep + it > 0:
         cumulative_err = 0.25*cumulative_err + 0.75*err
         cumulative_loss = 0.25*cumulative_loss + 0.75*loss
       else:
         cumulative_err = err
         cumulative_loss = loss
+      opt_state.hyperparams['f'] = cumulative_loss
 
-      if ep % (n_epochs//2) == 0 and wandb_upload:
+      if ep % (n_epochs//5) == 0 and wandb_upload:
         wandb.log({
             'Epoch': ep + it*n_epochs,
             'Loss': cumulative_loss,
             'Error': cumulative_err,
             'Refinements': it,
-            'Learning Rate': schedule(opt_state[-1].count)
+            # 'Learning Rate': schedule(opt_state[-1].count)
         })
 
     # solve
@@ -281,7 +283,7 @@ if __name__ == "__main__":
         linewidth=1.25)
     ax2.plot(
         t_fine,
-        v_train_plot,
+        jnp.abs(v_train_plot),
         '-',
         marker='*',
         color='darkblue',
@@ -298,7 +300,7 @@ if __name__ == "__main__":
         linewidth=1.25)
     ax2.plot(
         t_fine,
-        v_test_plot,
+        jnp.abs(v_test_plot),
         '--',
         marker='*',
         color='peru',
