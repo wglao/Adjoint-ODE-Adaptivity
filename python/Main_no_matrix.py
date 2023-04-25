@@ -200,21 +200,33 @@ if __name__ == "__main__":
   true_train = integrate.odeint(odeFn, u_0_train, t_span)[-1]
   true_test = integrate.odeint(odeFn, u_0_test, t_span)[-1]
 
+
   while err_total > tol and it <= maxit:
+    # define decaying values for err and loss
+    cumulative_err = 0
+    cumulative_loss = 0
+
     # train
     for ep in range(n_epochs):
       params, opt_state = trainStep(u_0_train, t, dt, true_train, params, net,
                                     opt_state, optimizer)
       loss, err = metricCalc(u_0_test, t, dt, true_test, params, net)
 
-      if wandb_upload:
-        wandb.log({
-            'Epoch': ep + it*n_epochs,
-            'Loss': loss,
-            'Error': err,
-            'Refinements': it,
-            'Learning Rate': schedule(opt_state[-1].count)
-        })
+      if ep > 0:
+        cumulative_err = 0.25*cumulative_err + 0.75*err
+        cumulative_loss = 0.25*cumulative_loss + 0.75*loss
+      else:
+        cumulative_err = err
+        cumulative_loss = loss
+
+    if wandb_upload:
+      wandb.log({
+          'Epoch': ep + it*n_epochs,
+          'Loss': cumulative_loss,
+          'Error': cumulative_err,
+          'Refinements': it,
+          'Learning Rate': schedule(opt_state[-1].count)
+      })
 
     # solve
     u_train_plot = forwardSolve(u_0_test[0], dt, params, net)
