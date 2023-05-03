@@ -28,14 +28,15 @@ import optax
 import plotly.express as px
 import plotly.graph_objects as go
 import scipy.integrate as integrate
-from jax import grad, jit, vmap
+from jax import grad, jit, vmap, value_and_grad
 from jax.lax import dynamic_slice_in_dim as dySlice
 from jax.lax import scan
 from models import ResNetBlock, ResNetODE
 
 
 def odeFn(u, t):
-  return jnp.sin(2*jnp.pi*u*t) / jnp.where(jnp.abs(u) > 1e-12, u, 1e-12)
+  # return jnp.sin(2*jnp.pi*u*t) / jnp.where(jnp.abs(u) > 1e-12, u, 1e-12)
+  return u
 
 
 def forwardFn(u, t, dt, params: dict, net: nn.Module):
@@ -134,46 +135,49 @@ def errorIndicator(u, v, dt, ref_factor, params, net):
 
 def lossFn(u_0, t, dt, true, params, net):
   u = forwardSolve(u_0, dt, params, net)
-  loss = jnp.abs(jnp.squeeze(u[-1]) - jnp.squeeze(true))
+  loss = jnp.square((jnp.squeeze(u[-1]) - jnp.squeeze(true)))
   return loss
 
 
 def trainStep(u_0, t, dt, true, params, net, opt_state,
               tx: optax.GradientTransformation):
-  grads = jtr.tree_map(
-      lambda m: jnp.mean(m, axis=0),
-      vmap(
-          grad(partial(lossFn, net=net), argnums=(4,)),
-          in_axes=(0, None, None, 0, None))(u_0, t, dt, true, params))[0]
+  loss, grads = vmap(
+      value_and_grad(partial(lossFn, net=net), argnums=(4,)),
+      in_axes=(0, None, None, 0, None))(u_0, t, dt, true, params)
+  grads = jtr.tree_map(lambda m: jnp.mean(m, axis=0), grads[0])
+  loss = jnp.mean(loss)
   updates, opt_state = tx.update(grads, opt_state)
   params = optax.apply_updates(params, updates)
-  return params, opt_state
+  return params, opt_state, loss
 
 
 def metricCalc(u_0, t, dt, true, params, net):
   loss = lossFn(u_0[0], t, dt, true[0], params, net)
-  err = lossFn(u_0[1], t, dt, true[1], params, net)
+  err = jnp.mean(
+      vmap(lossFn,
+           in_axes=(0, None, None, 0, None, None))(u_0[1:], t, dt, true[1:],
+                                                   params, net))
   return loss, err
 
 
 if __name__ == "__main__":
-  case = "ResNetODE_cos_decay"
+  case = "ResNetODE_simple_no_refine"
   wandb_upload = True
   if wandb_upload:
     import wandb
     wandb.init(project="Adjoint Adaptivity", entity="wglao", name=case)
     wandb.config.problem = 'ResNet'
-    wandb.config.method = 'eve'
+    wandb.config.method = 'no refinement'
 
   t_span = jnp.array([0, 1])
-  n_steps = 2
+  n_steps = 10
   t = jnp.linspace(t_span[0], t_span[1], n_steps + 1)
   dt = jnp.diff(t)
   ref_factor = 4
   dt_fine, t_fine = refineTime(dt, ref_factor)
 
   it = 0
-  maxit = 100
+  maxit = 0
   err_total = 1
   tol = 1e-8
 
@@ -187,160 +191,158 @@ if __name__ == "__main__":
   net = ResNetBlock((100,))
   params = net.init(rng, jnp.ones(1), jnp.ones(1), jnp.ones(1))['params']
 
-  n_epochs = 200
+  n_epochs = 5000
   learning_rate = 1e-4
-  schedule = optax.cosine_decay_schedule(learning_rate,n_epochs*20)
-  optimizer = optax.adam(schedule)
+  # schedule = optax.cosine_onecycle_schedule(n_epochs*25, learning_rate)
+  optimizer = optax.adam(learning_rate)
   # optimizer = optax.eve(learning_rate)
   opt_state = optimizer.init(params)
 
   u_0_train = jrand.normal(rng, (500,))
-  u_0_test = jnp.concatenate((jnp.array([u_0_train[0]]), jnp.ones((1, 1))),
-                             None)
+  u_0_test = jnp.concatenate((jnp.array([u_0_train[0]]), jnp.ones(
+      (1, 1)), jrand.normal(rng, (2, 1))), None)
 
   true_train = integrate.odeint(odeFn, u_0_train, t_span)[-1]
   true_test = integrate.odeint(odeFn, u_0_test, t_span)[-1]
 
   # define decaying values for err and loss
   cumulative_err = 0
-  cumulative_loss = 0
-  while err_total > tol and it <= maxit:
+  # cumulative_loss = 0
+  ep_total = 0
+  for ep in range(n_epochs):
+    params, opt_state, loss = trainStep(u_0_train, t, dt, true_train, params, net,
+                                  opt_state, optimizer)
+    loss, err = metricCalc(u_0_test, t, dt, true_test, params, net)
 
-    # train
-    for ep in range(n_epochs):
-      params, opt_state = trainStep(u_0_train, t, dt, true_train, params, net,
-                                    opt_state, optimizer)
-      loss, err = metricCalc(u_0_test, t, dt, true_test, params, net)
-
-      if ep + it > 0:
-        cumulative_err = 0.25*cumulative_err + 0.75*err
-        cumulative_loss = 0.25*cumulative_loss + 0.75*loss
-      else:
-        cumulative_err = err
-        cumulative_loss = loss
-      # opt_state.hyperparams['f'] = cumulative_loss
-
-      if ep % (n_epochs//5) == 0 and wandb_upload:
-        wandb.log({
-            'Epoch': ep + it*n_epochs,
-            'Loss': cumulative_loss,
-            'Error': cumulative_err,
-            'Refinements': it,
-            'Learning Rate': schedule(opt_state[-1].count)
-        })
-
-    # solve
-    u_train_plot = forwardSolve(u_0_test[0], dt, params, net)
-    v_train_plot = adjointSolve(u_train_plot, dt, true_test[0], ref_factor,
-                                params, net)
-    err_train_plot = errorIndicator(u_train_plot, v_train_plot, dt, ref_factor,
-                                    params, net)
-    u_test_plot = forwardSolve(u_0_test[1], dt, params, net)
-    v_test_plot = adjointSolve(u_test_plot, dt, true_test[1], ref_factor,
-                               params, net)
-    err_test_plot = errorIndicator(u_test_plot, v_test_plot, dt, ref_factor,
-                                   params, net)
-    err_plot = 0.5*(err_test_plot+err_train_plot)
-    # plot
-    fig, ax1 = plt.subplots()
-    ax1.bar(
-        t[:-1] + dt/2,
-        err_plot,
-        dt,
-        color='darkseagreen',
-        label='Error Indicator')
-    ax1.set_ylabel('Error Contribution')
-    if it == 0:
-      bar_ylim = ax1.get_ylim()
+    # if ep + it > 0:
+    #   cumulative_err = 0.25*cumulative_err + 0.75*err
+      # cumulative_loss = 0.25*cumulative_loss + 0.75*loss
+    # else:
+      # cumulative_err = err
+      # cumulative_loss = loss
+    log = {
+        'Epoch': ep + ep_total,
+        'Loss': loss,
+        'Error': err,
+        'Refinements': it,
+        # 'Learning Rate': learning_rate / (opt_state[-1][0][-2]),
+    }
+    if wandb_upload:
+      wandb.log(log)
     else:
-      ax1.set_ylim(*bar_ylim)
+      print(log)
 
-    ax2 = ax1.twinx()
+    if ep % (n_epochs//100) == n_epochs//100 - 1 or ep == 0:  # capture jump at refinement
 
-    # exact
-    ax2.plot(
-        t_span,
-        jnp.array([u_0_test[0], true_test[0]]),
-        color='midnightblue',
-        marker='o',
-        linestyle='None',
-        label='Seen Solution')
-    ax2.plot(
-        t_span,
-        jnp.array([u_0_test[1], true_test[1]]),
-        color='saddlebrown',
-        marker='o',
-        linestyle='None',
-        label='Unseen Solution')
+      # ep_total = ep_total + n_epochs*(it+1) - 1
+      # solve
+      u_train_plot = forwardSolve(u_0_test[0], dt, params, net)
+      v_train_plot = adjointSolve(u_train_plot, dt, true_test[0], ref_factor,
+                                  params, net)
+      err_train_plot = errorIndicator(u_train_plot, v_train_plot, dt, ref_factor,
+                                      params, net)
+      u_test_plot = forwardSolve(u_0_test[1], dt, params, net)
+      v_test_plot = adjointSolve(u_test_plot, dt, true_test[1], ref_factor,
+                                params, net)
+      err_test_plot = errorIndicator(u_test_plot, v_test_plot, dt, ref_factor,
+                                    params, net)
+      err_plot = 0.5*(err_test_plot+err_train_plot)
+      # plot
+      fig, ax1 = plt.subplots()
+      ax1.bar(
+          t[:-1] + dt/2,
+          err_plot,
+          dt,
+          color='darkseagreen',
+          label='Error Indicator')
+      ax1.set_ylabel('Error Contribution')
+      if it == 0:
+        bar_ylim = ax1.get_ylim()
+      else:
+        ax1.set_ylim(*bar_ylim)
 
-    ax2.plot(
-        t,
-        u_train_plot,
-        '-',
-        marker='.',
-        color='tab:blue',
-        label='Seen ResNetODE',
-        linewidth=1.25)
-    ax2.plot(
-        t_fine,
-        jnp.abs(v_train_plot),
-        '-',
-        marker='*',
-        color='darkblue',
-        label='Seen Adjoint',
-        linewidth=1.25)
-    ax2.set_ylabel('Solution')
-    ax2.plot(
-        t,
-        u_test_plot,
-        '--',
-        marker='.',
-        color='tab:orange',
-        label='Unseen ResNetODE',
-        linewidth=1.25)
-    ax2.plot(
-        t_fine,
-        jnp.abs(v_test_plot),
-        '--',
-        marker='*',
-        color='peru',
-        label='Unseen Adjoint',
-        linewidth=1)
-    ax2.set_ylabel('Solution')
+      ax2 = ax1.twinx()
 
-    ax2.set_xlabel('Time')
+      # exact
+      ax2.plot(
+          t_span,
+          jnp.array([u_0_test[0], true_test[0]]),
+          color='midnightblue',
+          marker='o',
+          linestyle='None',
+          label='Seen Solution')
+      ax2.plot(
+          t_span,
+          jnp.array([u_0_test[1], true_test[1]]),
+          color='saddlebrown',
+          marker='o',
+          linestyle='None',
+          label='Unseen Solution')
 
-    fig.legend(bbox_to_anchor=(0.65, 1), bbox_transform=ax2.transAxes)
+      ax2.plot(
+          t,
+          u_train_plot,
+          '-',
+          marker='.',
+          color='tab:blue',
+          linewidth=1.25)
+      ax2.plot(
+          t_fine,
+          jnp.abs(v_train_plot),
+          '-',
+          marker='*',
+          color='darkblue',
+          linewidth=1.25)
+      ax2.set_ylabel('Solution')
+      ax2.plot(
+          t,
+          u_test_plot,
+          '--',
+          marker='.',
+          color='tab:orange',
+          linewidth=1.25)
+      ax2.plot(
+          t_fine,
+          jnp.abs(v_test_plot),
+          '--',
+          marker='*',
+          color='peru',
+          linewidth=1)
+      ax2.set_ylabel('Solution')
 
-    f_name = case + '_{:d}'.format(it)
-    fig.savefig(case + '/' + f_name + '.png')
-    # if wandb_upload:
-    #   wandb.log({'Refinement Plot': ax2})
-    plt.close(fig)
+      ax2.set_xlabel('Time')
 
-    # adapt
-    u_refine = vmap(
-        forwardSolve, in_axes=(0, None, None, None))(u_0_train, dt, params, net)
-    v_refine = vmap(
-        adjointSolve,
-        in_axes=(0, None, 0, None, None, None))(u_refine, dt, true_train,
-                                                ref_factor, params, net)
-    err_refine = vmap(
-        errorIndicator,
-        in_axes=(0, 0, None, None, None, None))(u_refine, v_refine, dt,
-                                                ref_factor, params, net)
-    err_refine = jnp.mean(err_refine, axis=0)
-    t_new = jnp.zeros(len(t) + 1)
-    idx = jnp.argmax(err_refine) + 1
-    t_new = t_new.at[0:idx].set(t[0:idx])
-    t_new = t_new.at[idx + 1:].set(t[idx:])
-    t_new = t_new.at[idx].set(jnp.mean(t[idx - 1:idx + 1]))
+      fig.legend(bbox_to_anchor=(0.65, 1), bbox_transform=ax2.transAxes)
 
-    t = t_new
-    dt = jnp.diff(t)
-    dt_fine, t_fine = refineTime(dt, ref_factor)
+      f_name = case + '_{:d}'.format(ep)
+      fig.savefig(case + '/' + f_name + '.png')
+      # if wandb_upload:
+      #   wandb.log({'Refinement Plot': ax2})
+      plt.close(fig)
 
-    err_total = jnp.sum(err_refine)
-    it += 1
+      # adapt
+      # u_refine = vmap(
+      #     forwardSolve, in_axes=(0, None, None, None))(u_0_train, dt, params, net)
+      # v_refine = vmap(
+      #     adjointSolve,
+      #     in_axes=(0, None, 0, None, None, None))(u_refine, dt, true_train,
+      #                                             ref_factor, params, net)
+      # err_refine = vmap(
+      #     errorIndicator,
+      #     in_axes=(0, 0, None, None, None, None))(u_refine, v_refine, dt,
+      #                                             ref_factor, params, net)
+      # err_refine = jnp.mean(err_refine, axis=0)
+      # t_new = jnp.zeros(len(t) + 1)
+      # idx = jnp.argmax(err_refine) + 1
+      # t_new = t_new.at[0:idx].set(t[0:idx])
+      # t_new = t_new.at[idx + 1:].set(t[idx:])
+      # t_new = t_new.at[idx].set(jnp.mean(t[idx - 1:idx + 1]))
+
+      # t = t_new
+      # dt = jnp.diff(t)
+      # dt_fine, t_fine = refineTime(dt, ref_factor)
+
+      # err_total = jnp.sum(err_refine)
+      # it += 1
 
   animate.animate(case)

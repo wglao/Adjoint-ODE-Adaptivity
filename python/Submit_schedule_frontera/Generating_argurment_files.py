@@ -8,28 +8,24 @@ args = parser.parse_args()
 number_of_node = args.files
 number_of_GPU_per_node = args.GPU_per_node
 
-alpha_1 = [50,75,100]
-alpha_2 = [2]
-alpha_3 = [128]
-alpha_4 = [128]
+files = ['complex', 'complex_no_refine', 'complex_no_refine_shallow', 'detect_complex', 'backtrack_complex']
+# files = ['complex_no_refine', 'complex_no_refine_shallow']
+seeds = [1, 2, 3]
 
 LIST = []
-for a1 in alpha_1:
-  for a2 in alpha_2:
-    for a3 in alpha_3:
-      for a4 in alpha_4:
-        line = ' --alpha1 ' + str(a1) + ' --alpha2 ' + str(
-            a2) + ' --alpha3 ' + str(a3) + ' --alpha4 ' + str(
-                a4)
-        LIST.append(line)
+for f in files:
+  for s in seeds:
+    line = '_' + str(f) + '.py --seed ' + str(s)
+    LIST.append(line)
 
 LIST2 = []
 for file_i in range(number_of_node):
   for gpu_ind in range(number_of_GPU_per_node):
     if file_i*number_of_GPU_per_node + gpu_ind < len(LIST):
-      line = 'python ../Main_no_embed_receivers_rk45.py --node ' + str(
-          file_i + 1) + ' --GPU_index ' + str(gpu_ind) + LIST[
-              file_i*number_of_GPU_per_node + gpu_ind]
+      line = 'cd $SCRATCH/adjoint/python; python3 Main_no_matrix' + LIST[
+          file_i*number_of_GPU_per_node +
+          gpu_ind] + ' --node ' + str(file_i +
+                                      1) + ' --GPU_index ' + str(gpu_ind)
       # line = 'python ../Main_diffusion_based.py --node ' + str(
       #     file_i + 1) + ' --GPU_index ' + str(gpu_ind) + LIST[
       #         file_i*number_of_GPU_per_node + gpu_ind]

@@ -1,22 +1,22 @@
-# import argparse
+import argparse
 
-# parser = argparse.ArgumentParser()
-# parser.add_argument("--node", default=1, type=int)
-# parser.add_argument("--GPU_index", default=0, type=int)
-# parser.add_argument("--alpha1", default=1e-4, type=float)
-# args = parser.parse_args()
+parser = argparse.ArgumentParser()
+parser.add_argument("--node", default=1, type=int)
+parser.add_argument("--GPU_index", default=0, type=int)
+parser.add_argument("--seed", default=1, type=int)
+args = parser.parse_args()
 
-# NODE = args.node
-# GPU_index = args.GPU_index
+NODE = args.node
+GPU_index = args.GPU_index
 
 import os
 
-# os.environ["CUDA_VISIBLE_DEVICES"] = str(GPU_index)
+os.environ["CUDA_VISIBLE_DEVICES"] = str(GPU_index)
 
 import shutil
 from functools import partial
 
-import animate
+from animate import animate
 import cv2
 import flax.linen as nn
 import jax.numpy as jnp
@@ -33,10 +33,31 @@ from jax.lax import dynamic_slice_in_dim as dySlice
 from jax.lax import scan
 from models import ResNetBlock, ResNetODE
 
+# Gaussian Mixture (5 in space, 3 in time)
+m_rng = jrand.PRNGKey(1)
+s_rng = jrand.PRNGKey(2)
+c_rng = jrand.PRNGKey(3)
+u_m = jrand.normal(m_rng, (5,))
+u_s = jnp.abs(jrand.normal(s_rng, (5,)) / 3 + 1)
+t_m = jnp.abs(jrand.normal(m_rng, (3,)) / 6 + 0.5)
+t_s = jnp.abs(jrand.normal(s_rng, (3,)) / 3 + 1)
+c = jrand.normal(c_rng, (8,))
+gaussian = lambda x, m, s: jnp.exp(-((x - m)**2) /
+                                   (2*s**2)) / jnp.sqrt(2*jnp.pi*s**2)
+gaussian_mixture = lambda x, y: c[0]*gaussian(x, u_m[0], u_s[0]) + c[
+    1]*gaussian(x, u_m[1], u_s[1]) + c[2]*gaussian(x, u_m[2], u_s[2]) + c[
+        3]*gaussian(x, u_m[3], u_s[3]) + c[4]*gaussian(x, u_m[4], u_s[
+            4]) + c[5]*gaussian(y, t_m[0], t_s[0]) + c[6]*gaussian(
+                y, t_m[1], t_s[1]) + c[7]*gaussian(y, t_m[2], t_s[2])
 
+
+@jit
 def odeFn(u, t):
-  # return jnp.sin(2*jnp.pi*u*t) / jnp.where(jnp.abs(u) > 1e-12, u, 1e-12)
-  return u
+  # return u*jnp.sin(2*jnp.pi*u*t + u) / (t+1) + jnp.where(
+  #     u > 1e-12,
+  #     jnp.sin(jnp.where(u > 1e-12, u, 1)) / (jnp.where(u > 1e-12, u, 1)*
+  #                                            (t+1)), 1 / (t+1))
+  return gaussian_mixture(u, t)
 
 
 def forwardFn(u, t, dt, params: dict, net: nn.Module):
@@ -161,13 +182,13 @@ def metricCalc(u_0, t, dt, true, params, net):
 
 
 if __name__ == "__main__":
-  case = "ResNetODE_simple_regular500"
+  case = "ResNetODE_complex_regular1000_" + str(args.seed)
   wandb_upload = True
   if wandb_upload:
     import wandb
     wandb.init(project="Adjoint Adaptivity", entity="wglao", name=case)
     wandb.config.problem = 'ResNet'
-    wandb.config.method = 'simple'
+    wandb.config.method = 'complex'
 
   t_span = jnp.array([0, 1])
   n_steps = 2
@@ -187,8 +208,9 @@ if __name__ == "__main__":
   os.mkdir(case)
 
   # net and training
-  rng = jrand.PRNGKey(1)
-  net = ResNetBlock((100,))
+  seed = int(args.seed)
+  rng = jrand.PRNGKey(seed)
+  net = ResNetBlock((200, 100, 200))
   params = net.init(rng, jnp.ones(1), jnp.ones(1), jnp.ones(1))['params']
 
   n_epochs = 1000
@@ -198,9 +220,9 @@ if __name__ == "__main__":
   # optimizer = optax.eve(learning_rate)
   opt_state = optimizer.init(params)
 
-  u_0_train = jrand.normal(rng, (500,))
-  u_0_test = jnp.concatenate((jnp.array([u_0_train[0]]), jnp.ones(
-      (1, 1)), jrand.normal(rng, (2, 1))), None)
+  u_0_train = jrand.normal(rng, (5000,))
+  u_0_test = jnp.concatenate((jnp.array([u_0_train[0]]), -5*jnp.ones(
+      (1, 1)), 4*jrand.normal(rng, (99, 1))), None)
 
   true_train = integrate.odeint(odeFn, u_0_train, t_span)[-1]
   true_test = integrate.odeint(odeFn, u_0_test, t_span)[-1]
@@ -269,39 +291,13 @@ if __name__ == "__main__":
         linestyle='None',
         label='Unseen Solution')
 
+    ax2.plot(t, u_train_plot, '-', marker='.', color='tab:blue', linewidth=1.25)
     ax2.plot(
-        t,
-        u_train_plot,
-        '-',
-        marker='.',
-        color='tab:blue',
-        label='Seen ResNetODE',
-        linewidth=1.25)
-    ax2.plot(
-        t_fine,
-        jnp.abs(v_train_plot),
-        '-',
-        marker='*',
-        color='darkblue',
-        label='Seen Adjoint',
-        linewidth=1.25)
+        t_fine, jnp.abs(v_train_plot), '--', color='darkblue', linewidth=1.25)
     ax2.set_ylabel('Solution')
     ax2.plot(
-        t,
-        u_test_plot,
-        '--',
-        marker='.',
-        color='tab:orange',
-        label='Unseen ResNetODE',
-        linewidth=1.25)
-    ax2.plot(
-        t_fine,
-        jnp.abs(v_test_plot),
-        '--',
-        marker='*',
-        color='peru',
-        label='Unseen Adjoint',
-        linewidth=1)
+        t, u_test_plot, '-', marker='.', color='tab:orange', linewidth=1.25)
+    ax2.plot(t_fine, jnp.abs(v_test_plot), '--', color='peru', linewidth=1)
     ax2.set_ylabel('Solution')
 
     ax2.set_xlabel('Time')
@@ -339,4 +335,4 @@ if __name__ == "__main__":
     err_total = jnp.sum(err_refine)
     it += 1
 
-  animate.animate(case)
+  animate(case)

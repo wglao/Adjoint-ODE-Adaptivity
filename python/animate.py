@@ -21,5 +21,11 @@ def animate(case: str = 'test', framerate: int = 12):
 
 
 if __name__ == "__main__":
-  case = 'ResNet_no_matrix'
-  animate(case, 3)
+  import argparse
+  parser = argparse.ArgumentParser()
+  parser.add_argument("--case", default='test', type=str)
+  parser.add_argument("--fr", default=12, type=int)
+  args = parser.parse_args()
+  case = args.case
+  framerate = args.fr
+  animate(case, framerate)

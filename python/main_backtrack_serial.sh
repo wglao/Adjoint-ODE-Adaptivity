@@ -26,19 +26,15 @@
 #SBATCH -e rnode.e%j       # Name of stderr error file
 #SBATCH -p rtx              # Queue (partition) name
 #SBATCH -N 1                # Total # of nodes (must be 1 for serial)
-#SBATCH -n 4                # Total # of mpi tasks (should be 1 for serial)
+#SBATCH -n 1                # Total # of mpi tasks (should be 1 for serial)
 #SBATCH -t 12:00:00         # Run time (hh:mm:ss)
 #SBATCH --mail-type=all     # Send email at begin and end of job
 #SBATCH -A DMS22021         # Project/Allocation name (req'd if you have more than 1)
 
 # Any other commands must follow all #SBATCH directives...
-pwd
-module load launcher
 module load cuda nccl cudnn
 module list
 
-export LAUNCHER_WORKDIR=$2
-export LAUNCHER_JOB_FILE=$2/arguement_files$1
-
 # # Launch serial code...
-source $WORK/adj-env/bin/activate && ${LAUNCHER_DIR}/paramrun
+source $WORK/PHO-ICES/adj-env/bin/activate
+python3 Main_no_matrix_backtrack_complex.py
