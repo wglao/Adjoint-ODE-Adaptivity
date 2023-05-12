@@ -35,12 +35,12 @@ from models import ResNetBlock, ResNetODE
 
 
 def odeFn(u, t):
-  return jnp.sin(2*jnp.pi*u*t + u) / (t+1)
+  return jnp.cos(2*jnp.pi*u)
   # return u
 
 
 def forwardFn(u, t, dt, params: dict, net: nn.Module):
-  return net.apply({'params': params}, u[-1], t[-1], dt)
+  return net.apply({'params': params}, u[-1])
 
 
 def forwardSolve(u_0, dt, params: dict, net: nn.Module):
@@ -133,17 +133,28 @@ def errorIndicator(u, v, dt, ref_factor, params, net):
   return jnp.abs(err)
 
 
-def lossFn(u_0, t, dt, true, params, net):
-  u = forwardSolve(u_0, dt, params, net)
-  loss = jnp.square(jnp.squeeze(u[-1]) - jnp.squeeze(true))
+# @jit
+def lossFn(u_0, t, dt, true, params, net: nn.Module):
+  u_arr = net.apply({'params': params}, u_0)
+  loss = jnp.square(u_arr[-1] - true)
+  return loss
+
+
+def newLossFn(u_0, t, dt, true, params, net: nn.Module):
+  u_arr = net.apply({'params': params}, u_0)
+  u_diff = jnp.squeeze(u_arr) - jnp.squeeze(true)
+  loss = jnp.dot((jnp.square(u_diff[:-1]) + jnp.square(u_diff[1:])) / 2, dt)
   return loss
 
 
 def trainStep(u_0, t, dt, true, params, net, opt_state,
               tx: optax.GradientTransformation):
   loss, grads = vmap(
-      value_and_grad(partial(lossFn, net=net), argnums=(4,)),
-      in_axes=(0, None, None, 0, None))(u_0, t, dt, true, params)
+      value_and_grad(newLossFn, argnums=(4,)),
+      in_axes=(0, None, None, 0, None, None))(u_0, t, dt, true, params, net)
+  # loss, grads = vmap(
+  #     value_and_grad(lossFn, argnums=(4,)),
+  #     in_axes=(0, None, None, 0, None, None))(u_0, t, dt, true, params, net)
   grads = jtr.tree_map(lambda m: jnp.mean(m, axis=0), grads[0])
   loss = jnp.mean(loss)
   updates, opt_state = tx.update(grads, opt_state)
@@ -161,16 +172,16 @@ def metricCalc(u_0, t, dt, true, params, net):
 
 
 if __name__ == "__main__":
-  case = "ResNetODE_complex_regular1000_"+str(args.seed)
+  case = "ResNetODE_new_loss_" + str(args.seed)
   wandb_upload = True
   if wandb_upload:
     import wandb
     wandb.init(project="Adjoint Adaptivity", entity="wglao", name=case)
     wandb.config.problem = 'ResNet'
-    wandb.config.method = 'complex'
+    wandb.config.method = 'new loss'
 
   t_span = jnp.array([0, 1])
-  n_steps = 2
+  n_steps = 10
   t = jnp.linspace(t_span[0], t_span[1], n_steps + 1)
   dt = jnp.diff(t)
   ref_factor = 4
@@ -189,18 +200,19 @@ if __name__ == "__main__":
   # net and training
   seed = int(args.seed)
   rng = jrand.PRNGKey(seed)
-  net = ResNetBlock((300, 100, 300))
-  params = net.init(rng, jnp.ones(1), jnp.ones(1), jnp.ones(1))['params']
+  net = ResNetODE([500]*n_steps, dt)
+  params = net.init(rng, jnp.ones(1))['params']
 
-  n_epochs = 1000
-  learning_rate = 1e-4
+  n_epochs = 100
+  learning_rate = 1e-3
   # schedule = optax.cosine_onecycle_schedule(n_epochs*25, learning_rate)
   optimizer = optax.adam(learning_rate)
   # optimizer = optax.eve(learning_rate)
   opt_state = optimizer.init(params)
 
   u_0_train = jrand.normal(rng, (1000,))
-  u_0_test = jnp.concatenate((jnp.array([u_0_train[0]]), 3*jrand.normal(rng, (10, 1))), None)
+  u_0_test = jnp.concatenate((jnp.array([u_0_train[0]]), -3*jnp.ones(
+      (1, 1)), jrand.normal(rng, (9, 1))), None)
 
   true_train = integrate.odeint(odeFn, u_0_train, t_span)[-1]
   true_test = integrate.odeint(odeFn, u_0_test, t_span)[-1]
@@ -221,8 +233,12 @@ if __name__ == "__main__":
             'Epoch': ep + it*n_epochs,
             'Loss': loss,
             'Error': err,
-            'Refinements': it,
-            # 'Learning Rate': learning_rate/(opt_state[-1][0][-2])
+        })
+      else:
+        print({
+            'Epoch': ep + it*n_epochs,
+            'Loss': loss,
+            'Error': err,
         })
 
     # solve
@@ -289,28 +305,28 @@ if __name__ == "__main__":
     plt.close(fig)
 
     # adapt
-    u_refine = vmap(
-        forwardSolve, in_axes=(0, None, None, None))(u_0_train, dt, params, net)
-    v_refine = vmap(
-        adjointSolve,
-        in_axes=(0, None, 0, None, None, None))(u_refine, dt, true_train,
-                                                ref_factor, params, net)
-    err_refine = vmap(
-        errorIndicator,
-        in_axes=(0, 0, None, None, None, None))(u_refine, v_refine, dt,
-                                                ref_factor, params, net)
-    err_refine = jnp.mean(err_refine, axis=0)
-    t_new = jnp.zeros(len(t) + 1)
-    idx = jnp.argmax(err_refine) + 1
-    t_new = t_new.at[0:idx].set(t[0:idx])
-    t_new = t_new.at[idx + 1:].set(t[idx:])
-    t_new = t_new.at[idx].set(jnp.mean(t[idx - 1:idx + 1]))
+    # u_refine = vmap(
+    #     forwardSolve, in_axes=(0, None, None, None))(u_0_train, dt, params, net)
+    # v_refine = vmap(
+    #     adjointSolve,
+    #     in_axes=(0, None, 0, None, None, None))(u_refine, dt, true_train,
+    #                                             ref_factor, params, net)
+    # err_refine = vmap(
+    #     errorIndicator,
+    #     in_axes=(0, 0, None, None, None, None))(u_refine, v_refine, dt,
+    #                                             ref_factor, params, net)
+    # err_refine = jnp.mean(err_refine, axis=0)
+    # t_new = jnp.zeros(len(t) + 1)
+    # idx = jnp.argmax(err_refine) + 1
+    # t_new = t_new.at[0:idx].set(t[0:idx])
+    # t_new = t_new.at[idx + 1:].set(t[idx:])
+    # t_new = t_new.at[idx].set(jnp.mean(t[idx - 1:idx + 1]))
 
-    t = t_new
-    dt = jnp.diff(t)
-    dt_fine, t_fine = refineTime(dt, ref_factor)
+    # t = t_new
+    # dt = jnp.diff(t)
+    # dt_fine, t_fine = refineTime(dt, ref_factor)
 
-    err_total = jnp.sum(err_refine)
+    # err_total = jnp.sum(err_refine)
     it += 1
 
   animate(case)
