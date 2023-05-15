@@ -50,9 +50,11 @@ def forwardSolve(u_0, dt, params: dict, net: nn.Module):
   u_prev = u
 
   # for loop
-  for l, dt_l in enumerate(dt):
-    u_next = forwardFn(u[:l + 1], t[:l + 1], dt_l, params, net)
-    u = u.at[l + 1].set(u_next)
+  #for l, dt_l in enumerate(dt):
+  #  u_next = forwardFn(u[:l + 1], t[:l + 1], dt_l, params, net)
+  #  u = u.at[l + 1].set(u_next)
+
+  u = net.apply({'params': params}, u_0)
 
   # scan
   # def scanFn(u, l):
@@ -136,25 +138,25 @@ def errorIndicator(u, v, dt, ref_factor, params, net):
 # @jit
 def lossFn(u_0, t, dt, true, params, net: nn.Module):
   u_arr = net.apply({'params': params}, u_0)
-  loss = jnp.square(u_arr[-1] - true)
+  loss = jnp.squeeze(jnp.square(u_arr[-1] - true))
   return loss
 
 
 def newLossFn(u_0, t, dt, true, params, net: nn.Module):
   u_arr = net.apply({'params': params}, u_0)
   u_diff = jnp.squeeze(u_arr) - jnp.squeeze(true)
-  loss = jnp.dot((jnp.square(u_diff[:-1]) + jnp.square(u_diff[1:])) / 2, dt)
+  loss = jnp.squeeze(jnp.dot((jnp.square(u_diff[:-1]) + jnp.square(u_diff[1:])) / 2, dt))
   return loss
 
 
 def trainStep(u_0, t, dt, true, params, net, opt_state,
               tx: optax.GradientTransformation):
+  #loss, grads = vmap(
+  #    value_and_grad(newLossFn, argnums=(4,)),
+  #    in_axes=(0, None, None, 0, None, None))(u_0, t, dt, true, params, net)
   loss, grads = vmap(
-      value_and_grad(newLossFn, argnums=(4,)),
+      value_and_grad(lossFn, argnums=(4,)),
       in_axes=(0, None, None, 0, None, None))(u_0, t, dt, true, params, net)
-  # loss, grads = vmap(
-  #     value_and_grad(lossFn, argnums=(4,)),
-  #     in_axes=(0, None, None, 0, None, None))(u_0, t, dt, true, params, net)
   grads = jtr.tree_map(lambda m: jnp.mean(m, axis=0), grads[0])
   loss = jnp.mean(loss)
   updates, opt_state = tx.update(grads, opt_state)
@@ -172,7 +174,7 @@ def metricCalc(u_0, t, dt, true, params, net):
 
 
 if __name__ == "__main__":
-  case = "ResNetODE_new_loss_" + str(args.seed)
+  case = "ResNetODE_old_loss_" + str(args.seed)
   wandb_upload = True
   if wandb_upload:
     import wandb
@@ -243,41 +245,41 @@ if __name__ == "__main__":
 
     # solve
     u_train_plot = forwardSolve(u_0_test[0], dt, params, net)
-    v_train_plot = adjointSolve(u_train_plot, dt, true_test[0], ref_factor,
-                                params, net)
-    err_train_plot = errorIndicator(u_train_plot, v_train_plot, dt, ref_factor,
-                                    params, net)
+    #v_train_plot = adjointSolve(u_train_plot, dt, true_test[0], ref_factor,
+    #                            params, net)
+    #err_train_plot = errorIndicator(u_train_plot, v_train_plot, dt, ref_factor,
+    #                                params, net)
     u_test_plot = forwardSolve(u_0_test[1], dt, params, net)
-    v_test_plot = adjointSolve(u_test_plot, dt, true_test[1], ref_factor,
-                               params, net)
-    err_test_plot = errorIndicator(u_test_plot, v_test_plot, dt, ref_factor,
-                                   params, net)
-    err_plot = 0.5*(err_test_plot+err_train_plot)
+    #v_test_plot = adjointSolve(u_test_plot, dt, true_test[1], ref_factor,
+    #                           params, net)
+    #err_test_plot = errorIndicator(u_test_plot, v_test_plot, dt, ref_factor,
+    #                               params, net)
+    #err_plot = 0.5*(err_test_plot+err_train_plot)
     # plot
     fig, ax1 = plt.subplots()
-    ax1.bar(
-        t[:-1] + dt/2,
-        err_plot,
-        dt,
-        color='darkseagreen',
-        label='Error Indicator')
-    ax1.set_ylabel('Error Contribution')
-    if it == 0:
-      bar_ylim = ax1.get_ylim()
-    else:
-      ax1.set_ylim(*bar_ylim)
+    #ax1.bar(
+    #    t[:-1] + dt/2,
+    #    err_plot,
+    #    dt,
+    #    color='darkseagreen',
+    #    label='Error Indicator')
+    #ax1.set_ylabel('Error Contribution')
+    #if it == 0:
+    #  bar_ylim = ax1.get_ylim()
+    #else:
+    #  ax1.set_ylim(*bar_ylim)
 
-    ax2 = ax1.twinx()
+    #ax2 = ax1.twinx()
 
     # exact
-    ax2.plot(
+    ax1.plot(
         t_span,
         jnp.array([u_0_test[0], true_test[0]]),
         color='midnightblue',
         marker='o',
         linestyle='None',
         label='Seen Solution')
-    ax2.plot(
+    ax1.plot(
         t_span,
         jnp.array([u_0_test[1], true_test[1]]),
         color='saddlebrown',
@@ -285,18 +287,18 @@ if __name__ == "__main__":
         linestyle='None',
         label='Unseen Solution')
 
-    ax2.plot(t, u_train_plot, '-', marker='.', color='tab:blue', linewidth=1.25)
-    ax2.plot(
-        t_fine, jnp.abs(v_train_plot), '--', color='darkblue', linewidth=1.25)
-    ax2.set_ylabel('Solution')
-    ax2.plot(
+    ax1.plot(t, u_train_plot, '-', marker='.', color='tab:blue', linewidth=1.25)
+    #ax2.plot(
+     #   t_fine, jnp.abs(v_train_plot), '--', color='darkblue', linewidth=1.25)
+    #ax2.set_ylabel('Solution')
+    ax1.plot(
         t, u_test_plot, '-', marker='.', color='tab:orange', linewidth=1.25)
-    ax2.plot(t_fine, jnp.abs(v_test_plot), '--', color='peru', linewidth=1)
-    ax2.set_ylabel('Solution')
+    #ax2.plot(t_fine, jnp.abs(v_test_plot), '--', color='peru', linewidth=1)
+    ax1.set_ylabel('Solution')
 
-    ax2.set_xlabel('Time')
+    ax1.set_xlabel('Time')
 
-    fig.legend(bbox_to_anchor=(0.65, 1), bbox_transform=ax2.transAxes)
+    fig.legend(bbox_to_anchor=(0.65, 1), bbox_transform=ax1.transAxes)
 
     f_name = case + '_{:d}'.format(it)
     fig.savefig(case + '/' + f_name + '.png')

@@ -21,13 +21,13 @@
 #       followed by "module help launcher".
 #----------------------------------------------------
 
-#SBATCH -J rnode           # Job name
-#SBATCH -o rnode.o%j       # Name of stdout output file
-#SBATCH -e rnode.e%j       # Name of stderr error file
+#SBATCH -J new_loss           # Job name
+#SBATCH -o new_loss.o%j       # Name of stdout output file
+#SBATCH -e new_loss.e%j       # Name of stderr error file
 #SBATCH -p rtx              # Queue (partition) name
 #SBATCH -N 1                # Total # of nodes (must be 1 for serial)
 #SBATCH -n 1                # Total # of mpi tasks (should be 1 for serial)
-#SBATCH -t 12:00:00         # Run time (hh:mm:ss)
+#SBATCH -t 5:00:00         # Run time (hh:mm:ss)
 #SBATCH --mail-type=all     # Send email at begin and end of job
 #SBATCH -A DMS22021         # Project/Allocation name (req'd if you have more than 1)
 
@@ -36,5 +36,5 @@ module load cuda nccl cudnn
 module list
 
 # # Launch serial code...
-source $WORK/PHO-ICES/adj-env/bin/activate
-python3 Main_no_matrix_complex_no_refine.py
+source $WORK/adj-env/bin/activate
+python3 Main_new_loss.py --seed 2

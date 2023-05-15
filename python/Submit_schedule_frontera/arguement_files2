@@ -1,4 +1,0 @@
-cd $SCRATCH/adjoint/python; python3 Main_no_matrix_complex_no_refine.py --seed 2 --node 2 --GPU_index 0
-cd $SCRATCH/adjoint/python; python3 Main_no_matrix_complex_no_refine.py --seed 3 --node 2 --GPU_index 1
-cd $SCRATCH/adjoint/python; python3 Main_no_matrix_complex_no_refine_shallow.py --seed 1 --node 2 --GPU_index 2
-cd $SCRATCH/adjoint/python; python3 Main_no_matrix_complex_no_refine_shallow.py --seed 2 --node 2 --GPU_index 3

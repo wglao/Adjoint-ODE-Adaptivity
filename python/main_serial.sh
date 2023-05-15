@@ -21,9 +21,9 @@
 #       followed by "module help launcher".
 #----------------------------------------------------
 
-#SBATCH -J rnode           # Job name
-#SBATCH -o rnode.o%j       # Name of stdout output file
-#SBATCH -e rnode.e%j       # Name of stderr error file
+#SBATCH -J rn_var           # Job name
+#SBATCH -o rn_var.o%j       # Name of stdout output file
+#SBATCH -e rn_var.e%j       # Name of stderr error file
 #SBATCH -p rtx              # Queue (partition) name
 #SBATCH -N 1                # Total # of nodes (must be 1 for serial)
 #SBATCH -n 1                # Total # of mpi tasks (should be 1 for serial)
@@ -37,4 +37,4 @@ module list
 
 # # Launch serial code...
 source $WORK/PHO-ICES/adj-env/bin/activate
-python3 Main_no_matrix_complex.py
+python3 Main_variable_params.py

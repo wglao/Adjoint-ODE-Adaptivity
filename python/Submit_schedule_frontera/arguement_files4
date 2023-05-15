@@ -1,4 +1,0 @@
-cd $SCRATCH/adjoint/python; python3 Main_no_matrix_backtrack_complex.py --seed 1 --node 4 --GPU_index 0
-cd $SCRATCH/adjoint/python; python3 Main_no_matrix_backtrack_complex.py --seed 2 --node 4 --GPU_index 1
-cd $SCRATCH/adjoint/python; python3 Main_no_matrix_backtrack_complex.py --seed 3 --node 4 --GPU_index 2
- 

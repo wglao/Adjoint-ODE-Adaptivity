@@ -3,8 +3,8 @@
 # $1: number of nodes
 # $2: number of GPUs per nodes: Lonestar6: 3, Frontera/maverick2: 4
 
-rm *.e*
-rm *.o*
+# rm *.e*
+# rm *.o*
 rm arguement_files*
 
 for param in $(seq 1 1 $1)

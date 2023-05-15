@@ -8,9 +8,10 @@ args = parser.parse_args()
 number_of_node = args.files
 number_of_GPU_per_node = args.GPU_per_node
 
-files = ['complex', 'complex_no_refine', 'complex_no_refine_shallow', 'detect_complex', 'backtrack_complex']
+# files = ['complex', 'complex_no_refine', 'complex_no_refine_shallow', 'detect_complex', 'backtrack_complex']
 # files = ['complex_no_refine', 'complex_no_refine_shallow']
-seeds = [1, 2, 3]
+files = ['width_ref']
+seeds = [1, 2, 3, 4]
 
 LIST = []
 for f in files:
@@ -22,7 +23,7 @@ LIST2 = []
 for file_i in range(number_of_node):
   for gpu_ind in range(number_of_GPU_per_node):
     if file_i*number_of_GPU_per_node + gpu_ind < len(LIST):
-      line = 'cd $SCRATCH/adjoint/python; python3 Main_no_matrix' + LIST[
+      line = 'cd $SCRATCH/adjoint/python; python3 Main' + LIST[
           file_i*number_of_GPU_per_node +
           gpu_ind] + ' --node ' + str(file_i +
                                       1) + ' --GPU_index ' + str(gpu_ind)
