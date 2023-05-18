@@ -10,8 +10,8 @@ number_of_GPU_per_node = args.GPU_per_node
 
 # files = ['complex', 'complex_no_refine', 'complex_no_refine_shallow', 'detect_complex', 'backtrack_complex']
 # files = ['complex_no_refine', 'complex_no_refine_shallow']
-files = ['width_ref']
-seeds = [1, 2, 3, 4]
+files = ['new_loss']
+seeds = [5,6,7,8]
 
 LIST = []
 for f in files:

@@ -16,6 +16,25 @@ def bias_init(key: KeyArray, shape: Sequence[int], dtype: Any = jnp.float_):
   return jnp.sort(default_kernel_init(key, shape, dtype), axis=None)
 
 
+class SingleNeuronLayers(nn.Module):
+  layers: int = 1
+  activation: callable = nn.relu
+  kernel_init: Callable[[PRNGKey, Shape, Dtype], Array] = default_kernel_init
+  bias_init: Callable[[PRNGKey, Shape, Dtype], Array] = initializers.zeros_init()
+
+  @nn.compact
+  def __call__(self, inputs) -> Any:
+    f = inputs
+    out = jnp.empty((self.layers+1,))
+    out = out.at[0].set(jnp.squeeze(inputs))
+    for l in range(self.layers):
+      bias = self.param('bias', self.bias_init, (1, 1), self.param_dtype)
+      weight = self.param('weight', self.kernel_init, (1, 1), self.param_dtype)
+      f = f + self.activation(weight*f + bias)
+      out = out.at[l+1].set(jnp.squeeze(f))
+    return out
+
+
 class ResBlockSimple(nn.Module):
   """Single Layer Residual Block
   U_{n+1} = U_n + W2@ \sigma(W1*(U_{n}-b))
@@ -28,19 +47,19 @@ class ResBlockSimple(nn.Module):
 
   @nn.compact
   def __call__(self, u_n, t_n, dt_n):
-    if not isinstance(u_n, jnp.ndarray) or len(jnp.shape(u_n))==0:
+    if not isinstance(u_n, jnp.ndarray) or len(jnp.shape(u_n)) == 0:
       u_n = jnp.array([u_n])
     bias = self.param('bias', self.bias_init,
                       (self.features, jnp.shape(u_n)[-1]), self.param_dtype)
     weights1 = self.param('weights1', self.kernel_init,
-                         (self.features, jnp.shape(u_n)[-1]), self.param_dtype)
+                          (self.features, jnp.shape(u_n)[-1]), self.param_dtype)
     weights2 = self.param('weights2', self.kernel_init,
-                         (jnp.shape(u_n)[-1], self.features), self.param_dtype)
+                          (jnp.shape(u_n)[-1], self.features), self.param_dtype)
 
     # f = nn.Dense(features=self.features)(f)
     f = u_n - bias
     f = self.activation(weights1*f)
-    f = weights2@f
+    f = weights2 @ f
 
     u_n_plus_1 = u_n + f*dt_n
     return u_n_plus_1

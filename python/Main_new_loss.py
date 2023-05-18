@@ -145,20 +145,24 @@ def lossFn(u_0, t, dt, true, params, net: nn.Module):
 def newLossFn(u_0, t, dt, true, params, net: nn.Module):
   u_arr = net.apply({'params': params}, u_0)
   u_diff = jnp.squeeze(u_arr) - jnp.squeeze(true)
-  loss = jnp.squeeze(jnp.dot((jnp.square(u_diff[:-1]) + jnp.square(u_diff[1:])) / 2, dt))
+  loss = jnp.squeeze(
+      jnp.dot((jnp.square(u_diff[:-1]) + jnp.square(u_diff[1:])) / 2, dt))
   return loss
 
 
 def trainStep(u_0, t, dt, true, params, net, opt_state,
-              tx: optax.GradientTransformation):
-  #loss, grads = vmap(
-  #    value_and_grad(newLossFn, argnums=(4,)),
-  #    in_axes=(0, None, None, 0, None, None))(u_0, t, dt, true, params, net)
-  loss, grads = vmap(
+              tx: optax.GradientTransformation, it):
+  new_loss, new_grads = vmap(
+      value_and_grad(newLossFn, argnums=(4,)),
+      in_axes=(0, None, None, 0, None, None))(u_0, t, dt, true, params, net)
+  old_loss, old_grads = vmap(
       value_and_grad(lossFn, argnums=(4,)),
       in_axes=(0, None, None, 0, None, None))(u_0, t, dt, true, params, net)
-  grads = jtr.tree_map(lambda m: jnp.mean(m, axis=0), grads[0])
-  loss = jnp.mean(loss)
+  old_grads = jtr.tree_map(lambda m: jnp.mean(m, axis=0), old_grads[0])
+  new_grads = jtr.tree_map(lambda m: jnp.mean(m, axis=0), new_grads[0])
+  grads = jtr.tree_map(lambda n, o: n + o*10**((it+1) // 10 - 4), new_grads,
+                       old_grads)
+  loss = new_loss + old_loss*10**((it+1) // 10 - 4)
   updates, opt_state = tx.update(grads, opt_state)
   params = optax.apply_updates(params, updates)
   return params, opt_state, loss
@@ -174,7 +178,7 @@ def metricCalc(u_0, t, dt, true, params, net):
 
 
 if __name__ == "__main__":
-  case = "ResNetODE_old_loss_" + str(args.seed)
+  case = "ResNetODE_new_loss_" + str(args.seed)
   wandb_upload = True
   if wandb_upload:
     import wandb
@@ -212,7 +216,7 @@ if __name__ == "__main__":
   # optimizer = optax.eve(learning_rate)
   opt_state = optimizer.init(params)
 
-  u_0_train = jrand.normal(rng, (1000,))
+  u_0_train = jrand.uniform(rng, (1000,), minval=-3, maxval=3)
   u_0_test = jnp.concatenate((jnp.array([u_0_train[0]]), -3*jnp.ones(
       (1, 1)), jrand.normal(rng, (9, 1))), None)
 
@@ -227,7 +231,7 @@ if __name__ == "__main__":
     # train
     for ep in range(n_epochs):
       params, opt_state, loss = trainStep(u_0_train, t, dt, true_train, params,
-                                          net, opt_state, optimizer)
+                                          net, opt_state, optimizer, it)
       _, err = metricCalc(u_0_test, t, dt, true_test, params, net)
 
       if wandb_upload:
@@ -289,7 +293,7 @@ if __name__ == "__main__":
 
     ax1.plot(t, u_train_plot, '-', marker='.', color='tab:blue', linewidth=1.25)
     #ax2.plot(
-     #   t_fine, jnp.abs(v_train_plot), '--', color='darkblue', linewidth=1.25)
+    #   t_fine, jnp.abs(v_train_plot), '--', color='darkblue', linewidth=1.25)
     #ax2.set_ylabel('Solution')
     ax1.plot(
         t, u_test_plot, '-', marker='.', color='tab:orange', linewidth=1.25)
